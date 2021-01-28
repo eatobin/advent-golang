@@ -47,11 +47,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	txt := string(dat)
-	lines := strings.Fields(txt)
+	fields := strings.Fields(txt)
+
 	sum := 0
-	for _, value := range lines {
+	for _, value := range fields {
 		mass, err := strconv.Atoi(value)
 		if err != nil {
 			panic(err)
@@ -59,10 +59,10 @@ func main() {
 		fuel := Fuel(mass)
 		sum += fuel
 	}
-	fmt.Println(sum)
+	fmt.Printf("Part a: %d\n", sum)
 
 	sum = 0
-	for _, value := range lines {
+	for _, value := range fields {
 		mass, err := strconv.Atoi(value)
 		if err != nil {
 			panic(err)
@@ -70,5 +70,5 @@ func main() {
 		fuel := Fuel2(mass)
 		sum += fuel
 	}
-	fmt.Println(sum)
+	fmt.Printf("Part b: %d\n", sum)
 }
