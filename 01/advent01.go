@@ -49,10 +49,9 @@ func main() {
 	}
 
 	txt := string(dat)
-	lines := strings.Split(txt, "\n")
-	strValues := lines[:len(lines)-1]
+	lines := strings.Fields(txt)
 	sum := 0
-	for _, value := range strValues {
+	for _, value := range lines {
 		mass, err := strconv.Atoi(value)
 		if err != nil {
 			panic(err)
@@ -63,7 +62,7 @@ func main() {
 	fmt.Println(sum)
 
 	sum = 0
-	for _, value := range strValues {
+	for _, value := range lines {
 		mass, err := strconv.Atoi(value)
 		if err != nil {
 			panic(err)
