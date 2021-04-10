@@ -20,7 +20,7 @@ func Fuel(mass int) int {
 
 /*
 
-...calculate its fuel and add it to the total. Then, treat the fuel amount you
+Fuel2 calculate its fuel and add it to the total. Then, treat the fuel amount you
 just calculated as the input mass and repeat the process, continuing until a
 fuel requirement is zero or negative.
 
