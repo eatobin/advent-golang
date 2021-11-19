@@ -5,10 +5,13 @@ import (
 )
 
 func main() {
-	elements := [4]string{"abc", "def", "fgi", "adi"}
-	elementMap := make(map[int]string)
+	keys := [4]byte{'a', 'b', 'c', 'd'}
+	elements := [4]byte{55, 66, 77, 88}
+	elementMap := make(map[byte]byte)
 	for i := 0; i < 4; i++ {
-		elementMap[i] = elements[i]
+		elementMap[keys[i]] = elements[i]
 	}
-	fmt.Println(elementMap)
+	for key, value := range elementMap {
+		fmt.Printf("%c value is %d\n", key, value)
+	}
 }
