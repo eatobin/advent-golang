@@ -14,4 +14,7 @@ func main() {
 	for key, value := range elementMap {
 		fmt.Printf("%c value is %d\n", key, value)
 	}
+	fmt.Printf("\n%05d\n", 10)
+	cc := fmt.Sprintf("%05d", 11)
+	println(cc)
 }
