@@ -6,8 +6,8 @@ import (
 
 func main() {
 	keys := [4]byte{'a', 'b', 'c', 'd'}
-	elements := [4]byte{55, 66, 77, 88}
-	elementMap := make(map[byte]byte)
+	elements := [4]int8{55, 66, 77, 88}
+	elementMap := make(map[byte]int8)
 	for i := 0; i < 4; i++ {
 		elementMap[keys[i]] = elements[i]
 	}
