@@ -4,17 +4,24 @@ import (
 	"fmt"
 )
 
-func main() {
-	keys := [4]byte{'a', 'b', 'c', 'd'}
-	elements := [4]int8{55, 66, 77, 88}
-	elementMap := make(map[byte]int8)
-	for i := 0; i < 4; i++ {
-		elementMap[keys[i]] = elements[i]
+func pad5(op int) map[byte]int8 {
+	asString := fmt.Sprintf("%05d", op)
+	asChars := []byte(asString)
+	values := [5]int8{}
+	for i := 0; i < 5; i++ {
+		values[i] = int8(asChars[i] - 48)
 	}
-	for key, value := range elementMap {
+	keys := [5]byte{'a', 'b', 'c', 'd', 'e'}
+	elementMap := make(map[byte]int8)
+	for i := 0; i < 5; i++ {
+		elementMap[keys[i]] = values[i]
+	}
+	return elementMap
+}
+
+func main() {
+	myMap := pad5(10000)
+	for key, value := range myMap {
 		fmt.Printf("%c value is %d\n", key, value)
 	}
-	fmt.Printf("\n%05d\n", 10)
-	cc := fmt.Sprintf("%05d", 11)
-	println(cc)
 }
