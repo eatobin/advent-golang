@@ -4,24 +4,31 @@ import (
 	"fmt"
 )
 
-func pad5(op int) map[byte]int8 {
-	asString := fmt.Sprintf("%05d", op)
-	asChars := []byte(asString)
-	values := [5]int8{}
-	for i := 0; i < 5; i++ {
-		values[i] = int8(asChars[i] - 48)
+func CharToInt(char byte) byte {
+	if char < 48 || char > 57 {
+		panic("Char is not an integer")
 	}
+	return char - 48
+}
+
+func pad5(op int) map[byte]byte {
 	keys := [5]byte{'a', 'b', 'c', 'd', 'e'}
-	elementMap := make(map[byte]int8)
+	values := [5]byte{}
+	instruction := make(map[byte]byte)
+	asString := fmt.Sprintf("%05d", op)
+	asBytes := []byte(asString)
+
 	for i := 0; i < 5; i++ {
-		elementMap[keys[i]] = values[i]
+		values[i] = CharToInt(asBytes[i])
+		instruction[keys[i]] = values[i]
 	}
-	return elementMap
+
+	return instruction
 }
 
 func main() {
-	myMap := pad5(10000)
+	myMap := pad5(10009)
 	for key, value := range myMap {
-		fmt.Printf("%c value is %d\n", key, value)
+		fmt.Printf("%c :: %d\n", key, value)
 	}
 }
