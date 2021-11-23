@@ -13,21 +13,19 @@ func CharToInt(char byte) byte {
 
 func pad5(op int) map[byte]byte {
 	keys := [5]byte{'a', 'b', 'c', 'd', 'e'}
-	values := [5]byte{}
 	instruction := make(map[byte]byte)
 	asString := fmt.Sprintf("%05d", op)
 	asBytes := []byte(asString)
 
 	for i := 0; i < 5; i++ {
-		values[i] = CharToInt(asBytes[i])
-		instruction[keys[i]] = values[i]
+		instruction[keys[i]] = CharToInt(asBytes[i])
 	}
 
 	return instruction
 }
 
 func main() {
-	myMap := pad5(10099)
+	myMap := pad5(12345)
 	for key, value := range myMap {
 		fmt.Printf("%c :: %d\n", key, value)
 	}
