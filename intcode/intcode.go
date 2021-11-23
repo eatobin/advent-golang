@@ -27,7 +27,7 @@ func pad5(op int) map[byte]byte {
 }
 
 func main() {
-	myMap := pad5(10009)
+	myMap := pad5(10099)
 	for key, value := range myMap {
 		fmt.Printf("%c :: %d\n", key, value)
 	}
