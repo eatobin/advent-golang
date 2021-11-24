@@ -49,19 +49,17 @@ func Pad5(op int) map[byte]byte {
 	return instruction
 }
 
-//func main() {
-//	myMap := Pad5(12345)
-//	for key, value := range myMap {
-//		fmt.Printf("%c :: %d\n", key, value)
-//	}
-//	//fmt.Printf("\nInt = %d", CharToInt('j'))
-//	fmt.Printf("\nInt = %d", CharToInt('0'))
-//	fmt.Printf("\nInt = %d", CharToInt('9'))
-//}
-
 func main() {
 	for key, value := range MakeMemory("advent02.csv") {
 		fmt.Printf("%3d :: %d\n", key, value)
 	}
 	fmt.Println(MakeMemory("advent02.csv")[120])
+
+	myMap := Pad5(12345)
+	for key, value := range myMap {
+		fmt.Printf("%c :: %d\n", key, value)
+	}
+	//fmt.Printf("\nInt = %d", CharToInt('j'))
+	fmt.Printf("\nInt = %d", CharToInt('0'))
+	fmt.Printf("\nInt = %d", CharToInt('9'))
 }
