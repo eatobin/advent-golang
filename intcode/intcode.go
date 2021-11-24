@@ -2,7 +2,32 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"strconv"
+	"strings"
 )
+
+//fp = "advent02.csv"
+
+func MakeMemory(fp string) map[int]int {
+	dat, err := ioutil.ReadFile(fp)
+	if err != nil {
+		panic(err)
+	}
+
+	txt := string(dat)
+	txt = strings.TrimRight(txt, "\n")
+	strOps := strings.Split(txt, ",")
+	memory := make(map[int]int)
+	for i, strOp := range strOps {
+		op, err := strconv.Atoi(strOp)
+		if err != nil {
+			panic(err)
+		}
+		memory[i] = op
+	}
+	return memory
+}
 
 func CharToInt(char byte) byte {
 	if char < 48 || char > 57 {
@@ -24,12 +49,19 @@ func Pad5(op int) map[byte]byte {
 	return instruction
 }
 
+//func main() {
+//	myMap := Pad5(12345)
+//	for key, value := range myMap {
+//		fmt.Printf("%c :: %d\n", key, value)
+//	}
+//	//fmt.Printf("\nInt = %d", CharToInt('j'))
+//	fmt.Printf("\nInt = %d", CharToInt('0'))
+//	fmt.Printf("\nInt = %d", CharToInt('9'))
+//}
+
 func main() {
-	myMap := Pad5(12345)
-	for key, value := range myMap {
-		fmt.Printf("%c :: %d\n", key, value)
+	for key, value := range MakeMemory("advent02.csv") {
+		fmt.Printf("%3d :: %d\n", key, value)
 	}
-	//fmt.Printf("\nInt = %d", CharToInt('j'))
-	fmt.Printf("\nInt = %d", CharToInt('0'))
-	fmt.Printf("\nInt = %d", CharToInt('9'))
+	fmt.Println(MakeMemory("advent02.csv")[120])
 }
