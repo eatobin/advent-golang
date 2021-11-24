@@ -7,9 +7,12 @@ import (
 	"strings"
 )
 
+type Memory map[int]int
+type Instruction map[byte]uint8
+
 const fp = "advent02.csv"
 
-func MakeMemory(fp string) map[int]int {
+func MakeMemory(fp string) Memory {
 	dat, err := ioutil.ReadFile(fp)
 	if err != nil {
 		panic(err)
@@ -36,7 +39,7 @@ func CharToInt(char byte) uint8 {
 	return char - 48
 }
 
-func Pad5(op int) map[byte]uint8 {
+func Pad5(op int) Instruction {
 	keys := [5]byte{'a', 'b', 'c', 'd', 'e'}
 	instruction := make(map[byte]uint8)
 	asString := fmt.Sprintf("%05d", op)
