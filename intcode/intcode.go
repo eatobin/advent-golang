@@ -32,21 +32,21 @@ func MakeMemory(fp string) Memory {
 	return memory
 }
 
-func CharToInt(char byte) uint8 {
+func charToInt(char byte) uint8 {
 	if char < 48 || char > 57 {
 		panic("Char is not an integer")
 	}
 	return char - 48
 }
 
-func Pad5(op int) Instruction {
+func pad5(op int) Instruction {
 	keys := [5]byte{'a', 'b', 'c', 'd', 'e'}
 	instruction := make(map[byte]uint8)
 	asString := fmt.Sprintf("%05d", op)
 	asBytes := []byte(asString)
 
 	for i := 0; i < 5; i++ {
-		instruction[keys[i]] = CharToInt(asBytes[i])
+		instruction[keys[i]] = charToInt(asBytes[i])
 	}
 	return instruction
 }
@@ -57,11 +57,11 @@ func main() {
 	}
 	fmt.Println(MakeMemory("advent02.csv")[120])
 
-	myMap := Pad5(12345)
+	myMap := pad5(12345)
 	for key, value := range myMap {
 		fmt.Printf("%c :: %d\n", key, value)
 	}
-	//fmt.Printf("\nInt = %d", CharToInt('j'))
-	fmt.Printf("\nInt = %d", CharToInt('0'))
-	fmt.Printf("\nInt = %d", CharToInt('9'))
+	//fmt.Printf("\nInt = %d", charToInt('j'))
+	fmt.Printf("\nInt = %d", charToInt('0'))
+	fmt.Printf("\nInt = %d", charToInt('9'))
 }
