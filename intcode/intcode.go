@@ -45,7 +45,6 @@ func Pad5(op int) map[byte]uint8 {
 	for i := 0; i < 5; i++ {
 		instruction[keys[i]] = CharToInt(asBytes[i])
 	}
-
 	return instruction
 }
 
