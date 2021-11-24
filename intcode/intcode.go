@@ -22,6 +22,7 @@ func MakeMemory(fp string) Memory {
 	txt = strings.TrimRight(txt, "\n")
 	strOps := strings.Split(txt, ",")
 	memory := make(map[int]int)
+
 	for i, strOp := range strOps {
 		op, err := strconv.Atoi(strOp)
 		if err != nil {
