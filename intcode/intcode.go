@@ -29,16 +29,16 @@ func MakeMemory(fp string) map[int]int {
 	return memory
 }
 
-func CharToInt(char byte) byte {
+func CharToInt(char byte) uint8 {
 	if char < 48 || char > 57 {
 		panic("Char is not an integer")
 	}
 	return char - 48
 }
 
-func Pad5(op int) map[byte]byte {
+func Pad5(op int) map[byte]uint8 {
 	keys := [5]byte{'a', 'b', 'c', 'd', 'e'}
-	instruction := make(map[byte]byte)
+	instruction := make(map[byte]uint8)
 	asString := fmt.Sprintf("%05d", op)
 	asBytes := []byte(asString)
 
