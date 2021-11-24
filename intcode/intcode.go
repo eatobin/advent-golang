@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-//fp = "advent02.csv"
+const fp = "advent02.csv"
 
 func MakeMemory(fp string) map[int]int {
 	dat, err := ioutil.ReadFile(fp)
@@ -49,7 +49,7 @@ func Pad5(op int) map[byte]uint8 {
 }
 
 func main() {
-	for key, value := range MakeMemory("advent02.csv") {
+	for key, value := range MakeMemory(fp) {
 		fmt.Printf("%3d :: %d\n", key, value)
 	}
 	fmt.Println(MakeMemory("advent02.csv")[120])
