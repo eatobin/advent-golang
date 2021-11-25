@@ -11,6 +11,14 @@ type Memory map[int]int
 type Instruction map[byte]uint8
 
 const fp = "advent02.csv"
+const offsetC = 1
+const offsetB = 2
+const offsetA = 3
+
+type IntCode struct {
+	pointer int
+	memory  Memory
+}
 
 func MakeMemory(fp string) Memory {
 	dat, err := ioutil.ReadFile(fp)
@@ -50,6 +58,54 @@ func pad5(op int) Instruction {
 		instruction[keys[i]] = charToInt(asBytes[i])
 	}
 	return instruction
+}
+
+func aParam(instruction Instruction, pointer int, memory Memory) int {
+	switch instruction['a'] {
+	// a-p-w
+	case 0:
+		return memory[pointer+offsetA]
+	default:
+		return 0
+	}
+}
+
+func bParam(instruction Instruction, pointer int, memory Memory) int {
+	switch instruction['b'] {
+	// b-p-r
+	case 0:
+		return memory[memory[pointer+offsetB]]
+	default:
+		return 0
+	}
+}
+
+func cParam(instruction Instruction, pointer int, memory Memory) int {
+	switch instruction['c'] {
+	// c-p-r
+	case 0:
+		return memory[memory[pointer+offsetC]]
+	default:
+		return 0
+	}
+}
+
+func opCode(ic IntCode) IntCode {
+	instruction := pad5(ic.memory[ic.pointer])
+	switch instruction['e'] {
+	case 1:
+		a := aParam(instruction, ic.pointer, ic.memory)
+		b := bParam(instruction, ic.pointer, ic.memory)
+		c := cParam(instruction, ic.pointer, ic.memory)
+		opCode(IntCode{
+			pointer: ic.pointer + 4,
+			//memory:  ic.memory[aParam(instruction, ic.pointer, ic.memory)],
+			memory: ic.memory,
+		})
+	case 9:
+		return IntCode{pointer: ic.pointer, memory: ic.memory}
+	}
+	return IntCode{}
 }
 
 func main() {
