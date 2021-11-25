@@ -90,17 +90,26 @@ func cParam(instruction Instruction, pointer int, memory Memory) int {
 	}
 }
 
+func updateMemory(memory Memory, key int, value int) Memory {
+	memory[key] = value
+	return memory
+}
+
 func opCode(ic IntCode) IntCode {
 	instruction := pad5(ic.memory[ic.pointer])
+	a := aParam(instruction, ic.pointer, ic.memory)
+	b := bParam(instruction, ic.pointer, ic.memory)
+	c := cParam(instruction, ic.pointer, ic.memory)
 	switch instruction['e'] {
 	case 1:
-		a := aParam(instruction, ic.pointer, ic.memory)
-		b := bParam(instruction, ic.pointer, ic.memory)
-		c := cParam(instruction, ic.pointer, ic.memory)
 		opCode(IntCode{
 			pointer: ic.pointer + 4,
-			//memory:  ic.memory[aParam(instruction, ic.pointer, ic.memory)],
-			memory: ic.memory,
+			memory:  updateMemory(ic.memory, a, b+c),
+		})
+	case 2:
+		opCode(IntCode{
+			pointer: ic.pointer + 4,
+			memory:  updateMemory(ic.memory, a, b*c),
 		})
 	case 9:
 		return IntCode{pointer: ic.pointer, memory: ic.memory}
