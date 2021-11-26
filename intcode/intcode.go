@@ -122,5 +122,20 @@ func main() {
 	tv := MakeMemory(fp)
 
 	answer := opCode(IntCode{pointer: 0, memory: updatedMemory(tv, 12, 2)})
-	fmt.Printf("Part A answer = %d", answer.memory[0])
+	fmt.Printf("Part A answer = %d", answer.memory[0]) // Part A answer = 2890696
 }
+
+//;part b
+//(def noun-verb
+//(vec (for [noun (range 0 100)
+//verb (range 0 100)
+//:let [candidate (((op-code {:pointer 0
+//:memory  (updated-memory noun verb)})
+//:memory)
+//0)]
+//:when (= candidate 19690720)]
+//[candidate noun verb (+ (* 100 noun) verb)])))
+//
+//(println (last (first noun-verb)))
+//
+//;8226
