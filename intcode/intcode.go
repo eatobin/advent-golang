@@ -112,22 +112,15 @@ func opCode(ic IntCode) IntCode {
 	return IntCode{pointer: ic.pointer, memory: ic.memory}
 }
 
+func updatedMemory(memory Memory, noun int, verb int) Memory {
+	memory[1] = noun
+	memory[2] = verb
+	return memory
+}
+
 func main() {
-	for key, value := range MakeMemory(fp) {
-		fmt.Printf("%3d :: %d\n", key, value)
-	}
-	fmt.Println(MakeMemory("advent02.csv")[120])
+	tv := MakeMemory(fp)
 
-	myMap := pad5(12345)
-	for key, value := range myMap {
-		fmt.Printf("%c :: %d\n", key, value)
-	}
-	//fmt.Printf("\nInt = %d", charToInt('j'))
-	fmt.Printf("\nInt = %d", charToInt('0'))
-	fmt.Printf("\nInt = %d", charToInt('9'))
-
-	n := map[int]int{0: 100, 1: 200}
-	fmt.Println("map:", n)
-	mm := updateMemory(n, 1, 999)
-	fmt.Println("map:", mm)
+	answer := opCode(IntCode{pointer: 0, memory: updatedMemory(tv, 12, 2)})
+	fmt.Printf("Part A answer = %d", answer.memory[0])
 }
