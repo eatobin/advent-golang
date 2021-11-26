@@ -7,43 +7,21 @@ import (
 	"strings"
 )
 
-// Run op codes on r registers.
-func Run(r []int) {
-	ip := 0
-	for {
-		switch r[ip] {
-		case 1:
-			a := r[ip+1]
-			b := r[ip+2]
-			c := r[ip+3]
-			r[c] = r[a] + r[b]
-			ip += 4
-		case 2:
-			a := r[ip+1]
-			b := r[ip+2]
-			c := r[ip+3]
-			r[c] = r[a] * r[b]
-			ip += 4
-		case 99:
-			return
-		default:
-			panic("invalid op code")
-		}
-	}
+type Memory map[int]int
+type Instruction map[byte]uint8
+
+const fp = "advent02.csv"
+const offsetC = 1
+const offsetB = 2
+const offsetA = 3
+
+type IntCode struct {
+	pointer int
+	memory  Memory
 }
 
-// FixRun fixes 1 2 op codes and runs the program.
-func FixRun(noun int, verb int, rr []int) int {
-	r := make([]int, len(rr))
-	copy(r, rr)
-	r[1] = noun
-	r[2] = verb
-	Run(r)
-	return r[0]
-}
-
-func main() {
-	dat, err := ioutil.ReadFile("advent02.csv")
+func MakeMemory(fp string) Memory {
+	dat, err := ioutil.ReadFile(fp)
 	if err != nil {
 		panic(err)
 	}
@@ -51,25 +29,111 @@ func main() {
 	txt := string(dat)
 	txt = strings.TrimRight(txt, "\n")
 	strOps := strings.Split(txt, ",")
-	r := make([]int, len(strOps))
+	memory := make(map[int]int)
+
 	for i, strOp := range strOps {
 		op, err := strconv.Atoi(strOp)
 		if err != nil {
 			panic(err)
 		}
-
-		r[i] = op
+		memory[i] = op
 	}
+	return memory
+}
 
-	result := FixRun(12, 2, r)
-	fmt.Println(result)
+func charToInt(char byte) uint8 {
+	if char < 48 || char > 57 {
+		panic("Char is not an integer")
+	}
+	return char - 48
+}
 
-	for noun := 0; noun < 100; noun++ {
-		for verb := 0; verb < 100; verb++ {
-			result = FixRun(noun, verb, r)
-			if result == 19690720 {
-				fmt.Printf("%d (%d %d)\n", 100*noun+verb, noun, verb)
+func pad5(op int) Instruction {
+	keys := [5]byte{'a', 'b', 'c', 'd', 'e'}
+	instruction := make(map[byte]uint8)
+	asString := fmt.Sprintf("%05d", op)
+	asBytes := []byte(asString)
+
+	for i := 0; i < 5; i++ {
+		instruction[keys[i]] = charToInt(asBytes[i])
+	}
+	return instruction
+}
+
+func aParam(instruction Instruction, pointer int, memory Memory) int {
+	switch instruction['a'] {
+	// a-p-w
+	case 0:
+		return memory[pointer+offsetA]
+	default:
+		return 0
+	}
+}
+
+func bParam(instruction Instruction, pointer int, memory Memory) int {
+	switch instruction['b'] {
+	// b-p-r
+	case 0:
+		return memory[memory[pointer+offsetB]]
+	default:
+		return 0
+	}
+}
+
+func cParam(instruction Instruction, pointer int, memory Memory) int {
+	switch instruction['c'] {
+	// c-p-r
+	case 0:
+		return memory[memory[pointer+offsetC]]
+	default:
+		return 0
+	}
+}
+
+func updateMemory(memory Memory, key int, value int) Memory {
+	memory[key] = value
+	return memory
+}
+
+func opCode(ic IntCode) IntCode {
+	instruction := pad5(ic.memory[ic.pointer])
+	switch instruction['e'] {
+	case 1:
+		opCode(IntCode{
+			pointer: ic.pointer + 4,
+			memory:  updateMemory(ic.memory, aParam(instruction, ic.pointer, ic.memory), bParam(instruction, ic.pointer, ic.memory)+cParam(instruction, ic.pointer, ic.memory)),
+		})
+	case 2:
+		opCode(IntCode{
+			pointer: ic.pointer + 4,
+			memory:  updateMemory(ic.memory, aParam(instruction, ic.pointer, ic.memory), bParam(instruction, ic.pointer, ic.memory)*cParam(instruction, ic.pointer, ic.memory)),
+		})
+	}
+	return IntCode{pointer: ic.pointer, memory: ic.memory}
+}
+
+func updatedMemory(memory Memory, noun int, verb int) Memory {
+	memory[1] = noun
+	memory[2] = verb
+	return memory
+}
+
+func nounVerb() {
+	for noun := 0; noun < 101; noun++ {
+		for verb := 0; verb < 101; verb++ {
+			tv := MakeMemory(fp)
+			candidate := opCode(IntCode{pointer: 0, memory: updatedMemory(tv, noun, verb)}).memory[0]
+			if candidate == 19690720 {
+				fmt.Printf("Part B answer = %d", (100*noun)+verb)
 			}
 		}
 	}
+}
+
+func main() {
+	tv := MakeMemory(fp)
+
+	answer := opCode(IntCode{pointer: 0, memory: updatedMemory(tv, 12, 2)})
+	fmt.Printf("Part A answer = %d\n", answer.memory[0]) // Part A answer = 2890696
+	nounVerb()                                           // Part B answer = 8226
 }
