@@ -61,7 +61,7 @@ func pad5(op int) Instruction {
 }
 
 func aParam(instruction Instruction, pointer int, memory Memory) int {
-	choice := 0
+	var choice int
 	switch instruction['a'] {
 	// a-p-w
 	case 0:
@@ -71,7 +71,7 @@ func aParam(instruction Instruction, pointer int, memory Memory) int {
 }
 
 func bParam(instruction Instruction, pointer int, memory Memory) int {
-	choice := 0
+	var choice int
 	switch instruction['b'] {
 	// b-p-r
 	case 0:
@@ -81,7 +81,7 @@ func bParam(instruction Instruction, pointer int, memory Memory) int {
 }
 
 func cParam(instruction Instruction, pointer int, memory Memory) int {
-	choice := 0
+	var choice int
 	switch instruction['c'] {
 	// c-p-r
 	case 0:
@@ -109,7 +109,7 @@ func opCode(ic IntCode) IntCode {
 			memory:  updateMemory(ic.memory, aParam(instruction, ic.pointer, ic.memory), bParam(instruction, ic.pointer, ic.memory)*cParam(instruction, ic.pointer, ic.memory)),
 		})
 	}
-	return IntCode{pointer: ic.pointer, memory: ic.memory}
+	return ic
 }
 
 func updatedMemory(memory Memory, noun int, verb int) Memory {
