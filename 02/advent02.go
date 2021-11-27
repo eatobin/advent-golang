@@ -61,33 +61,33 @@ func pad5(op int) Instruction {
 }
 
 func aParam(instruction Instruction, pointer int, memory Memory) int {
+	choice := 0
 	switch instruction['a'] {
 	// a-p-w
 	case 0:
-		return memory[pointer+offsetA]
-	default:
-		return 0
+		choice = memory[pointer+offsetA]
 	}
+	return choice
 }
 
 func bParam(instruction Instruction, pointer int, memory Memory) int {
+	choice := 0
 	switch instruction['b'] {
 	// b-p-r
 	case 0:
-		return memory[memory[pointer+offsetB]]
-	default:
-		return 0
+		choice = memory[memory[pointer+offsetB]]
 	}
+	return choice
 }
 
 func cParam(instruction Instruction, pointer int, memory Memory) int {
+	choice := 0
 	switch instruction['c'] {
 	// c-p-r
 	case 0:
-		return memory[memory[pointer+offsetC]]
-	default:
-		return 0
+		choice = memory[memory[pointer+offsetC]]
 	}
+	return choice
 }
 
 func updateMemory(memory Memory, key int, value int) Memory {
