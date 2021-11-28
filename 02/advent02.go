@@ -103,12 +103,14 @@ func opCode(ic IntCode) IntCode {
 	case 1:
 		opCode(IntCode{
 			pointer: ic.pointer + 4,
-			memory:  updateMemory(ic.memory, aParam(instruction, ic.pointer, ic.memory), bParam(instruction, ic.pointer, ic.memory)+cParam(instruction, ic.pointer, ic.memory)),
+			memory: updateMemory(ic.memory, aParam(instruction, ic.pointer, ic.memory),
+				bParam(instruction, ic.pointer, ic.memory)+cParam(instruction, ic.pointer, ic.memory)),
 		})
 	case 2:
 		opCode(IntCode{
 			pointer: ic.pointer + 4,
-			memory:  updateMemory(ic.memory, aParam(instruction, ic.pointer, ic.memory), bParam(instruction, ic.pointer, ic.memory)*cParam(instruction, ic.pointer, ic.memory)),
+			memory: updateMemory(ic.memory, aParam(instruction, ic.pointer, ic.memory),
+				bParam(instruction, ic.pointer, ic.memory)*cParam(instruction, ic.pointer, ic.memory)),
 		})
 	default:
 		panic("opcode is not valid")
