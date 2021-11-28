@@ -98,6 +98,8 @@ func updateMemory(memory Memory, key int, value int) Memory {
 func opCode(ic IntCode) IntCode {
 	instruction := pad5(ic.memory[ic.pointer])
 	switch instruction['e'] {
+	case 9:
+		break
 	case 1:
 		opCode(IntCode{
 			pointer: ic.pointer + 4,
@@ -108,6 +110,8 @@ func opCode(ic IntCode) IntCode {
 			pointer: ic.pointer + 4,
 			memory:  updateMemory(ic.memory, aParam(instruction, ic.pointer, ic.memory), bParam(instruction, ic.pointer, ic.memory)*cParam(instruction, ic.pointer, ic.memory)),
 		})
+	default:
+		panic("opcode is not valid")
 	}
 	return ic
 }
