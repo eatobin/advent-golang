@@ -90,8 +90,8 @@ func cParam(instruction Instruction, pointer int, memory Memory) int {
 	return choice
 }
 
-func updateMemory(memory Memory, key int, value int) Memory {
-	memory[key] = value
+func updateMemory(memory Memory, index int, value int) Memory {
+	memory[index] = value
 	return memory
 }
 
@@ -103,13 +103,15 @@ func opCode(ic IntCode) IntCode {
 	case 1:
 		opCode(IntCode{
 			pointer: ic.pointer + 4,
-			memory: updateMemory(ic.memory, aParam(instruction, ic.pointer, ic.memory),
+			memory: updateMemory(ic.memory,
+				aParam(instruction, ic.pointer, ic.memory),
 				bParam(instruction, ic.pointer, ic.memory)+cParam(instruction, ic.pointer, ic.memory)),
 		})
 	case 2:
 		opCode(IntCode{
 			pointer: ic.pointer + 4,
-			memory: updateMemory(ic.memory, aParam(instruction, ic.pointer, ic.memory),
+			memory: updateMemory(ic.memory,
+				aParam(instruction, ic.pointer, ic.memory),
 				bParam(instruction, ic.pointer, ic.memory)*cParam(instruction, ic.pointer, ic.memory)),
 		})
 	default:
@@ -138,7 +140,6 @@ func nounVerb() {
 
 func main() {
 	tv := MakeMemory(fp)
-
 	answer := opCode(IntCode{pointer: 0, memory: updatedMemory(tv, 12, 2)})
 	fmt.Printf("Part A answer = %d\n", answer.memory[0]) // Part A answer = 2890696
 	nounVerb()                                           // Part B answer = 8226
