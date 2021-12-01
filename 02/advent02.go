@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-type Memory map[int]int
+type Memory []int
 type Instruction map[byte]uint8
 
 const fp = "advent02.csv"
@@ -29,7 +29,7 @@ func MakeMemory(fp string) Memory {
 	txt := string(dat)
 	txt = strings.TrimRight(txt, "\n")
 	strOps := strings.Split(txt, ",")
-	memory := make(map[int]int)
+	memory := make([]int, len(strOps))
 
 	for i, strOp := range strOps {
 		op, err := strconv.Atoi(strOp)
