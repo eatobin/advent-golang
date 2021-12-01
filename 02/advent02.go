@@ -11,9 +11,9 @@ type Memory []int
 type Instruction map[byte]uint8
 
 const fp = "advent02.csv"
-const offsetC = 1
-const offsetB = 2
-const offsetA = 3
+const offsetC int = 1
+const offsetB int = 2
+const offsetA int = 3
 
 type IntCode struct {
 	pointer int
@@ -60,6 +60,14 @@ func pad5(op int) Instruction {
 	return instruction
 }
 
+func getOrElse(pointer int, offsetX int, memory Memory) int {
+	if (pointer + offsetX) > len(memory)-1 {
+		return 0
+	} else {
+		return memory[memory[pointer+offsetX]]
+	}
+}
+
 func aParam(instruction Instruction, pointer int, memory Memory) int {
 	var choice int
 	switch instruction['a'] {
@@ -75,7 +83,7 @@ func bParam(instruction Instruction, pointer int, memory Memory) int {
 	switch instruction['b'] {
 	// b-p-r
 	case 0:
-		choice = memory[memory[pointer+offsetB]]
+		choice = getOrElse(pointer, offsetB, memory)
 	}
 	return choice
 }
@@ -85,7 +93,7 @@ func cParam(instruction Instruction, pointer int, memory Memory) int {
 	switch instruction['c'] {
 	// c-p-r
 	case 0:
-		choice = memory[memory[pointer+offsetC]]
+		choice = getOrElse(pointer, offsetC, memory)
 	}
 	return choice
 }
