@@ -68,32 +68,32 @@ func getOrElse(pointer int, offsetX int, memory Memory) int {
 	}
 }
 
-func aParam(instruction Instruction, pointer int, memory Memory) int {
+func aParam(instruction Instruction, ic IntCode) int {
 	var choice int
 	switch instruction['a'] {
 	// a-p-w
 	case 0:
-		choice = memory[pointer+offsetA]
+		choice = ic.memory[ic.pointer+offsetA]
 	}
 	return choice
 }
 
-func bParam(instruction Instruction, pointer int, memory Memory) int {
+func bParam(instruction Instruction, ic IntCode) int {
 	var choice int
 	switch instruction['b'] {
 	// b-p-r
 	case 0:
-		choice = getOrElse(pointer, offsetB, memory)
+		choice = getOrElse(ic.pointer, offsetB, ic.memory)
 	}
 	return choice
 }
 
-func cParam(instruction Instruction, pointer int, memory Memory) int {
+func cParam(instruction Instruction, ic IntCode) int {
 	var choice int
 	switch instruction['c'] {
 	// c-p-r
 	case 0:
-		choice = getOrElse(pointer, offsetC, memory)
+		choice = getOrElse(ic.pointer, offsetC, ic.memory)
 	}
 	return choice
 }
@@ -112,15 +112,15 @@ func opCode(ic IntCode) IntCode {
 		opCode(IntCode{
 			pointer: ic.pointer + 4,
 			memory: updateMemory(ic.memory,
-				aParam(instruction, ic.pointer, ic.memory),
-				bParam(instruction, ic.pointer, ic.memory)+cParam(instruction, ic.pointer, ic.memory)),
+				aParam(instruction, ic),
+				bParam(instruction, ic)+cParam(instruction, ic)),
 		})
 	case 2:
 		opCode(IntCode{
 			pointer: ic.pointer + 4,
 			memory: updateMemory(ic.memory,
-				aParam(instruction, ic.pointer, ic.memory),
-				bParam(instruction, ic.pointer, ic.memory)*cParam(instruction, ic.pointer, ic.memory)),
+				aParam(instruction, ic),
+				bParam(instruction, ic)*cParam(instruction, ic)),
 		})
 	default:
 		panic("opcode is not valid")
