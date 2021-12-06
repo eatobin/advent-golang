@@ -107,7 +107,7 @@ func opCode(ic IntCode) IntCode {
 	instruction := pad5(ic.memory[ic.pointer])
 	switch instruction['e'] {
 	case 9:
-		break
+		return ic
 	case 1:
 		return opCode(IntCode{
 			pointer: ic.pointer + 4,
@@ -125,7 +125,6 @@ func opCode(ic IntCode) IntCode {
 	default:
 		panic("opcode is not valid")
 	}
-	return ic
 }
 
 func updatedMemory(memory Memory, noun int, verb int) Memory {
