@@ -153,6 +153,34 @@ func opCode(ic IntCode) IntCode {
 			pointer: ic.pointer + 2,
 			memory:  ic.memory,
 		})
+	case 5:
+		var newPointer int
+		c := cParam(instruction, ic)
+		if c == 0 {
+			newPointer = ic.pointer + 3
+		} else {
+			newPointer = bParam(instruction, ic)
+		}
+		opCode(IntCode{
+			input:   ic.input,
+			output:  ic.output,
+			pointer: newPointer,
+			memory:  ic.memory,
+		})
+	case 6:
+		var newPointer int
+		c := cParam(instruction, ic)
+		if c != 0 {
+			newPointer = ic.pointer + 3
+		} else {
+			newPointer = bParam(instruction, ic)
+		}
+		opCode(IntCode{
+			input:   ic.input,
+			output:  ic.output,
+			pointer: newPointer,
+			memory:  ic.memory,
+		})
 	default:
 		panic("opcode is not valid")
 	}
