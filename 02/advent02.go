@@ -109,14 +109,14 @@ func opCode(ic IntCode) IntCode {
 	case 9:
 		break
 	case 1:
-		opCode(IntCode{
+		return opCode(IntCode{
 			pointer: ic.pointer + 4,
 			memory: updateMemory(ic.memory,
 				aParam(instruction, ic),
 				bParam(instruction, ic)+cParam(instruction, ic)),
 		})
 	case 2:
-		opCode(IntCode{
+		return opCode(IntCode{
 			pointer: ic.pointer + 4,
 			memory: updateMemory(ic.memory,
 				aParam(instruction, ic),
