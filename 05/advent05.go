@@ -16,6 +16,8 @@ const offsetB int = 2
 const offsetA int = 3
 
 type IntCode struct {
+	input   int
+	output  int
 	pointer int
 	memory  Memory
 }
@@ -119,6 +121,8 @@ func opCode(ic IntCode) IntCode {
 		break
 	case 1:
 		opCode(IntCode{
+			input:   ic.input,
+			output:  ic.output,
 			pointer: ic.pointer + 4,
 			memory: updateMemory(ic.memory,
 				aParam(instruction, ic),
@@ -126,6 +130,8 @@ func opCode(ic IntCode) IntCode {
 		})
 	case 2:
 		opCode(IntCode{
+			input:   ic.input,
+			output:  ic.output,
 			pointer: ic.pointer + 4,
 			memory: updateMemory(ic.memory,
 				aParam(instruction, ic),
@@ -151,7 +157,7 @@ out:
 	for noun = 0; noun < 101; noun++ {
 		for verb = 0; verb < 101; verb++ {
 			tv := MakeMemory(fp)
-			candidate := opCode(IntCode{pointer: 0, memory: updatedMemory(tv, noun, verb)}).memory[0]
+			candidate := opCode(IntCode{input: 0, output: 0, pointer: 0, memory: updatedMemory(tv, noun, verb)}).memory[0]
 			if candidate == 19690720 {
 				break out
 			}
@@ -162,7 +168,7 @@ out:
 
 func main() {
 	tv := MakeMemory(fp)
-	answer := opCode(IntCode{pointer: 0, memory: updatedMemory(tv, 12, 2)})
+	answer := opCode(IntCode{input: 0, output: 0, pointer: 0, memory: updatedMemory(tv, 12, 2)})
 	fmt.Printf("Part A answer = %d\n", answer.memory[0]) // Part A answer = 2890696
 	fmt.Printf("Part B answer = %d", nounVerb())         // Part B answer = 8226
 }
