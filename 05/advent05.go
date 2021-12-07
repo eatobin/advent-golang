@@ -10,7 +10,7 @@ import (
 type Memory []int
 type Instruction map[byte]uint8
 
-const fp = "advent02.csv"
+const fp = "advent05.csv"
 const offsetC int = 1
 const offsetB int = 2
 const offsetA int = 3
@@ -118,9 +118,9 @@ func opCode(ic IntCode) IntCode {
 	instruction := pad5(ic.memory[ic.pointer])
 	switch instruction['e'] {
 	case 9:
-		break
+		return ic
 	case 1:
-		opCode(IntCode{
+		return opCode(IntCode{
 			input:   ic.input,
 			output:  ic.output,
 			pointer: ic.pointer + 4,
@@ -129,7 +129,7 @@ func opCode(ic IntCode) IntCode {
 				bParam(instruction, ic)+cParam(instruction, ic)),
 		})
 	case 2:
-		opCode(IntCode{
+		return opCode(IntCode{
 			input:   ic.input,
 			output:  ic.output,
 			pointer: ic.pointer + 4,
@@ -138,7 +138,7 @@ func opCode(ic IntCode) IntCode {
 				bParam(instruction, ic)*cParam(instruction, ic)),
 		})
 	case 3:
-		opCode(IntCode{
+		return opCode(IntCode{
 			input:   ic.input,
 			output:  ic.output,
 			pointer: ic.pointer + 2,
@@ -147,73 +147,73 @@ func opCode(ic IntCode) IntCode {
 				ic.input),
 		})
 	case 4:
-		opCode(IntCode{
+		return opCode(IntCode{
 			input:   ic.input,
 			output:  cParam(instruction, ic),
 			pointer: ic.pointer + 2,
 			memory:  ic.memory,
 		})
 	case 5:
-		var newPointer int
+		var newPointer = ic.pointer
 		c := cParam(instruction, ic)
 		if c == 0 {
-			newPointer = ic.pointer + 3
+			newPointer = newPointer + 3
 		} else {
 			newPointer = bParam(instruction, ic)
 		}
-		opCode(IntCode{
+		return opCode(IntCode{
 			input:   ic.input,
 			output:  ic.output,
 			pointer: newPointer,
 			memory:  ic.memory,
 		})
 	case 6:
-		var newPointer int
+		var newPointer = ic.pointer
 		c := cParam(instruction, ic)
 		if c != 0 {
-			newPointer = ic.pointer + 3
+			newPointer = newPointer + 3
 		} else {
 			newPointer = bParam(instruction, ic)
 		}
-		opCode(IntCode{
+		return opCode(IntCode{
 			input:   ic.input,
 			output:  ic.output,
 			pointer: newPointer,
 			memory:  ic.memory,
 		})
 	case 7:
-		var newMemory Memory
+		var newMemory = ic.memory
 		c := cParam(instruction, ic)
 		b := bParam(instruction, ic)
 		if c < b {
-			newMemory = updateMemory(ic.memory,
+			newMemory = updateMemory(newMemory,
 				aParam(instruction, ic),
 				1)
 		} else {
-			newMemory = updateMemory(ic.memory,
+			newMemory = updateMemory(newMemory,
 				aParam(instruction, ic),
 				0)
 		}
-		opCode(IntCode{
+		return opCode(IntCode{
 			input:   ic.input,
 			output:  ic.output,
 			pointer: ic.pointer + 4,
 			memory:  newMemory,
 		})
 	case 8:
-		var newMemory Memory
+		var newMemory = ic.memory
 		c := cParam(instruction, ic)
 		b := bParam(instruction, ic)
 		if c == b {
-			newMemory = updateMemory(ic.memory,
+			newMemory = updateMemory(newMemory,
 				aParam(instruction, ic),
 				1)
 		} else {
-			newMemory = updateMemory(ic.memory,
+			newMemory = updateMemory(newMemory,
 				aParam(instruction, ic),
 				0)
 		}
-		opCode(IntCode{
+		return opCode(IntCode{
 			input:   ic.input,
 			output:  ic.output,
 			pointer: ic.pointer + 4,
@@ -222,35 +222,14 @@ func opCode(ic IntCode) IntCode {
 	default:
 		panic("opcode is not valid")
 	}
-	return ic
-}
-
-func updatedMemory(memory Memory, noun int, verb int) Memory {
-	memory[1] = noun
-	memory[2] = verb
-	return memory
-}
-
-func nounVerb() int {
-	var noun int
-	var verb int
-
-out:
-	for noun = 0; noun < 101; noun++ {
-		for verb = 0; verb < 101; verb++ {
-			tv := MakeMemory(fp)
-			candidate := opCode(IntCode{input: 0, output: 0, pointer: 0, memory: updatedMemory(tv, noun, verb)}).memory[0]
-			if candidate == 19690720 {
-				break out
-			}
-		}
-	}
-	return (100 * noun) + verb
 }
 
 func main() {
 	tv := MakeMemory(fp)
-	answer := opCode(IntCode{input: 0, output: 0, pointer: 0, memory: updatedMemory(tv, 12, 2)})
-	fmt.Printf("Part A answer = %d\n", answer.memory[0]) // Part A answer = 2890696
-	fmt.Printf("Part B answer = %d", nounVerb())         // Part B answer = 8226
+	answer := opCode(IntCode{input: 1, output: 0, pointer: 0, memory: tv})
+	fmt.Printf("Part A answer = %d\n", answer.output) // Part A answer = 9025675
+
+	tv = MakeMemory(fp)
+	answer2 := opCode(IntCode{input: 5, output: 0, pointer: 0, memory: tv})
+	fmt.Printf("Part B answer = %d", answer2.output) // Part B answer = 11981754
 }
