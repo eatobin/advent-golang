@@ -103,20 +103,20 @@ func updateMemory(memory Memory, index int, value int) Memory {
 	return memory
 }
 
-func opCode(ic IntCode) IntCode {
+func OpCode(ic IntCode) IntCode {
 	instruction := pad5(ic.memory[ic.pointer])
 	switch instruction['e'] {
 	case 9:
 		return ic
 	case 1:
-		return opCode(IntCode{
+		return OpCode(IntCode{
 			pointer: ic.pointer + 4,
 			memory: updateMemory(ic.memory,
 				aParam(instruction, ic),
 				bParam(instruction, ic)+cParam(instruction, ic)),
 		})
 	case 2:
-		return opCode(IntCode{
+		return OpCode(IntCode{
 			pointer: ic.pointer + 4,
 			memory: updateMemory(ic.memory,
 				aParam(instruction, ic),
@@ -141,7 +141,7 @@ out:
 	for noun = 0; noun < 101; noun++ {
 		for verb = 0; verb < 101; verb++ {
 			tv := MakeMemory(fp)
-			candidate := opCode(IntCode{pointer: 0, memory: updatedMemory(tv, noun, verb)}).memory[0]
+			candidate := OpCode(IntCode{pointer: 0, memory: updatedMemory(tv, noun, verb)}).memory[0]
 			if candidate == 19690720 {
 				break out
 			}
@@ -152,7 +152,7 @@ out:
 
 func main() {
 	tv := MakeMemory(fp)
-	answer := opCode(IntCode{pointer: 0, memory: updatedMemory(tv, 12, 2)})
+	answer := OpCode(IntCode{pointer: 0, memory: updatedMemory(tv, 12, 2)})
 	fmt.Printf("Part A answer = %d\n", answer.memory[0]) // Part A answer = 2890696
 	fmt.Printf("Part B answer = %d", nounVerb())         // Part B answer = 8226
 }
