@@ -20,6 +20,25 @@ type IntCode struct {
 	memory  Memory
 }
 
+// CompareIntCode compares two IntCodes
+func CompareIntCode(a, b IntCode) bool {
+	if &a == &b {
+		return true
+	}
+	if a.pointer != b.pointer {
+		return false
+	}
+	if len(a.memory) != len(b.memory) {
+		return false
+	}
+	for i, v := range a.memory {
+		if v != b.memory[i] {
+			return false
+		}
+	}
+	return true
+}
+
 func MakeMemory(fp string) Memory {
 	dat, err := ioutil.ReadFile(fp)
 	if err != nil {
