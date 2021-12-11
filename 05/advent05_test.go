@@ -11,9 +11,10 @@ type Fixtures struct {
 
 func TestOpCode(t *testing.T) {
 	fixtures := []Fixtures{
-		//{IntCode{pointer: 0, memory: []int{1, 0, 0, 0, 99}}, IntCode{pointer: 4, memory: []int{2, 0, 0, 0, 99}}},
 		{IntCode{input: 198, output: 0, pointer: 0, memory: []int{3, 0, 4, 0, 99}},
 			IntCode{input: 198, output: 198, pointer: 4, memory: []int{198, 0, 4, 0, 99}}},
+		{IntCode{input: 0, output: 0, pointer: 0, memory: []int{1002, 4, 3, 4, 33}},
+			IntCode{input: 0, output: 0, pointer: 4, memory: []int{1002, 4, 3, 4, 99}}},
 	}
 	for _, fixture := range fixtures {
 		value := OpCode(fixture.Value)
