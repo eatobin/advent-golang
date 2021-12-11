@@ -114,13 +114,13 @@ func updateMemory(memory Memory, index int, value int) Memory {
 	return memory
 }
 
-func opCode(ic IntCode) IntCode {
+func OpCode(ic IntCode) IntCode {
 	instruction := pad5(ic.memory[ic.pointer])
 	switch instruction['e'] {
 	case 9:
 		return ic
 	case 1:
-		return opCode(IntCode{
+		return OpCode(IntCode{
 			input:   ic.input,
 			output:  ic.output,
 			pointer: ic.pointer + 4,
@@ -129,7 +129,7 @@ func opCode(ic IntCode) IntCode {
 				bParam(instruction, ic)+cParam(instruction, ic)),
 		})
 	case 2:
-		return opCode(IntCode{
+		return OpCode(IntCode{
 			input:   ic.input,
 			output:  ic.output,
 			pointer: ic.pointer + 4,
@@ -138,7 +138,7 @@ func opCode(ic IntCode) IntCode {
 				bParam(instruction, ic)*cParam(instruction, ic)),
 		})
 	case 3:
-		return opCode(IntCode{
+		return OpCode(IntCode{
 			input:   ic.input,
 			output:  ic.output,
 			pointer: ic.pointer + 2,
@@ -147,7 +147,7 @@ func opCode(ic IntCode) IntCode {
 				ic.input),
 		})
 	case 4:
-		return opCode(IntCode{
+		return OpCode(IntCode{
 			input:   ic.input,
 			output:  cParam(instruction, ic),
 			pointer: ic.pointer + 2,
@@ -161,7 +161,7 @@ func opCode(ic IntCode) IntCode {
 		} else {
 			newPointer = bParam(instruction, ic)
 		}
-		return opCode(IntCode{
+		return OpCode(IntCode{
 			input:   ic.input,
 			output:  ic.output,
 			pointer: newPointer,
@@ -175,7 +175,7 @@ func opCode(ic IntCode) IntCode {
 		} else {
 			newPointer = bParam(instruction, ic)
 		}
-		return opCode(IntCode{
+		return OpCode(IntCode{
 			input:   ic.input,
 			output:  ic.output,
 			pointer: newPointer,
@@ -194,7 +194,7 @@ func opCode(ic IntCode) IntCode {
 				aParam(instruction, ic),
 				0)
 		}
-		return opCode(IntCode{
+		return OpCode(IntCode{
 			input:   ic.input,
 			output:  ic.output,
 			pointer: ic.pointer + 4,
@@ -213,7 +213,7 @@ func opCode(ic IntCode) IntCode {
 				aParam(instruction, ic),
 				0)
 		}
-		return opCode(IntCode{
+		return OpCode(IntCode{
 			input:   ic.input,
 			output:  ic.output,
 			pointer: ic.pointer + 4,
@@ -226,10 +226,10 @@ func opCode(ic IntCode) IntCode {
 
 func main() {
 	tv := MakeMemory(fp)
-	answer := opCode(IntCode{input: 1, output: 0, pointer: 0, memory: tv})
+	answer := OpCode(IntCode{input: 1, output: 0, pointer: 0, memory: tv})
 	fmt.Printf("Part A answer = %d\n", answer.output) // Part A answer = 9025675
 
 	tv = MakeMemory(fp)
-	answer2 := opCode(IntCode{input: 5, output: 0, pointer: 0, memory: tv})
+	answer2 := OpCode(IntCode{input: 5, output: 0, pointer: 0, memory: tv})
 	fmt.Printf("Part B answer = %d", answer2.output) // Part B answer = 11981754
 }

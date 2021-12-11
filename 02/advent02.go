@@ -105,25 +105,27 @@ func updateMemory(memory Memory, index int, value int) Memory {
 
 func OpCode(ic IntCode) IntCode {
 	instruction := pad5(ic.memory[ic.pointer])
-	switch instruction['e'] {
-	case 9:
+	if instruction['d'] == 9 {
 		return ic
-	case 1:
-		return OpCode(IntCode{
-			pointer: ic.pointer + 4,
-			memory: updateMemory(ic.memory,
-				aParam(instruction, ic),
-				bParam(instruction, ic)+cParam(instruction, ic)),
-		})
-	case 2:
-		return OpCode(IntCode{
-			pointer: ic.pointer + 4,
-			memory: updateMemory(ic.memory,
-				aParam(instruction, ic),
-				bParam(instruction, ic)*cParam(instruction, ic)),
-		})
-	default:
-		panic("opcode is not valid")
+	} else {
+		switch instruction['e'] {
+		case 1:
+			return OpCode(IntCode{
+				pointer: ic.pointer + 4,
+				memory: updateMemory(ic.memory,
+					aParam(instruction, ic),
+					bParam(instruction, ic)+cParam(instruction, ic)),
+			})
+		case 2:
+			return OpCode(IntCode{
+				pointer: ic.pointer + 4,
+				memory: updateMemory(ic.memory,
+					aParam(instruction, ic),
+					bParam(instruction, ic)*cParam(instruction, ic)),
+			})
+		default:
+			panic("opcode is not valid")
+		}
 	}
 }
 
