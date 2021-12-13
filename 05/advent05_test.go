@@ -20,9 +20,12 @@ func TestOpCode(t *testing.T) {
 		// can be negative
 		{IntCode{input: 0, output: 0, pointer: 0, memory: []int{1101, 100, -1, 4, 0}},
 			IntCode{input: 0, output: 0, pointer: 4, memory: []int{1101, 100, -1, 4, 99}}},
-		// equal to 8 - position
+		// equal to 8 - position - pass
 		{IntCode{input: 8, output: 0, pointer: 0, memory: []int{3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8}},
 			IntCode{input: 8, output: 1, pointer: 8, memory: []int{3, 9, 8, 9, 10, 9, 4, 9, 99, 1, 8}}},
+		// equal to 8 - position - fail
+		{IntCode{input: 88, output: 0, pointer: 0, memory: []int{3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8}},
+			IntCode{input: 88, output: 0, pointer: 8, memory: []int{3, 9, 8, 9, 10, 9, 4, 9, 99, 0, 8}}},
 		// less than 8 - position
 		{IntCode{input: 7, output: 0, pointer: 0, memory: []int{3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8}},
 			IntCode{input: 7, output: 1, pointer: 8, memory: []int{3, 9, 7, 9, 10, 9, 4, 9, 99, 1, 8}}},
