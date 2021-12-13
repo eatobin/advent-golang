@@ -29,6 +29,9 @@ func TestOpCode(t *testing.T) {
 		// equal to 8 - immediate
 		{IntCode{input: 8, output: 0, pointer: 0, memory: []int{3, 3, 1108, -1, 8, 3, 4, 3, 99}},
 			IntCode{input: 8, output: 1, pointer: 8, memory: []int{3, 3, 1108, 1, 8, 3, 4, 3, 99}}},
+		// less than 8 - immediate
+		{IntCode{input: 7, output: 0, pointer: 0, memory: []int{3, 3, 1107, -1, 8, 3, 4, 3, 99}},
+			IntCode{input: 7, output: 1, pointer: 8, memory: []int{3, 3, 1107, 1, 8, 3, 4, 3, 99}}},
 	}
 	for _, fixture := range fixtures {
 		value := OpCode(fixture.Value)
