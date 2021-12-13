@@ -26,9 +26,12 @@ func TestOpCode(t *testing.T) {
 		// equal to 8 - position - fail
 		{IntCode{input: 88, output: 0, pointer: 0, memory: []int{3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8}},
 			IntCode{input: 88, output: 0, pointer: 8, memory: []int{3, 9, 8, 9, 10, 9, 4, 9, 99, 0, 8}}},
-		// less than 8 - position
+		// less than 8 - position - pass
 		{IntCode{input: 7, output: 0, pointer: 0, memory: []int{3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8}},
 			IntCode{input: 7, output: 1, pointer: 8, memory: []int{3, 9, 7, 9, 10, 9, 4, 9, 99, 1, 8}}},
+		// less than 8 - position - fail
+		{IntCode{input: 77, output: 0, pointer: 0, memory: []int{3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8}},
+			IntCode{input: 77, output: 0, pointer: 8, memory: []int{3, 9, 7, 9, 10, 9, 4, 9, 99, 0, 8}}},
 		// equal to 8 - immediate
 		{IntCode{input: 8, output: 0, pointer: 0, memory: []int{3, 3, 1108, -1, 8, 3, 4, 3, 99}},
 			IntCode{input: 8, output: 1, pointer: 8, memory: []int{3, 3, 1108, 1, 8, 3, 4, 3, 99}}},
