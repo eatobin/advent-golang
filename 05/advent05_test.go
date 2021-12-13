@@ -38,6 +38,9 @@ func TestOpCode(t *testing.T) {
 		// jump on 0 - immediate
 		{IntCode{input: 0, output: 0, pointer: 0, memory: []int{3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1}},
 			IntCode{input: 0, output: 0, pointer: 11, memory: []int{3, 3, 1105, 0, 9, 1101, 0, 0, 12, 4, 12, 99, 0}}},
+		// input below, at or above 8
+		{IntCode{input: 0, output: 0, pointer: 0, memory: []int{3, 21, 1008, 21, 8, 20, 1005, 20, 22, 107, 8, 21, 20, 1006, 20, 31, 1106, 0, 36, 98, 0, 0, 1002, 21, 125, 20, 4, 20, 1105, 1, 46, 104, 999, 1105, 1, 46, 1101, 1000, 1, 20, 4, 20, 1105, 1, 46, 98, 99}},
+			IntCode{input: 0, output: 999, pointer: 46, memory: []int{3, 21, 1008, 21, 8, 20, 1005, 20, 22, 107, 8, 21, 20, 1006, 20, 31, 1106, 0, 36, 98, 0, 0, 1002, 21, 125, 20, 4, 20, 1105, 1, 46, 104, 999, 1105, 1, 46, 1101, 1000, 1, 20, 4, 20, 1105, 1, 46, 98, 99}}},
 	}
 	for _, fixture := range fixtures {
 		value := OpCode(fixture.Value)
