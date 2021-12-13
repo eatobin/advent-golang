@@ -117,13 +117,12 @@ func bParam(instruction Instruction, ic IntCode) int {
 
 func cParam(instruction Instruction, ic IntCode) int {
 	var choice int
-	switch instruction['e'] {
-	case 3:
+	if instruction['e'] == 3 {
 		switch instruction['c'] {
 		case 0: // c-p-w
 			choice = ic.memory[ic.pointer+offsetC]
 		}
-	default:
+	} else {
 		switch instruction['c'] {
 		case 0: // c-p-r
 			choice = getOrElse(ic.pointer, offsetC, ic.memory)
