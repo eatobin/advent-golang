@@ -117,11 +117,6 @@ func (icP *IntCode) cParam(instruction Instruction) int {
 	return choice
 }
 
-//func updateMemory(memory Memory, index int, value int) Memory {
-//	memory[index] = value
-//	return memory
-//}
-
 func OpCode(icP *IntCode) int {
 	instruction := pad5(icP.memory[icP.pointer])
 	if instruction['d'] == 9 {
@@ -162,7 +157,15 @@ out:
 	for noun = 0; noun < 101; noun++ {
 		for verb = 0; verb < 101; verb++ {
 			tv := MakeMemory(fp)
-			candidate := OpCode(IntCode{pointer: 0, memory: updatedMemory(tv, noun, verb)}).memory[0]
+			icP := &IntCode{
+				pointer: 0,
+				memory:  updatedMemory(tv, noun, verb),
+			}
+			icReturn := 1
+			for icReturn == 1 {
+				icReturn = OpCode(icP)
+			}
+			candidate := icP.memory[0]
 			if candidate == 19690720 {
 				break out
 			}
@@ -181,7 +184,6 @@ func main() {
 	for icReturn == 1 {
 		icReturn = OpCode(icP)
 	}
-	//answer := OpCode(IntCode{pointer: 0, memory: updatedMemory(tv, 12, 2)})
 	fmt.Printf("Part A answer = %d\n", icP.memory[0]) // Part A answer = 2890696
-	//fmt.Printf("Part B answer = %d", nounVerb())         // Part B answer = 8226
+	fmt.Printf("Part B answer = %d", nounVerb())      // Part B answer = 8226
 }
