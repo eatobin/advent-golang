@@ -154,22 +154,22 @@ func updatedMemory(memory Memory, noun int, verb int) Memory {
 	return memory
 }
 
-//func nounVerb() int {
-//	var noun int
-//	var verb int
-//
-//out:
-//	for noun = 0; noun < 101; noun++ {
-//		for verb = 0; verb < 101; verb++ {
-//			tv := MakeMemory(fp)
-//			candidate := OpCode(IntCode{pointer: 0, memory: updatedMemory(tv, noun, verb)}).memory[0]
-//			if candidate == 19690720 {
-//				break out
-//			}
-//		}
-//	}
-//	return (100 * noun) + verb
-//}
+func nounVerb() int {
+	var noun int
+	var verb int
+
+out:
+	for noun = 0; noun < 101; noun++ {
+		for verb = 0; verb < 101; verb++ {
+			tv := MakeMemory(fp)
+			candidate := OpCode(IntCode{pointer: 0, memory: updatedMemory(tv, noun, verb)}).memory[0]
+			if candidate == 19690720 {
+				break out
+			}
+		}
+	}
+	return (100 * noun) + verb
+}
 
 func main() {
 	tv := MakeMemory(fp)
