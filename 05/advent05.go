@@ -95,155 +95,96 @@ func getOrElse(pointer int, offsetX int, memory Memory) int {
 	}
 }
 
-func aParam(instruction Instruction, ic IntCode) int {
+func (icP *IntCode) aParam(instruction Instruction) int {
 	var choice int
 	switch instruction['a'] {
 	case 0: // a-p-w
-		choice = ic.memory[ic.pointer+offsetA]
+		choice = icP.memory[icP.pointer+offsetA]
 	}
 	return choice
 }
 
-func bParam(instruction Instruction, ic IntCode) int {
+func (icP *IntCode) bParam(instruction Instruction) int {
 	var choice int
 	switch instruction['b'] {
 	case 0: // b-p-r
-		choice = getOrElse(ic.pointer, offsetB, ic.memory)
+		choice = getOrElse(icP.pointer, offsetB, icP.memory)
 	case 1: // b-i-r
-		choice = ic.memory[ic.pointer+offsetB]
+		choice = icP.memory[icP.pointer+offsetB]
 	}
 	return choice
 }
 
-func cParam(instruction Instruction, ic IntCode) int {
+func (icP *IntCode) cParam(instruction Instruction) int {
 	var choice int
 	if instruction['e'] == 3 {
 		switch instruction['c'] {
 		case 0: // c-p-w
-			choice = ic.memory[ic.pointer+offsetC]
+			choice = icP.memory[icP.pointer+offsetC]
 		}
 	} else {
 		switch instruction['c'] {
 		case 0: // c-p-r
-			choice = getOrElse(ic.pointer, offsetC, ic.memory)
+			choice = getOrElse(icP.pointer, offsetC, icP.memory)
 		case 1: // c-i-r
-			choice = ic.memory[ic.pointer+offsetC]
+			choice = icP.memory[icP.pointer+offsetC]
 		}
 	}
 	return choice
 }
 
-func updateMemory(memory Memory, index int, value int) Memory {
-	memory[index] = value
-	return memory
-}
-
-func OpCode(ic IntCode) IntCode {
-	instruction := pad5(ic.memory[ic.pointer])
+func OpCode(icP *IntCode) int {
+	instruction := pad5(icP.memory[icP.pointer])
 	if instruction['d'] == 9 {
-		return ic
+		return 0
 	} else {
 		switch instruction['e'] {
 		case 1:
-			return OpCode(IntCode{
-				input:   ic.input,
-				output:  ic.output,
-				pointer: ic.pointer + 4,
-				memory: updateMemory(ic.memory,
-					aParam(instruction, ic),
-					bParam(instruction, ic)+cParam(instruction, ic)),
-			})
+			icP.memory[icP.aParam(instruction)] = icP.bParam(instruction) + icP.cParam(instruction)
+			icP.pointer += 4
+			return 1
 		case 2:
-			return OpCode(IntCode{
-				input:   ic.input,
-				output:  ic.output,
-				pointer: ic.pointer + 4,
-				memory: updateMemory(ic.memory,
-					aParam(instruction, ic),
-					bParam(instruction, ic)*cParam(instruction, ic)),
-			})
+			icP.memory[icP.aParam(instruction)] = icP.bParam(instruction) * icP.cParam(instruction)
+			icP.pointer += 4
+			return 1
 		case 3:
-			return OpCode(IntCode{
-				input:   ic.input,
-				output:  ic.output,
-				pointer: ic.pointer + 2,
-				memory: updateMemory(ic.memory,
-					cParam(instruction, ic),
-					ic.input),
-			})
+			icP.memory[icP.cParam(instruction)] = icP.input
+			icP.pointer += 2
+			return 1
 		case 4:
-			return OpCode(IntCode{
-				input:   ic.input,
-				output:  cParam(instruction, ic),
-				pointer: ic.pointer + 2,
-				memory:  ic.memory,
-			})
+			icP.output = icP.cParam(instruction)
+			icP.pointer += 2
+			return 1
 		case 5:
-			var newPointer = ic.pointer
-			c := cParam(instruction, ic)
-			if c == 0 {
-				newPointer = newPointer + 3
+			if icP.cParam(instruction) == 0 {
+				icP.pointer += 3
 			} else {
-				newPointer = bParam(instruction, ic)
+				icP.pointer = icP.bParam(instruction)
 			}
-			return OpCode(IntCode{
-				input:   ic.input,
-				output:  ic.output,
-				pointer: newPointer,
-				memory:  ic.memory,
-			})
+			return 1
 		case 6:
-			var newPointer = ic.pointer
-			c := cParam(instruction, ic)
-			if c != 0 {
-				newPointer = newPointer + 3
+			if icP.cParam(instruction) != 0 {
+				icP.pointer += 3
 			} else {
-				newPointer = bParam(instruction, ic)
+				icP.pointer = icP.bParam(instruction)
 			}
-			return OpCode(IntCode{
-				input:   ic.input,
-				output:  ic.output,
-				pointer: newPointer,
-				memory:  ic.memory,
-			})
+			return 1
 		case 7:
-			var newMemory = ic.memory
-			c := cParam(instruction, ic)
-			b := bParam(instruction, ic)
-			if c < b {
-				newMemory = updateMemory(newMemory,
-					aParam(instruction, ic),
-					1)
+			if icP.cParam(instruction) < icP.bParam(instruction) {
+				icP.memory[icP.aParam(instruction)] = 1
 			} else {
-				newMemory = updateMemory(newMemory,
-					aParam(instruction, ic),
-					0)
+				icP.memory[icP.aParam(instruction)] = 0
 			}
-			return OpCode(IntCode{
-				input:   ic.input,
-				output:  ic.output,
-				pointer: ic.pointer + 4,
-				memory:  newMemory,
-			})
+			icP.pointer += 4
+			return 1
 		case 8:
-			var newMemory = ic.memory
-			c := cParam(instruction, ic)
-			b := bParam(instruction, ic)
-			if c == b {
-				newMemory = updateMemory(newMemory,
-					aParam(instruction, ic),
-					1)
+			if icP.cParam(instruction) == icP.bParam(instruction) {
+				icP.memory[icP.aParam(instruction)] = 1
 			} else {
-				newMemory = updateMemory(newMemory,
-					aParam(instruction, ic),
-					0)
+				icP.memory[icP.aParam(instruction)] = 0
 			}
-			return OpCode(IntCode{
-				input:   ic.input,
-				output:  ic.output,
-				pointer: ic.pointer + 4,
-				memory:  newMemory,
-			})
+			icP.pointer += 4
+			return 1
 		default:
 			panic("opcode is not valid")
 		}
@@ -252,10 +193,28 @@ func OpCode(ic IntCode) IntCode {
 
 func main() {
 	tv := MakeMemory(fp)
-	answer := OpCode(IntCode{input: 1, output: 0, pointer: 0, memory: tv})
-	fmt.Printf("Part A answer = %d\n", answer.output) // Part A answer = 9025675
+	icP := &IntCode{
+		input:   1,
+		output:  0,
+		pointer: 0,
+		memory:  tv,
+	}
+	icReturn := 1
+	for icReturn == 1 {
+		icReturn = OpCode(icP)
+	}
+	fmt.Printf("Part A answer = %d\n", icP.output) // Part A answer = 9025675
 
 	tv = MakeMemory(fp)
-	answer2 := OpCode(IntCode{input: 5, output: 0, pointer: 0, memory: tv})
-	fmt.Printf("Part B answer = %d", answer2.output) // Part B answer = 11981754
+	icP = &IntCode{
+		input:   5,
+		output:  0,
+		pointer: 0,
+		memory:  tv,
+	}
+	icReturn = 1
+	for icReturn == 1 {
+		icReturn = OpCode(icP)
+	}
+	fmt.Printf("Part B answer = %d", icP.output) // Part B answer = 11981754
 }
