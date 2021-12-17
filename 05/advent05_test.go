@@ -60,10 +60,14 @@ func TestOpCode(t *testing.T) {
 		{IntCode{input: 9, output: 0, pointer: 0, memory: []int{3, 21, 1008, 21, 8, 20, 1005, 20, 22, 107, 8, 21, 20, 1006, 20, 31, 1106, 0, 36, 98, 0, 0, 1002, 21, 125, 20, 4, 20, 1105, 1, 46, 104, 999, 1105, 1, 46, 1101, 1000, 1, 20, 4, 20, 1105, 1, 46, 98, 99}},
 			IntCode{input: 9, output: 1001, pointer: 46, memory: []int{3, 21, 1008, 21, 8, 20, 1005, 20, 22, 107, 8, 21, 20, 1006, 20, 31, 1106, 0, 36, 98, 1001, 9, 1002, 21, 125, 20, 4, 20, 1105, 1, 46, 104, 999, 1105, 1, 46, 1101, 1000, 1, 20, 4, 20, 1105, 1, 46, 98, 99}}},
 	}
+
 	for _, fixture := range fixtures {
-		value := OpCode(fixture.Value)
-		if !CompareIntCode(value, fixture.Expected) {
-			t.Errorf("Got %v; want\n %v", value, fixture.Expected)
+		icReturn := 1
+		for icReturn == 1 {
+			icReturn = OpCode(&fixture.Value)
+		}
+		if !CompareIntCode(fixture.Value, fixture.Expected) {
+			t.Errorf("Got %v; want\n %v", fixture.Value, fixture.Expected)
 		}
 	}
 }
