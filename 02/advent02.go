@@ -124,17 +124,11 @@ func OpCode(icP *IntCode) int {
 	} else {
 		switch instruction['e'] {
 		case 1:
-			a := icP.aParam(instruction)
-			b := icP.bParam(instruction)
-			c := icP.cParam(instruction)
-			icP.memory[a] = b + c
+			icP.memory[icP.aParam(instruction)] = icP.bParam(instruction) + icP.cParam(instruction)
 			icP.pointer += 4
 			return 1
 		case 2:
-			a := icP.aParam(instruction)
-			b := icP.bParam(instruction)
-			c := icP.cParam(instruction)
-			icP.memory[a] = b * c
+			icP.memory[icP.aParam(instruction)] = icP.bParam(instruction) * icP.cParam(instruction)
 			icP.pointer += 4
 			return 1
 		default:
