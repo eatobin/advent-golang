@@ -133,7 +133,7 @@ func (icP *IntCode) cParam(instruction Instruction) int {
 	return choice
 }
 
-func OpCode(icP *IntCode) int {
+func (icP *IntCode) opCode() int {
 	instruction := pad5(icP.memory[icP.pointer])
 	if instruction['d'] == 9 {
 		return 0
@@ -201,7 +201,7 @@ func main() {
 	}
 	icReturn := 1
 	for icReturn == 1 {
-		icReturn = OpCode(icP)
+		icReturn = icP.opCode()
 	}
 	fmt.Printf("Part A answer = %d\n", icP.output) // Part A answer = 9025675
 
@@ -214,7 +214,7 @@ func main() {
 	}
 	icReturn = 1
 	for icReturn == 1 {
-		icReturn = OpCode(icP)
+		icReturn = icP.opCode()
 	}
 	fmt.Printf("Part B answer = %d", icP.output) // Part B answer = 11981754
 }

@@ -64,7 +64,7 @@ func TestOpCode(t *testing.T) {
 	for _, fixture := range fixtures {
 		icReturn := 1
 		for icReturn == 1 {
-			icReturn = OpCode(&fixture.Value)
+			icReturn = fixture.Value.opCode()
 		}
 		if !CompareIntCode(fixture.Value, fixture.Expected) {
 			t.Errorf("Got %v; want\n %v", fixture.Value, fixture.Expected)
