@@ -10,16 +10,19 @@ import (
 type Memory []int
 type Instruction map[byte]uint8
 
-const fp = "advent07.csv"
+const fp = "advent05.csv"
 const offsetC int = 1
 const offsetB int = 2
 const offsetA int = 3
 
 type IntCode struct {
-	input   int
-	output  int
-	pointer int
-	memory  Memory
+	input     int
+	output    int
+	phase     byte
+	pointer   int
+	memory    Memory
+	isStopped bool
+	doesRecur bool
 }
 
 // CompareIntCode compares two IntCodes
@@ -33,6 +36,9 @@ func CompareIntCode(a, b IntCode) bool {
 	if a.output != b.output {
 		return false
 	}
+	if a.phase != b.phase {
+		return false
+	}
 	if a.pointer != b.pointer {
 		return false
 	}
@@ -43,6 +49,12 @@ func CompareIntCode(a, b IntCode) bool {
 		if v != b.memory[i] {
 			return false
 		}
+	}
+	if a.isStopped != b.isStopped {
+		return false
+	}
+	if a.doesRecur != b.doesRecur {
+		return false
 	}
 	return true
 }
