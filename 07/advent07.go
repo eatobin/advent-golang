@@ -146,59 +146,64 @@ func (icP *IntCode) cParam(instruction Instruction) int {
 }
 
 func (icP *IntCode) opCode() int {
-	instruction := pad5(icP.memory[icP.pointer])
-	if instruction['d'] == 9 {
+	if icP.isStopped {
 		return 0
 	} else {
-		switch instruction['e'] {
-		case 1:
-			icP.memory[icP.aParam(instruction)] = icP.bParam(instruction) + icP.cParam(instruction)
-			icP.pointer += 4
+		instruction := pad5(icP.memory[icP.pointer])
+		if instruction['d'] == 9 {
+			icP.isStopped = true
 			return 1
-		case 2:
-			icP.memory[icP.aParam(instruction)] = icP.bParam(instruction) * icP.cParam(instruction)
-			icP.pointer += 4
-			return 1
-		case 3:
-			icP.memory[icP.cParam(instruction)] = icP.input
-			icP.pointer += 2
-			return 1
-		case 4:
-			icP.output = icP.cParam(instruction)
-			icP.pointer += 2
-			return 1
-		case 5:
-			if icP.cParam(instruction) == 0 {
-				icP.pointer += 3
-			} else {
-				icP.pointer = icP.bParam(instruction)
+		} else {
+			switch instruction['e'] {
+			case 1:
+				icP.memory[icP.aParam(instruction)] = icP.bParam(instruction) + icP.cParam(instruction)
+				icP.pointer += 4
+				return 1
+			case 2:
+				icP.memory[icP.aParam(instruction)] = icP.bParam(instruction) * icP.cParam(instruction)
+				icP.pointer += 4
+				return 1
+			case 3:
+				icP.memory[icP.cParam(instruction)] = icP.input
+				icP.pointer += 2
+				return 1
+			case 4:
+				icP.output = icP.cParam(instruction)
+				icP.pointer += 2
+				return 1
+			case 5:
+				if icP.cParam(instruction) == 0 {
+					icP.pointer += 3
+				} else {
+					icP.pointer = icP.bParam(instruction)
+				}
+				return 1
+			case 6:
+				if icP.cParam(instruction) != 0 {
+					icP.pointer += 3
+				} else {
+					icP.pointer = icP.bParam(instruction)
+				}
+				return 1
+			case 7:
+				if icP.cParam(instruction) < icP.bParam(instruction) {
+					icP.memory[icP.aParam(instruction)] = 1
+				} else {
+					icP.memory[icP.aParam(instruction)] = 0
+				}
+				icP.pointer += 4
+				return 1
+			case 8:
+				if icP.cParam(instruction) == icP.bParam(instruction) {
+					icP.memory[icP.aParam(instruction)] = 1
+				} else {
+					icP.memory[icP.aParam(instruction)] = 0
+				}
+				icP.pointer += 4
+				return 1
+			default:
+				panic("opcode is not valid")
 			}
-			return 1
-		case 6:
-			if icP.cParam(instruction) != 0 {
-				icP.pointer += 3
-			} else {
-				icP.pointer = icP.bParam(instruction)
-			}
-			return 1
-		case 7:
-			if icP.cParam(instruction) < icP.bParam(instruction) {
-				icP.memory[icP.aParam(instruction)] = 1
-			} else {
-				icP.memory[icP.aParam(instruction)] = 0
-			}
-			icP.pointer += 4
-			return 1
-		case 8:
-			if icP.cParam(instruction) == icP.bParam(instruction) {
-				icP.memory[icP.aParam(instruction)] = 1
-			} else {
-				icP.memory[icP.aParam(instruction)] = 0
-			}
-			icP.pointer += 4
-			return 1
-		default:
-			panic("opcode is not valid")
 		}
 	}
 }
