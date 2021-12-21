@@ -241,28 +241,48 @@ func areUnique(si []int) bool {
 	return true
 }
 
-func makeRange(min, max int) []int {
-	a := make([]int, max-min+1)
-	for i := range a {
-		a[i] = min + i
-	}
-	return a
-}
-
-func main() {
+func possibilities() [][]int {
 	var winners [][]int
 	var candidate []int
 	for a := 0; a < 5; a++ {
 		for b := 0; b < 5; b++ {
-			candidate = nil
-			candidate = append(candidate, a, b)
-			if areUnique(candidate) {
-				winners = append(winners, candidate)
+			for c := 0; c < 5; c++ {
+				for d := 0; d < 5; d++ {
+					for e := 0; e < 5; e++ {
+						candidate = nil
+						candidate = append(candidate, a, b, c, d, e)
+						if areUnique(candidate) {
+							winners = append(winners, candidate)
+						}
+					}
+				}
 			}
 		}
 	}
-	fmt.Printf("%v", winners)
-	fmt.Printf("\ncount = %d", len(winners))
+	return winners
+}
+
+func main() {
+	//var winners [][]int
+	//var candidate []int
+	//for a := 0; a < 5; a++ {
+	//	for b := 0; b < 5; b++ {
+	//		for c := 0; c < 5; c++ {
+	//			for d := 0; d < 5; d++ {
+	//				for e := 0; e < 5; e++ {
+	//					candidate = nil
+	//					candidate = append(candidate, a, b, c, d, e)
+	//					if areUnique(candidate) {
+	//						winners = append(winners, candidate)
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+	fmt.Printf("%v", possibilities())
+	fmt.Printf("\ncount = %d", len(possibilities()))
+	fmt.Printf("\n%v", possibilities()[119])
 	//a := makeRange(0, 4)
 	//fmt.Println(a)
 	//visited := []int{
