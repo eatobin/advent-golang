@@ -262,6 +262,7 @@ func main() {
 		}
 	}
 	fmt.Printf("%v", winners)
+	fmt.Printf("\ncount = %d", len(winners))
 	//a := makeRange(0, 4)
 	//fmt.Println(a)
 	//visited := []int{
