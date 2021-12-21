@@ -18,7 +18,7 @@ const offsetA int = 3
 type IntCode struct {
 	input     int
 	output    int
-	phase     byte
+	phase     int
 	pointer   int
 	memory    Memory
 	isStopped bool
@@ -164,7 +164,15 @@ func (icP *IntCode) opCode() int {
 				icP.pointer += 4
 				return 1
 			case 3:
-				icP.memory[icP.cParam(instruction)] = icP.input
+				if icP.phase != -1 {
+					if icP.pointer == 0 {
+						icP.memory[icP.cParam(instruction)] = icP.phase
+					} else {
+						icP.memory[icP.cParam(instruction)] = icP.input
+					}
+				} else {
+					icP.memory[icP.cParam(instruction)] = icP.input
+				}
 				icP.pointer += 2
 				return 1
 			case 4:
@@ -211,10 +219,13 @@ func (icP *IntCode) opCode() int {
 func main() {
 	tv := MakeMemory(fp)
 	icP := &IntCode{
-		input:   1,
-		output:  0,
-		pointer: 0,
-		memory:  tv,
+		input:     1,
+		output:    0,
+		phase:     -1,
+		pointer:   0,
+		memory:    tv,
+		isStopped: false,
+		doesRecur: true,
 	}
 	icReturn := 1
 	for icReturn == 1 {
@@ -224,10 +235,13 @@ func main() {
 
 	tv = MakeMemory(fp)
 	icP = &IntCode{
-		input:   5,
-		output:  0,
-		pointer: 0,
-		memory:  tv,
+		input:     5,
+		output:    0,
+		phase:     -1,
+		pointer:   0,
+		memory:    tv,
+		isStopped: false,
+		doesRecur: true,
 	}
 	icReturn = 1
 	for icReturn == 1 {
