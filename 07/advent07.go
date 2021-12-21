@@ -216,36 +216,93 @@ func (icP *IntCode) opCode() int {
 	}
 }
 
-func main() {
-	tv := MakeMemory(fp)
-	icP := &IntCode{
-		input:     1,
-		output:    0,
-		phase:     -1,
-		pointer:   0,
-		memory:    tv,
-		isStopped: false,
-		doesRecur: true,
-	}
-	icReturn := 1
-	for icReturn == 1 {
-		icReturn = icP.opCode()
-	}
-	fmt.Printf("Part A answer = %d\n", icP.output) // Part A answer = 9025675
+func genUnique(si []int) []int {
+	var unique []int
+	m := map[int]bool{}
 
-	tv = MakeMemory(fp)
-	icP = &IntCode{
-		input:     5,
-		output:    0,
-		phase:     -1,
-		pointer:   0,
-		memory:    tv,
-		isStopped: false,
-		doesRecur: true,
+	for _, v := range si {
+		if !m[v] {
+			m[v] = true
+			unique = append(unique, v)
+		}
 	}
-	icReturn = 1
-	for icReturn == 1 {
-		icReturn = icP.opCode()
-	}
-	fmt.Printf("Part B answer = %d", icP.output) // Part B answer = 11981754
+	return unique
 }
+
+func areUnique(si []int) bool {
+	m := map[int]bool{}
+	for _, v := range si {
+		if m[v] {
+			return false
+		} else {
+			m[v] = true
+		}
+	}
+	return true
+}
+
+func makeRange(min, max int) []int {
+	a := make([]int, max-min+1)
+	for i := range a {
+		a[i] = min + i
+	}
+	return a
+}
+
+func main() {
+	var winners [][]int
+	var candidate []int
+	for a := 0; a < 5; a++ {
+		for b := 0; b < 5; b++ {
+			candidate = nil
+			candidate = append(candidate, a, b)
+			if areUnique(candidate) {
+				winners = append(winners, candidate)
+			}
+		}
+	}
+	fmt.Printf("%v", winners)
+	//a := makeRange(0, 4)
+	//fmt.Println(a)
+	//visited := []int{
+	//	1,
+	//	2,
+	//	88,
+	//	22,
+	//}
+	//
+	//fmt.Println(areUnique(visited))
+}
+
+//tv := MakeMemory(fp)
+//icP := &IntCode{
+//	input:     1,
+//	output:    0,
+//	phase:     -1,
+//	pointer:   0,
+//	memory:    tv,
+//	isStopped: false,
+//	doesRecur: true,
+//}
+//icReturn := 1
+//for icReturn == 1 {
+//	icReturn = icP.opCode()
+//}
+//fmt.Printf("Part A answer = %d\n", icP.output) // Part A answer = 9025675
+//
+//tv = MakeMemory(fp)
+//icP = &IntCode{
+//	input:     5,
+//	output:    0,
+//	phase:     -1,
+//	pointer:   0,
+//	memory:    tv,
+//	isStopped: false,
+//	doesRecur: true,
+//}
+//icReturn = 1
+//for icReturn == 1 {
+//	icReturn = icP.opCode()
+//}
+//fmt.Printf("Part B answer = %d", icP.output) // Part B answer = 11981754
+//}
