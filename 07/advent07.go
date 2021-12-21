@@ -216,19 +216,6 @@ func (icP *IntCode) opCode() int {
 	}
 }
 
-func genUnique(si []int) []int {
-	var unique []int
-	m := map[int]bool{}
-
-	for _, v := range si {
-		if !m[v] {
-			m[v] = true
-			unique = append(unique, v)
-		}
-	}
-	return unique
-}
-
 func areUnique(si []int) bool {
 	m := map[int]bool{}
 	for _, v := range si {
@@ -241,7 +228,7 @@ func areUnique(si []int) bool {
 	return true
 }
 
-func possibilities() [][]int {
+func candidates() [][]int {
 	var winners [][]int
 	var candidate []int
 	for a := 0; a < 5; a++ {
@@ -262,27 +249,94 @@ func possibilities() [][]int {
 	return winners
 }
 
+func pass(candidate []int, memory Memory) int {
+	icpA := &IntCode{
+		input:     0,
+		output:    0,
+		phase:     candidate[0],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: true,
+	}
+
+	icReturn := 1
+	for icReturn == 1 {
+		icReturn = icpA.opCode()
+	}
+
+	icpB := &IntCode{
+		input:     icpA.output,
+		output:    0,
+		phase:     candidate[1],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: true,
+	}
+
+	icReturn = 1
+	for icReturn == 1 {
+		icReturn = icpB.opCode()
+	}
+
+	icpC := &IntCode{
+		input:     icpB.output,
+		output:    0,
+		phase:     candidate[2],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: true,
+	}
+
+	icReturn = 1
+	for icReturn == 1 {
+		icReturn = icpC.opCode()
+	}
+
+	icpD := &IntCode{
+		input:     icpC.output,
+		output:    0,
+		phase:     candidate[3],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: true,
+	}
+
+	icReturn = 1
+	for icReturn == 1 {
+		icReturn = icpD.opCode()
+	}
+
+	icpE := &IntCode{
+		input:     icpD.output,
+		output:    0,
+		phase:     candidate[4],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: true,
+	}
+
+	icReturn = 1
+	for icReturn == 1 {
+		icReturn = icpE.opCode()
+	}
+
+	return icpE.output
+}
+
 func main() {
-	//var winners [][]int
-	//var candidate []int
-	//for a := 0; a < 5; a++ {
-	//	for b := 0; b < 5; b++ {
-	//		for c := 0; c < 5; c++ {
-	//			for d := 0; d < 5; d++ {
-	//				for e := 0; e < 5; e++ {
-	//					candidate = nil
-	//					candidate = append(candidate, a, b, c, d, e)
-	//					if areUnique(candidate) {
-	//						winners = append(winners, candidate)
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
-	fmt.Printf("%v", possibilities())
-	fmt.Printf("\ncount = %d", len(possibilities()))
-	fmt.Printf("\n%v", possibilities()[119])
+	var mem = []int{3, 23, 3, 24, 1002, 24, 10, 24, 1002, 23, -1, 23, 101, 5, 23, 23, 1, 24, 23, 23, 4, 23, 99, 0, 0}
+	var phases = []int{0, 1, 2, 3, 4}
+	answer := pass(phases, mem)
+	fmt.Printf("%v", answer)
+
+	//fmt.Printf("%v", candidates())
+	//fmt.Printf("\ncount = %d", len(candidates()))
+	//fmt.Printf("\n%v", candidates()[119])
 	//a := makeRange(0, 4)
 	//fmt.Println(a)
 	//visited := []int{
