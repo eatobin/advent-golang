@@ -336,6 +336,7 @@ func passes(candidates [][]int, memory Memory) []int {
 	}
 	return vcm
 }
+
 func main() {
 	tv := MakeMemory(fp)
 	answer := passes(candidates(), tv)
