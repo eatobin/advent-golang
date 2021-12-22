@@ -11,7 +11,7 @@ import (
 type Memory []int
 type Instruction map[byte]uint8
 
-const fp = "advent05.csv"
+const fp = "advent07.csv"
 const offsetC int = 1
 const offsetB int = 2
 const offsetA int = 3
@@ -337,47 +337,10 @@ func passes(candidates [][]int, memory Memory) []int {
 	return vcm
 }
 func main() {
-	var mem = []int{3, 31, 3, 32, 1002, 32, 10, 32, 1001, 31, -2, 31, 1007, 31, 0, 33, 1002, 33, 7, 33, 1, 33, 31, 31, 1, 32, 31, 31, 4, 31, 99, 0, 0, 0}
-	//var phases = []int{1, 0, 4, 3, 2}
-	//answer := pass(phases, mem)
-	answer := passes(candidates(), mem)
+	tv := MakeMemory(fp)
+	answer := passes(candidates(), tv)
 	sort.Ints(answer)
-	fmt.Printf("%v", answer[119])
+	fmt.Printf("Part A answer = %d\n", answer[119]) // Part A answer = ;368584
 
-	//fmt.Printf("\n%v", candidates())
-	//fmt.Printf("\ncount = %d", len(candidates()))
-	//fmt.Printf("\n%v", candidates()[119])
+	//fmt.Printf("Part B answer = %d", icP.output) // Part B answer = 11981754
 }
-
-//tv := MakeMemory(fp)
-//icP := &IntCode{
-//	input:     1,
-//	output:    0,
-//	phase:     -1,
-//	pointer:   0,
-//	memory:    tv,
-//	isStopped: false,
-//	doesRecur: true,
-//}
-//icReturn := 1
-//for icReturn == 1 {
-//	icReturn = icP.opCode()
-//}
-//fmt.Printf("Part A answer = %d\n", icP.output) // Part A answer = ;368584
-//
-//tv = MakeMemory(fp)
-//icP = &IntCode{
-//	input:     5,
-//	output:    0,
-//	phase:     -1,
-//	pointer:   0,
-//	memory:    tv,
-//	isStopped: false,
-//	doesRecur: true,
-//}
-//icReturn = 1
-//for icReturn == 1 {
-//	icReturn = icP.opCode()
-//}
-//fmt.Printf("Part B answer = %d", icP.output) // Part B answer = 11981754
-//}
