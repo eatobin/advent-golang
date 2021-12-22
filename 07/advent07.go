@@ -341,7 +341,7 @@ func main() {
 	tv := MakeMemory(fp)
 	answer := passes(candidates(), tv)
 	sort.Ints(answer)
-	fmt.Printf("Part A answer = %d\n", answer[119]) // Part A answer = ;368584
+	fmt.Printf("Part A answer = %d\n", answer[len(answer)-1]) // Part A answer = ;368584
 
 	//fmt.Printf("Part B answer = %d", icP.output) // Part B answer = 11981754
 }
