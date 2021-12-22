@@ -351,12 +351,12 @@ func pass(candidate []int, memory Memory) int {
 }
 
 func pass2(candidate []int, memory Memory) int {
-	isFirstPass := true
+	aInput := 0
 	eOutput := 0
 	isEStopped := false
 	for !isEStopped {
 		icpA := &IntCode{
-			input:     0,
+			input:     aInput,
 			output:    0,
 			phase:     candidate[0],
 			pointer:   0,
@@ -430,6 +430,7 @@ func pass2(candidate []int, memory Memory) int {
 			icReturn = icpE.opCode()
 		}
 
+		aInput = icpE.output
 		eOutput = icpE.output
 		isEStopped = icpE.isStopped
 	}
