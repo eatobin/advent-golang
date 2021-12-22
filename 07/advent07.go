@@ -177,6 +177,7 @@ func (icP *IntCode) opCode() int {
 				icP.pointer += 2
 				return 1
 			case 4:
+				// TODO recur
 				icP.output = icP.cParam(instruction)
 				icP.pointer += 2
 				return 1
@@ -441,7 +442,7 @@ func pass2(candidate []int, memory Memory) int {
 func passes(candidates [][]int, memory Memory) []int {
 	vcm := make([]int, len(candidates))
 	for i, v := range candidates {
-		vcm[i] = pass(v, memory)
+		vcm[i] = pass2(v, memory)
 	}
 	return vcm
 }
