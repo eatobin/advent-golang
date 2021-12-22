@@ -26,4 +26,11 @@ func TestOpCode(t *testing.T) {
 			t.Errorf("Got %v; want\n %v", got, fixture.Expected)
 		}
 	}
+
+	a := IntCode{input: 198, output: 0, phase: -1, pointer: 0, memory: []int{3, 0, 4, 0, 99}, isStopped: false, doesRecur: true}
+	b := IntCode{input: 198, output: 0, phase: -1, pointer: 0, memory: []int{3, 0, 4, 0, 99}, isStopped: false, doesRecur: true}
+
+	if !CompareIntCode(a, b) {
+		t.Errorf("a: %v; not equal to\n b: %v", a, b)
+	}
 }
