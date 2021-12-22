@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -328,25 +329,24 @@ func pass(candidate []int, memory Memory) int {
 	return icpE.output
 }
 
+func passes(candidates [][]int, memory Memory) []int {
+	vcm := make([]int, len(candidates))
+	for i, v := range candidates {
+		vcm[i] = pass(v, memory)
+	}
+	return vcm
+}
 func main() {
 	var mem = []int{3, 31, 3, 32, 1002, 32, 10, 32, 1001, 31, -2, 31, 1007, 31, 0, 33, 1002, 33, 7, 33, 1, 33, 31, 31, 1, 32, 31, 31, 4, 31, 99, 0, 0, 0}
-	var phases = []int{1, 0, 4, 3, 2}
-	answer := pass(phases, mem)
-	fmt.Printf("%v", answer)
+	//var phases = []int{1, 0, 4, 3, 2}
+	//answer := pass(phases, mem)
+	answer := passes(candidates(), mem)
+	sort.Ints(answer)
+	fmt.Printf("%v", answer[119])
 
-	//fmt.Printf("%v", candidates())
+	//fmt.Printf("\n%v", candidates())
 	//fmt.Printf("\ncount = %d", len(candidates()))
 	//fmt.Printf("\n%v", candidates()[119])
-	//a := makeRange(0, 4)
-	//fmt.Println(a)
-	//visited := []int{
-	//	1,
-	//	2,
-	//	88,
-	//	22,
-	//}
-	//
-	//fmt.Println(areUnique(visited))
 }
 
 //tv := MakeMemory(fp)
