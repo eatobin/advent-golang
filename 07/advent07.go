@@ -250,6 +250,27 @@ func candidates() [][]int {
 	return winners
 }
 
+func candidates2() [][]int {
+	var winners [][]int
+	var candidate []int
+	for a := 5; a < 10; a++ {
+		for b := 5; b < 10; b++ {
+			for c := 5; c < 10; c++ {
+				for d := 5; d < 10; d++ {
+					for e := 5; e < 10; e++ {
+						candidate = nil
+						candidate = append(candidate, a, b, c, d, e)
+						if areUnique(candidate) {
+							winners = append(winners, candidate)
+						}
+					}
+				}
+			}
+		}
+	}
+	return winners
+}
+
 func pass(candidate []int, memory Memory) int {
 	icpA := &IntCode{
 		input:     0,
@@ -319,6 +340,85 @@ func pass(candidate []int, memory Memory) int {
 		memory:    memory,
 		isStopped: false,
 		doesRecur: true,
+	}
+
+	icReturn = 1
+	for icReturn == 1 {
+		icReturn = icpE.opCode()
+	}
+
+	return icpE.output
+}
+
+func pass2(candidate []int, memory Memory) int {
+	icpA := &IntCode{
+		input:     0,
+		output:    0,
+		phase:     candidate[0],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: false,
+	}
+
+	icReturn := 1
+	for icReturn == 1 {
+		icReturn = icpA.opCode()
+	}
+
+	icpB := &IntCode{
+		input:     icpA.output,
+		output:    0,
+		phase:     candidate[1],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: false,
+	}
+
+	icReturn = 1
+	for icReturn == 1 {
+		icReturn = icpB.opCode()
+	}
+
+	icpC := &IntCode{
+		input:     icpB.output,
+		output:    0,
+		phase:     candidate[2],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: false,
+	}
+
+	icReturn = 1
+	for icReturn == 1 {
+		icReturn = icpC.opCode()
+	}
+
+	icpD := &IntCode{
+		input:     icpC.output,
+		output:    0,
+		phase:     candidate[3],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: false,
+	}
+
+	icReturn = 1
+	for icReturn == 1 {
+		icReturn = icpD.opCode()
+	}
+
+	icpE := &IntCode{
+		input:     icpD.output,
+		output:    0,
+		phase:     candidate[4],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: false,
 	}
 
 	icReturn = 1
