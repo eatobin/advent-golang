@@ -153,7 +153,7 @@ func (icP *IntCode) opCode() int {
 		instruction := pad5(icP.memory[icP.pointer])
 		if instruction['d'] == 9 {
 			icP.isStopped = true
-			return 1
+			return 0
 		} else {
 			switch instruction['e'] {
 			case 1:
