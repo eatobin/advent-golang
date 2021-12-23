@@ -357,86 +357,81 @@ func pass(candidate []int, memory Memory) int {
 }
 
 func pass2(candidate []int, memory Memory) int {
-	aInput := 0
 	eOutput := 0
 	allStopped := false
-	for !allStopped {
-		icpA := &IntCode{
-			input:     aInput,
-			output:    0,
-			phase:     candidate[0],
-			pointer:   0,
-			memory:    memory,
-			isStopped: false,
-			doesRecur: false,
-		}
+	icpA := &IntCode{
+		input:     0,
+		output:    0,
+		phase:     candidate[0],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: false,
+	}
+	icpB := &IntCode{
+		input:     0,
+		output:    0,
+		phase:     candidate[1],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: false,
+	}
+	icpC := &IntCode{
+		input:     0,
+		output:    0,
+		phase:     candidate[2],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: false,
+	}
+	icpD := &IntCode{
+		input:     0,
+		output:    0,
+		phase:     candidate[3],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: false,
+	}
+	icpE := &IntCode{
+		input:     0,
+		output:    0,
+		phase:     candidate[4],
+		pointer:   0,
+		memory:    memory,
+		isStopped: false,
+		doesRecur: false,
+	}
 
+	for !allStopped {
 		icReturn := 1
 		for icReturn == 1 {
 			icReturn = icpA.opCode()
 		}
-
-		icpB := &IntCode{
-			input:     icpA.output,
-			output:    0,
-			phase:     candidate[1],
-			pointer:   0,
-			memory:    memory,
-			isStopped: false,
-			doesRecur: false,
-		}
-
+		icpB.input = icpA.output
 		icReturn = 1
 		for icReturn == 1 {
 			icReturn = icpB.opCode()
 		}
-
-		icpC := &IntCode{
-			input:     icpB.output,
-			output:    0,
-			phase:     candidate[2],
-			pointer:   0,
-			memory:    memory,
-			isStopped: false,
-			doesRecur: false,
-		}
-
+		icpC.input = icpB.output
 		icReturn = 1
 		for icReturn == 1 {
 			icReturn = icpC.opCode()
 		}
-
-		icpD := &IntCode{
-			input:     icpC.output,
-			output:    0,
-			phase:     candidate[3],
-			pointer:   0,
-			memory:    memory,
-			isStopped: false,
-			doesRecur: false,
-		}
-
+		icpD.input = icpC.output
 		icReturn = 1
 		for icReturn == 1 {
 			icReturn = icpD.opCode()
 		}
-
-		icpE := &IntCode{
-			input:     icpD.output,
-			output:    0,
-			phase:     candidate[4],
-			pointer:   0,
-			memory:    memory,
-			isStopped: false,
-			doesRecur: false,
-		}
-
+		icpE.input = icpD.output
 		icReturn = 1
 		for icReturn == 1 {
 			icReturn = icpE.opCode()
 		}
 
-		aInput = icpE.output
+		icpA.input = icpE.output
 		eOutput = icpE.output
 		allStopped = icpE.isStopped
 	}
