@@ -177,10 +177,15 @@ func (icP *IntCode) opCode() int {
 				icP.pointer += 2
 				return 1
 			case 4:
-				// TODO recur
-				icP.output = icP.cParam(instruction)
-				icP.pointer += 2
-				return 1
+				if icP.doesRecur {
+					icP.output = icP.cParam(instruction)
+					icP.pointer += 2
+					return 1
+				} else {
+					icP.output = icP.cParam(instruction)
+					icP.pointer += 2
+					return 0
+				}
 			case 5:
 				if icP.cParam(instruction) == 0 {
 					icP.pointer += 3
