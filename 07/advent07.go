@@ -256,26 +256,26 @@ func candidates() [][]int {
 	return winners
 }
 
-//func candidates2() [][]int {
-//	var winners [][]int
-//	var candidate []int
-//	for a := 5; a < 10; a++ {
-//		for b := 5; b < 10; b++ {
-//			for c := 5; c < 10; c++ {
-//				for d := 5; d < 10; d++ {
-//					for e := 5; e < 10; e++ {
-//						candidate = nil
-//						candidate = append(candidate, a, b, c, d, e)
-//						if areUnique(candidate) {
-//							winners = append(winners, candidate)
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
-//	return winners
-//}
+func candidates2() [][]int {
+	var winners [][]int
+	var candidate []int
+	for a := 5; a < 10; a++ {
+		for b := 5; b < 10; b++ {
+			for c := 5; c < 10; c++ {
+				for d := 5; d < 10; d++ {
+					for e := 5; e < 10; e++ {
+						candidate = nil
+						candidate = append(candidate, a, b, c, d, e)
+						if areUnique(candidate) {
+							winners = append(winners, candidate)
+						}
+					}
+				}
+			}
+		}
+	}
+	return winners
+}
 
 func pass(candidate []int, memory Memory) int {
 	icpA := &IntCode{
@@ -461,5 +461,8 @@ func main() {
 	sort.Ints(answer)
 	fmt.Printf("Part A answer = %d\n", answer[len(answer)-1]) // Part A answer = ;368584
 
-	//fmt.Printf("Part B answer = %d", icP.output) // Part B answer = 11981754
+	tv = MakeMemory(fp)
+	answer2 := passes2(candidates2(), tv)
+	sort.Ints(answer2)
+	fmt.Printf("Part B answer = %d", answer2[len(answer)-1]) // Part B answer = 35993240
 }
