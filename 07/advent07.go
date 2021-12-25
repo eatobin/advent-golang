@@ -356,7 +356,17 @@ func pass(candidate []int, memory Memory) int {
 	return icpE.output
 }
 
-func pass2(candidate []int, memory Memory) int {
+func pass2(candidate []int, commonMemory Memory) int {
+	memA := make([]int, len(commonMemory))
+	memB := make([]int, len(commonMemory))
+	memC := make([]int, len(commonMemory))
+	memD := make([]int, len(commonMemory))
+	memE := make([]int, len(commonMemory))
+	copy(memA, commonMemory)
+	copy(memB, commonMemory)
+	copy(memC, commonMemory)
+	copy(memD, commonMemory)
+	copy(memE, commonMemory)
 	eOutput := 0
 	allStopped := false
 	icpA := &IntCode{
@@ -364,7 +374,7 @@ func pass2(candidate []int, memory Memory) int {
 		output:    0,
 		phase:     candidate[0],
 		pointer:   0,
-		memory:    memory,
+		memory:    memA,
 		isStopped: false,
 		doesRecur: false,
 	}
@@ -373,7 +383,7 @@ func pass2(candidate []int, memory Memory) int {
 		output:    0,
 		phase:     candidate[1],
 		pointer:   0,
-		memory:    memory,
+		memory:    memB,
 		isStopped: false,
 		doesRecur: false,
 	}
@@ -382,7 +392,7 @@ func pass2(candidate []int, memory Memory) int {
 		output:    0,
 		phase:     candidate[2],
 		pointer:   0,
-		memory:    memory,
+		memory:    memC,
 		isStopped: false,
 		doesRecur: false,
 	}
@@ -391,7 +401,7 @@ func pass2(candidate []int, memory Memory) int {
 		output:    0,
 		phase:     candidate[3],
 		pointer:   0,
-		memory:    memory,
+		memory:    memD,
 		isStopped: false,
 		doesRecur: false,
 	}
@@ -400,7 +410,7 @@ func pass2(candidate []int, memory Memory) int {
 		output:    0,
 		phase:     candidate[4],
 		pointer:   0,
-		memory:    memory,
+		memory:    memE,
 		isStopped: false,
 		doesRecur: false,
 	}
