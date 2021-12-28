@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -17,13 +16,14 @@ const offsetB int = 2
 const offsetA int = 3
 
 type IntCode struct {
-	input     int
-	output    int
-	phase     int
-	pointer   int
-	memory    Memory
-	isStopped bool
-	doesRecur bool
+	input        int
+	output       int
+	phase        int
+	pointer      int
+	relativeBase int
+	memory       Memory
+	isStopped    bool
+	doesRecur    bool
 }
 
 // CompareIntCode compares two IntCodes
@@ -43,6 +43,9 @@ func CompareIntCode(a, b IntCode) bool {
 	if a.pointer != b.pointer {
 		return false
 	}
+	if a.relativeBase != b.relativeBase {
+		return false
+	}
 	if len(a.memory) != len(b.memory) {
 		return false
 	}
@@ -60,7 +63,7 @@ func CompareIntCode(a, b IntCode) bool {
 	return true
 }
 
-func MakeMemory(fp string) Memory {
+func MakeMemory(fp string) Memory { // TODO make memory a map so you can write past the end (key = 1000 vs 973)
 	dat, err := ioutil.ReadFile(fp)
 	if err != nil {
 		panic(err)
@@ -100,11 +103,11 @@ func pad5(op int) Instruction {
 	return instruction
 }
 
-func getOrElse(pointer int, offsetX int, memory Memory) int {
-	if (pointer + offsetX) > len(memory)-1 {
+func getOrElse(pointer int, offsetX int, relativeBase int, memory Memory) int {
+	if (pointer+offsetX) > len(memory)-1 || memory[pointer+offsetX]+relativeBase > len(memory)-1 {
 		return 0
 	} else {
-		return memory[memory[pointer+offsetX]]
+		return memory[memory[pointer+offsetX]+relativeBase]
 	}
 }
 
@@ -113,6 +116,8 @@ func (icP *IntCode) aParam(instruction Instruction) int {
 	switch instruction['a'] {
 	case 0: // a-p-w
 		choice = icP.memory[icP.pointer+offsetA]
+	case 2: // a-r-w
+		choice = icP.memory[icP.pointer+offsetA] + icP.relativeBase
 	}
 	return choice
 }
@@ -121,9 +126,11 @@ func (icP *IntCode) bParam(instruction Instruction) int {
 	var choice int
 	switch instruction['b'] {
 	case 0: // b-p-r
-		choice = getOrElse(icP.pointer, offsetB, icP.memory)
+		choice = getOrElse(icP.pointer, offsetB, 0, icP.memory)
 	case 1: // b-i-r
 		choice = icP.memory[icP.pointer+offsetB]
+	case 2: // b-r-r
+		choice = getOrElse(icP.pointer, offsetB, icP.relativeBase, icP.memory)
 	}
 	return choice
 }
@@ -138,9 +145,11 @@ func (icP *IntCode) cParam(instruction Instruction) int {
 	} else {
 		switch instruction['c'] {
 		case 0: // c-p-r
-			choice = getOrElse(icP.pointer, offsetC, icP.memory)
+			choice = getOrElse(icP.pointer, offsetC, 0, icP.memory)
 		case 1: // c-i-r
 			choice = icP.memory[icP.pointer+offsetC]
+		case 2: // c-r-r
+			choice = getOrElse(icP.pointer, offsetC, icP.relativeBase, icP.memory)
 		}
 	}
 	return choice
@@ -216,6 +225,10 @@ func (icP *IntCode) opCode() int {
 				}
 				icP.pointer += 4
 				return 1
+			case 9:
+				icP.memory[icP.cParam(instruction)] = icP.relativeBase
+				icP.pointer += 2
+				return 1
 			default:
 				panic("opcode is not valid")
 			}
@@ -223,266 +236,24 @@ func (icP *IntCode) opCode() int {
 	}
 }
 
-func areUnique(si []int) bool {
-	m := map[int]bool{}
-	for _, v := range si {
-		if m[v] {
-			return false
-		} else {
-			m[v] = true
-		}
-	}
-	return true
-}
-
-func candidates() [][]int {
-	var winners [][]int
-	var candidate []int
-	for a := 0; a < 5; a++ {
-		for b := 0; b < 5; b++ {
-			for c := 0; c < 5; c++ {
-				for d := 0; d < 5; d++ {
-					for e := 0; e < 5; e++ {
-						candidate = nil
-						candidate = append(candidate, a, b, c, d, e)
-						if areUnique(candidate) {
-							winners = append(winners, candidate)
-						}
-					}
-				}
-			}
-		}
-	}
-	return winners
-}
-
-func candidates2() [][]int {
-	var winners [][]int
-	var candidate []int
-	for a := 5; a < 10; a++ {
-		for b := 5; b < 10; b++ {
-			for c := 5; c < 10; c++ {
-				for d := 5; d < 10; d++ {
-					for e := 5; e < 10; e++ {
-						candidate = nil
-						candidate = append(candidate, a, b, c, d, e)
-						if areUnique(candidate) {
-							winners = append(winners, candidate)
-						}
-					}
-				}
-			}
-		}
-	}
-	return winners
-}
-
-func pass(candidate []int, commonMemory Memory) int {
-	memA := make([]int, len(commonMemory))
-	memB := make([]int, len(commonMemory))
-	memC := make([]int, len(commonMemory))
-	memD := make([]int, len(commonMemory))
-	memE := make([]int, len(commonMemory))
-	copy(memA, commonMemory)
-	copy(memB, commonMemory)
-	copy(memC, commonMemory)
-	copy(memD, commonMemory)
-	copy(memE, commonMemory)
-	icpA := &IntCode{
-		input:     0,
-		output:    0,
-		phase:     candidate[0],
-		pointer:   0,
-		memory:    memA,
-		isStopped: false,
-		doesRecur: true,
-	}
-
-	icReturn := 1
-	for icReturn == 1 {
-		icReturn = icpA.opCode()
-	}
-
-	icpB := &IntCode{
-		input:     icpA.output,
-		output:    0,
-		phase:     candidate[1],
-		pointer:   0,
-		memory:    memB,
-		isStopped: false,
-		doesRecur: true,
-	}
-
-	icReturn = 1
-	for icReturn == 1 {
-		icReturn = icpB.opCode()
-	}
-
-	icpC := &IntCode{
-		input:     icpB.output,
-		output:    0,
-		phase:     candidate[2],
-		pointer:   0,
-		memory:    memC,
-		isStopped: false,
-		doesRecur: true,
-	}
-
-	icReturn = 1
-	for icReturn == 1 {
-		icReturn = icpC.opCode()
-	}
-
-	icpD := &IntCode{
-		input:     icpC.output,
-		output:    0,
-		phase:     candidate[3],
-		pointer:   0,
-		memory:    memD,
-		isStopped: false,
-		doesRecur: true,
-	}
-
-	icReturn = 1
-	for icReturn == 1 {
-		icReturn = icpD.opCode()
-	}
-
-	icpE := &IntCode{
-		input:     icpD.output,
-		output:    0,
-		phase:     candidate[4],
-		pointer:   0,
-		memory:    memE,
-		isStopped: false,
-		doesRecur: true,
-	}
-
-	icReturn = 1
-	for icReturn == 1 {
-		icReturn = icpE.opCode()
-	}
-
-	return icpE.output
-}
-
-func pass2(candidate []int, commonMemory Memory) int {
-	memA := make([]int, len(commonMemory))
-	memB := make([]int, len(commonMemory))
-	memC := make([]int, len(commonMemory))
-	memD := make([]int, len(commonMemory))
-	memE := make([]int, len(commonMemory))
-	copy(memA, commonMemory)
-	copy(memB, commonMemory)
-	copy(memC, commonMemory)
-	copy(memD, commonMemory)
-	copy(memE, commonMemory)
-	eOutput := 0
-	allStopped := false
-	icpA := &IntCode{
-		input:     0,
-		output:    0,
-		phase:     candidate[0],
-		pointer:   0,
-		memory:    memA,
-		isStopped: false,
-		doesRecur: false,
-	}
-	icpB := &IntCode{
-		input:     0,
-		output:    0,
-		phase:     candidate[1],
-		pointer:   0,
-		memory:    memB,
-		isStopped: false,
-		doesRecur: false,
-	}
-	icpC := &IntCode{
-		input:     0,
-		output:    0,
-		phase:     candidate[2],
-		pointer:   0,
-		memory:    memC,
-		isStopped: false,
-		doesRecur: false,
-	}
-	icpD := &IntCode{
-		input:     0,
-		output:    0,
-		phase:     candidate[3],
-		pointer:   0,
-		memory:    memD,
-		isStopped: false,
-		doesRecur: false,
-	}
-	icpE := &IntCode{
-		input:     0,
-		output:    0,
-		phase:     candidate[4],
-		pointer:   0,
-		memory:    memE,
-		isStopped: false,
-		doesRecur: false,
-	}
-
-	for !allStopped {
-		icReturn := 1
-		for icReturn == 1 {
-			icReturn = icpA.opCode()
-		}
-		icpB.input = icpA.output
-		icReturn = 1
-		for icReturn == 1 {
-			icReturn = icpB.opCode()
-		}
-		icpC.input = icpB.output
-		icReturn = 1
-		for icReturn == 1 {
-			icReturn = icpC.opCode()
-		}
-		icpD.input = icpC.output
-		icReturn = 1
-		for icReturn == 1 {
-			icReturn = icpD.opCode()
-		}
-		icpE.input = icpD.output
-		icReturn = 1
-		for icReturn == 1 {
-			icReturn = icpE.opCode()
-		}
-
-		icpA.input = icpE.output
-		eOutput = icpE.output
-		allStopped = icpE.isStopped
-	}
-
-	return eOutput
-}
-
-func passes(candidates [][]int, memory Memory) []int {
-	vcm := make([]int, len(candidates))
-	for i, v := range candidates {
-		vcm[i] = pass(v, memory)
-	}
-	return vcm
-}
-
-func passes2(candidates [][]int, memory Memory) []int {
-	vcm := make([]int, len(candidates))
-	for i, v := range candidates {
-		vcm[i] = pass2(v, memory)
-	}
-	return vcm
-}
-
 func main() {
 	tv := MakeMemory(fp)
-	answer := passes(candidates(), tv)
-	sort.Ints(answer)
-	fmt.Printf("Part A answer = %d\n", answer[len(answer)-1]) // Part A answer = ;368584
+	icP := &IntCode{
+		input:        1,
+		output:       0,
+		phase:        -1,
+		pointer:      0,
+		relativeBase: 0,
+		memory:       tv,
+		isStopped:    false,
+		doesRecur:    true,
+	}
+	icReturn := 1
+	for icReturn == 1 {
+		icReturn = icP.opCode()
+	}
+	fmt.Printf("Part A answer = %d\n", icP.output) // Part A answer = 3780860499
 
-	tv = MakeMemory(fp)
-	answer2 := passes2(candidates2(), tv)
-	sort.Ints(answer2)
-	fmt.Printf("Part B answer = %d", answer2[len(answer)-1]) // Part B answer = 35993240
+	//tv = MakeMemory(fp)
+	//fmt.Printf("Part B answer = %d", answer2[len(answer)-1]) // Part B answer = 35993240
 }
