@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-type Memory []int
+type Memory map[int]int
 type Instruction map[byte]uint8
 
 const fp = "advent02.csv"
@@ -48,7 +48,7 @@ func MakeMemory(fp string) Memory {
 	txt := string(dat)
 	txt = strings.TrimRight(txt, "\n")
 	strOps := strings.Split(txt, ",")
-	memory := make([]int, len(strOps))
+	memory := make(map[int]int)
 
 	for i, strOp := range strOps {
 		op, err := strconv.Atoi(strOp)
@@ -80,10 +80,11 @@ func pad5(op int) Instruction {
 }
 
 func getOrElse(pointer int, offsetX int, memory Memory) int {
-	if (pointer + offsetX) > len(memory)-1 {
-		return 0
+	v, prs := memory[pointer+offsetX]
+	if prs {
+		return v
 	} else {
-		return memory[memory[pointer+offsetX]]
+		return 0
 	}
 }
 
