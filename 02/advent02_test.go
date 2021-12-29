@@ -10,8 +10,10 @@ type Fixtures struct {
 }
 
 func TestOpCode(t *testing.T) {
+	test01In := MakeMemory("test01In.csv")
+	test01Out := MakeMemory("test01Out.csv")
 	fixtures := []Fixtures{
-		{Value: IntCode{pointer: 0, memory: map[int]int{0: 1, 1: 0, 2: 0, 3: 0, 4: 99}}, Expected: IntCode{pointer: 4, memory: map[int]int{0: 2, 1: 0, 2: 0, 3: 0, 4: 99}}},
+		{Value: IntCode{pointer: 0, memory: test01In}, Expected: IntCode{pointer: 4, memory: test01Out}},
 		{IntCode{pointer: 0, memory: map[int]int{0: 2, 1: 3, 2: 0, 3: 3, 4: 99}}, IntCode{pointer: 4, memory: map[int]int{0: 2, 1: 3, 2: 0, 3: 6, 4: 99}}},
 		{IntCode{pointer: 0, memory: map[int]int{0: 2, 1: 4, 2: 4, 3: 5, 4: 99, 5: 0}}, IntCode{pointer: 4, memory: map[int]int{0: 2, 1: 4, 2: 4, 3: 5, 4: 99, 5: 9801}}},
 		{IntCode{pointer: 0, memory: map[int]int{0: 1, 1: 1, 2: 1, 3: 4, 4: 99, 5: 5, 6: 6, 7: 0, 8: 99}}, IntCode{pointer: 8, memory: map[int]int{0: 30, 1: 1, 2: 1, 3: 4, 4: 2, 5: 5, 6: 6, 7: 0, 8: 99}}},
