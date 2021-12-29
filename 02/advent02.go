@@ -82,7 +82,7 @@ func pad5(op int) Instruction {
 func getOrElse(pointer int, offsetX int, memory Memory) int {
 	v, prs := memory[pointer+offsetX]
 	if prs {
-		return v
+		return memory[v]
 	} else {
 		return 0
 	}
