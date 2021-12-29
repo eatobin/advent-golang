@@ -12,13 +12,21 @@ type Fixtures struct {
 func TestOpCode(t *testing.T) {
 	test01In := MakeMemory("test01In.csv")
 	test01Out := MakeMemory("test01Out.csv")
+	test02In := MakeMemory("test02In.csv")
+	test02Out := MakeMemory("test02Out.csv")
+	test03In := MakeMemory("test03In.csv")
+	test03Out := MakeMemory("test03Out.csv")
+	test04In := MakeMemory("test04In.csv")
+	test04Out := MakeMemory("test04Out.csv")
+	test05In := MakeMemory("test05In.csv")
+	test05Out := MakeMemory("test05Out.csv")
+
 	fixtures := []Fixtures{
 		{Value: IntCode{pointer: 0, memory: test01In}, Expected: IntCode{pointer: 4, memory: test01Out}},
-		{IntCode{pointer: 0, memory: map[int]int{0: 2, 1: 3, 2: 0, 3: 3, 4: 99}}, IntCode{pointer: 4, memory: map[int]int{0: 2, 1: 3, 2: 0, 3: 6, 4: 99}}},
-		{IntCode{pointer: 0, memory: map[int]int{0: 2, 1: 4, 2: 4, 3: 5, 4: 99, 5: 0}}, IntCode{pointer: 4, memory: map[int]int{0: 2, 1: 4, 2: 4, 3: 5, 4: 99, 5: 9801}}},
-		{IntCode{pointer: 0, memory: map[int]int{0: 1, 1: 1, 2: 1, 3: 4, 4: 99, 5: 5, 6: 6, 7: 0, 8: 99}}, IntCode{pointer: 8, memory: map[int]int{0: 30, 1: 1, 2: 1, 3: 4, 4: 2, 5: 5, 6: 6, 7: 0, 8: 99}}},
-		{IntCode{pointer: 0, memory: map[int]int{0: 1, 1: 9, 2: 10, 3: 3, 4: 2, 5: 3, 6: 11, 7: 0, 8: 99, 9: 30, 10: 40, 11: 50}},
-			IntCode{pointer: 8, memory: map[int]int{0: 3500, 1: 9, 2: 10, 3: 70, 4: 2, 5: 3, 6: 11, 7: 0, 8: 99, 9: 30, 10: 40, 11: 50}}},
+		{IntCode{pointer: 0, memory: test02In}, IntCode{pointer: 4, memory: test02Out}},
+		{IntCode{pointer: 0, memory: test03In}, IntCode{pointer: 8, memory: test03Out}},
+		{IntCode{pointer: 0, memory: test04In}, IntCode{pointer: 4, memory: test04Out}},
+		{IntCode{pointer: 0, memory: test05In}, IntCode{pointer: 8, memory: test05Out}},
 	}
 
 	for _, fixture := range fixtures {
