@@ -22,7 +22,7 @@ func TestOpCode(t *testing.T) {
 	test05Out := MakeMemory("test05Out.csv")
 
 	fixtures := []Fixtures{
-		{Value: IntCode{pointer: 0, memory: test01In}, Expected: IntCode{pointer: 4, memory: test01Out}},
+		{IntCode{pointer: 0, memory: test01In}, IntCode{pointer: 4, memory: test01Out}},
 		{IntCode{pointer: 0, memory: test02In}, IntCode{pointer: 4, memory: test02Out}},
 		{IntCode{pointer: 0, memory: test03In}, IntCode{pointer: 8, memory: test03Out}},
 		{IntCode{pointer: 0, memory: test04In}, IntCode{pointer: 4, memory: test04Out}},
