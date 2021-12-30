@@ -10,7 +10,6 @@ import (
 type Memory map[int]int
 type Instruction map[byte]uint8
 
-const fp = "advent09.csv"
 const offsetC int = 1
 const offsetB int = 2
 const offsetA int = 3
@@ -191,40 +190,4 @@ func (icP *IntCode) opCode() int {
 			}
 		}
 	}
-}
-
-func main() {
-	tv := MakeMemory(fp)
-	icP := &IntCode{
-		input:        1,
-		output:       0,
-		phase:        -1,
-		pointer:      0,
-		relativeBase: 0,
-		memory:       tv,
-		isStopped:    false,
-		doesRecur:    true,
-	}
-	icReturn := 1
-	for icReturn == 1 {
-		icReturn = icP.opCode()
-	}
-	fmt.Printf("Part A answer = %d\n", icP.output) // Part A answer = 3780860499
-
-	tv = MakeMemory(fp)
-	icP = &IntCode{
-		input:        2,
-		output:       0,
-		phase:        -1,
-		pointer:      0,
-		relativeBase: 0,
-		memory:       tv,
-		isStopped:    false,
-		doesRecur:    true,
-	}
-	icReturn = 1
-	for icReturn == 1 {
-		icReturn = icP.opCode()
-	}
-	fmt.Printf("Part B answer = %d\n", icP.output) // Part A answer = 33343
 }

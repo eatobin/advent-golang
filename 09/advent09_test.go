@@ -9,6 +9,43 @@ type Fixtures struct {
 	Expected IntCode
 }
 
+// CompareIntCode compares two IntCodes
+func CompareIntCode(a, b IntCode) bool {
+	if &a == &b {
+		return true
+	}
+	if a.input != b.input {
+		return false
+	}
+	if a.output != b.output {
+		return false
+	}
+	if a.phase != b.phase {
+		return false
+	}
+	if a.pointer != b.pointer {
+		return false
+	}
+	if a.relativeBase != b.relativeBase {
+		return false
+	}
+	if len(a.memory) != len(b.memory) {
+		return false
+	}
+	for i, v := range a.memory {
+		if v != b.memory[i] {
+			return false
+		}
+	}
+	if a.isStopped != b.isStopped {
+		return false
+	}
+	if a.doesRecur != b.doesRecur {
+		return false
+	}
+	return true
+}
+
 func TestOpCode(t *testing.T) {
 	test00In := MakeMemory("test00In.csv")
 	test00Out := MakeMemory("test00Out.csv")
