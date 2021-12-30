@@ -103,32 +103,6 @@ func pad5(op int) Instruction {
 	return instruction
 }
 
-//func getOrElse(pointer int, offsetX int, relativeBase int, memory Memory) int {
-//	v, prs := memory[memory[pointer+offsetX]+relativeBase]
-//	if prs {
-//		return memory[v]
-//	} else {
-//		return 0
-//	}
-//}
-func getOrElse(pointer int, offsetX int, relativeBase int, memory Memory) int {
-	v, prs := memory[pointer+offsetX]
-	if relativeBase == 0 {
-		if prs {
-			return memory[v]
-		} else {
-			return 0
-		}
-	} else {
-		vR, prsR := memory[v+relativeBase]
-		if prsR {
-			return vR
-		} else {
-			return 0
-		}
-	}
-}
-
 func (icP *IntCode) aParam(instruction Instruction) int {
 	var choice int
 	switch instruction['a'] {
@@ -144,11 +118,11 @@ func (icP *IntCode) bParam(instruction Instruction) int {
 	var choice int
 	switch instruction['b'] {
 	case 0: // b-p-r
-		choice = getOrElse(icP.pointer, offsetB, 0, icP.memory)
+		choice = icP.memory[icP.memory[icP.pointer+offsetB]]
 	case 1: // b-i-r
 		choice = icP.memory[icP.pointer+offsetB]
 	case 2: // b-r-r
-		choice = getOrElse(icP.pointer, offsetB, icP.relativeBase, icP.memory)
+		choice = icP.memory[icP.memory[icP.pointer+offsetB]+icP.relativeBase]
 	}
 	return choice
 }
@@ -165,11 +139,11 @@ func (icP *IntCode) cParam(instruction Instruction) int {
 	} else {
 		switch instruction['c'] {
 		case 0: // c-p-r
-			choice = getOrElse(icP.pointer, offsetC, 0, icP.memory)
+			choice = icP.memory[icP.memory[icP.pointer+offsetC]]
 		case 1: // c-i-r
 			choice = icP.memory[icP.pointer+offsetC]
 		case 2: // c-r-r
-			choice = getOrElse(icP.pointer, offsetC, icP.relativeBase, icP.memory)
+			choice = icP.memory[icP.memory[icP.pointer+offsetC]+icP.relativeBase]
 		}
 	}
 	return choice
@@ -246,7 +220,7 @@ func (icP *IntCode) opCode() int {
 				icP.pointer += 4
 				return 1
 			case 9:
-				icP.memory[icP.cParam(instruction)] = icP.relativeBase
+				icP.relativeBase += icP.memory[icP.cParam(instruction)]
 				icP.pointer += 2
 				return 1
 			default:
