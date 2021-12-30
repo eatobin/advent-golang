@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-type Memory []int
+type Memory map[int]int
 type Instruction map[byte]uint8
 
 const fp = "advent09.csv"
@@ -63,7 +63,7 @@ func CompareIntCode(a, b IntCode) bool {
 	return true
 }
 
-func MakeMemory(fp string) Memory { // TODO make memory a map so you can write past the end (key = 1000 vs 973)
+func MakeMemory(fp string) Memory {
 	dat, err := ioutil.ReadFile(fp)
 	if err != nil {
 		panic(err)
@@ -72,7 +72,7 @@ func MakeMemory(fp string) Memory { // TODO make memory a map so you can write p
 	txt := string(dat)
 	txt = strings.TrimRight(txt, "\n")
 	strOps := strings.Split(txt, ",")
-	memory := make([]int, len(strOps))
+	memory := make(map[int]int)
 
 	for i, strOp := range strOps {
 		op, err := strconv.Atoi(strOp)
@@ -103,11 +103,29 @@ func pad5(op int) Instruction {
 	return instruction
 }
 
+//func getOrElse(pointer int, offsetX int, relativeBase int, memory Memory) int {
+//	v, prs := memory[memory[pointer+offsetX]+relativeBase]
+//	if prs {
+//		return memory[v]
+//	} else {
+//		return 0
+//	}
+//}
 func getOrElse(pointer int, offsetX int, relativeBase int, memory Memory) int {
-	if (pointer+offsetX) > len(memory)-1 || memory[pointer+offsetX]+relativeBase > len(memory)-1 {
-		return 0
+	v, prs := memory[pointer+offsetX]
+	if relativeBase == 0 {
+		if prs {
+			return memory[v]
+		} else {
+			return 0
+		}
 	} else {
-		return memory[memory[pointer+offsetX]+relativeBase]
+		vR, prsR := memory[v+relativeBase]
+		if prsR {
+			return vR
+		} else {
+			return 0
+		}
 	}
 }
 
@@ -141,6 +159,8 @@ func (icP *IntCode) cParam(instruction Instruction) int {
 		switch instruction['c'] {
 		case 0: // c-p-w
 			choice = icP.memory[icP.pointer+offsetC]
+		case 2: // c-r-w
+			choice = icP.memory[icP.pointer+offsetC] + icP.relativeBase
 		}
 	} else {
 		switch instruction['c'] {
@@ -252,7 +272,7 @@ func main() {
 	for icReturn == 1 {
 		icReturn = icP.opCode()
 	}
-	fmt.Printf("Part A answer = %d\n", icP.output) // Part A answer = 3780860499
+	fmt.Printf("Part A answer = %v\n", *icP) // Part A answer = 3780860499
 
 	//tv = MakeMemory(fp)
 	//fmt.Printf("Part B answer = %d", answer2[len(answer)-1]) // Part B answer = 35993240
