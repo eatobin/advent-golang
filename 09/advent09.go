@@ -220,7 +220,7 @@ func (icP *IntCode) opCode() int {
 				icP.pointer += 4
 				return 1
 			case 9:
-				icP.relativeBase += icP.memory[icP.cParam(instruction)]
+				icP.relativeBase += icP.cParam(instruction)
 				icP.pointer += 2
 				return 1
 			default:
