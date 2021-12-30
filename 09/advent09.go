@@ -248,6 +248,20 @@ func main() {
 	}
 	fmt.Printf("Part A answer = %d\n", icP.output) // Part A answer = 3780860499
 
-	//tv = MakeMemory(fp)
-	//fmt.Printf("Part B answer = %d", answer2[len(answer)-1]) // Part B answer = 35993240
+	tv = MakeMemory(fp)
+	icP = &IntCode{
+		input:        2,
+		output:       0,
+		phase:        -1,
+		pointer:      0,
+		relativeBase: 0,
+		memory:       tv,
+		isStopped:    false,
+		doesRecur:    true,
+	}
+	icReturn = 1
+	for icReturn == 1 {
+		icReturn = icP.opCode()
+	}
+	fmt.Printf("Part B answer = %d\n", icP.output) // Part A answer = 33343
 }
