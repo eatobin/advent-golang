@@ -246,7 +246,7 @@ func main() {
 	for icReturn == 1 {
 		icReturn = icP.opCode()
 	}
-	fmt.Printf("Part A answer = %v\n", *icP) // Part A answer = 3780860499
+	fmt.Printf("Part A answer = %d\n", icP.output) // Part A answer = 3780860499
 
 	//tv = MakeMemory(fp)
 	//fmt.Printf("Part B answer = %d", answer2[len(answer)-1]) // Part B answer = 35993240
