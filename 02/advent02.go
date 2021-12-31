@@ -2,143 +2,12 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"strconv"
-	"strings"
+	"github.com/eatobin/advent-golang/intcode"
 )
 
-type Memory map[int]int
-type Instruction map[byte]uint8
+const fp = "02/resources/advent02.csv"
 
-const fp = "advent02.csv"
-const offsetC int = 1
-const offsetB int = 2
-const offsetA int = 3
-
-type IntCode struct {
-	pointer int
-	memory  Memory
-}
-
-// CompareIntCode compares two IntCodes
-func CompareIntCode(a, b IntCode) bool {
-	if &a == &b {
-		return true
-	}
-	if a.pointer != b.pointer {
-		return false
-	}
-	if len(a.memory) != len(b.memory) {
-		return false
-	}
-	for i, v := range a.memory {
-		if v != b.memory[i] {
-			return false
-		}
-	}
-	return true
-}
-
-func MakeMemory(fp string) Memory {
-	dat, err := ioutil.ReadFile(fp)
-	if err != nil {
-		panic(err)
-	}
-
-	txt := string(dat)
-	txt = strings.TrimRight(txt, "\n")
-	strOps := strings.Split(txt, ",")
-	memory := make(map[int]int)
-
-	for i, strOp := range strOps {
-		op, err := strconv.Atoi(strOp)
-		if err != nil {
-			panic(err)
-		}
-		memory[i] = op
-	}
-	return memory
-}
-
-func charToInt(char byte) uint8 {
-	if char < 48 || char > 57 {
-		panic("Char is not an integer")
-	}
-	return char - 48
-}
-
-func pad5(op int) Instruction {
-	keys := [5]byte{'a', 'b', 'c', 'd', 'e'}
-	instruction := make(map[byte]uint8)
-	asString := fmt.Sprintf("%05d", op)
-	asBytes := []byte(asString)
-
-	for i := 0; i < 5; i++ {
-		instruction[keys[i]] = charToInt(asBytes[i])
-	}
-	return instruction
-}
-
-func getOrElse(pointer int, offsetX int, memory Memory) int {
-	v, prs := memory[pointer+offsetX]
-	if prs {
-		return memory[v]
-	} else {
-		return 0
-	}
-}
-
-func (icP *IntCode) aParam(instruction Instruction) int {
-	var choice int
-	switch instruction['a'] {
-	// a-p-w
-	case 0:
-		choice = icP.memory[icP.pointer+offsetA]
-	}
-	return choice
-}
-
-func (icP *IntCode) bParam(instruction Instruction) int {
-	var choice int
-	switch instruction['b'] {
-	// b-p-r
-	case 0:
-		choice = getOrElse(icP.pointer, offsetB, icP.memory)
-	}
-	return choice
-}
-
-func (icP *IntCode) cParam(instruction Instruction) int {
-	var choice int
-	switch instruction['c'] {
-	// c-p-r
-	case 0:
-		choice = getOrElse(icP.pointer, offsetC, icP.memory)
-	}
-	return choice
-}
-
-func OpCode(icP *IntCode) int {
-	instruction := pad5(icP.memory[icP.pointer])
-	if instruction['d'] == 9 {
-		return 0
-	} else {
-		switch instruction['e'] {
-		case 1:
-			icP.memory[icP.aParam(instruction)] = icP.bParam(instruction) + icP.cParam(instruction)
-			icP.pointer += 4
-			return 1
-		case 2:
-			icP.memory[icP.aParam(instruction)] = icP.bParam(instruction) * icP.cParam(instruction)
-			icP.pointer += 4
-			return 1
-		default:
-			panic("opcode is not valid")
-		}
-	}
-}
-
-func updatedMemory(memory Memory, noun int, verb int) Memory {
+func updatedMemory(memory intcode.Memory, noun int, verb int) intcode.Memory {
 	memory[1] = noun
 	memory[2] = verb
 	return memory
@@ -151,16 +20,16 @@ func nounVerb() int {
 out:
 	for noun = 0; noun < 101; noun++ {
 		for verb = 0; verb < 101; verb++ {
-			tv := MakeMemory(fp)
-			icP := &IntCode{
-				pointer: 0,
-				memory:  updatedMemory(tv, noun, verb),
+			tv := intcode.MakeMemory(fp)
+			icP := &intcode.IntCode{
+				Pointer: 0,
+				Memory:  updatedMemory(tv, noun, verb),
 			}
 			icReturn := 1
 			for icReturn == 1 {
-				icReturn = OpCode(icP)
+				icReturn = icP.OpCode()
 			}
-			candidate := icP.memory[0]
+			candidate := icP.Memory[0]
 			if candidate == 19690720 {
 				break out
 			}
@@ -170,15 +39,15 @@ out:
 }
 
 func main() {
-	tv := MakeMemory(fp)
-	icP := &IntCode{
-		pointer: 0,
-		memory:  updatedMemory(tv, 12, 2),
+	tv := intcode.MakeMemory(fp)
+	icP := &intcode.IntCode{
+		Pointer: 0,
+		Memory:  updatedMemory(tv, 12, 2),
 	}
 	icReturn := 1
 	for icReturn == 1 {
-		icReturn = OpCode(icP)
+		icReturn = icP.OpCode()
 	}
-	fmt.Printf("Part A answer = %d\n", icP.memory[0]) // Part A answer = 2890696
+	fmt.Printf("Part A answer = %d\n", icP.Memory[0]) // Part A answer = 2890696
 	fmt.Printf("Part B answer = %d", nounVerb())      // Part B answer = 8226
 }

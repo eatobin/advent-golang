@@ -1,4 +1,4 @@
-package main
+package intcode
 
 import (
 	"fmt"
@@ -15,14 +15,14 @@ const offsetB int = 2
 const offsetA int = 3
 
 type IntCode struct {
-	input        int
-	output       int
-	phase        int
-	pointer      int
-	relativeBase int
-	memory       Memory
-	isStopped    bool
-	doesRecur    bool
+	Input        int
+	Output       int
+	Phase        int
+	Pointer      int
+	RelativeBase int
+	Memory       Memory
+	IsStopped    bool
+	DoesRecur    bool
 }
 
 func MakeMemory(fp string) Memory {
@@ -69,9 +69,9 @@ func (icP *IntCode) aParam(instruction Instruction) int {
 	var choice int
 	switch instruction['a'] {
 	case 0: // a-p-w
-		choice = icP.memory[icP.pointer+offsetA]
+		choice = icP.Memory[icP.Pointer+offsetA]
 	case 2: // a-r-w
-		choice = icP.memory[icP.pointer+offsetA] + icP.relativeBase
+		choice = icP.Memory[icP.Pointer+offsetA] + icP.RelativeBase
 	}
 	return choice
 }
@@ -80,11 +80,11 @@ func (icP *IntCode) bParam(instruction Instruction) int {
 	var choice int
 	switch instruction['b'] {
 	case 0: // b-p-r
-		choice = icP.memory[icP.memory[icP.pointer+offsetB]]
+		choice = icP.Memory[icP.Memory[icP.Pointer+offsetB]]
 	case 1: // b-i-r
-		choice = icP.memory[icP.pointer+offsetB]
+		choice = icP.Memory[icP.Pointer+offsetB]
 	case 2: // b-r-r
-		choice = icP.memory[icP.memory[icP.pointer+offsetB]+icP.relativeBase]
+		choice = icP.Memory[icP.Memory[icP.Pointer+offsetB]+icP.RelativeBase]
 	}
 	return choice
 }
@@ -94,96 +94,96 @@ func (icP *IntCode) cParam(instruction Instruction) int {
 	if instruction['e'] == 3 {
 		switch instruction['c'] {
 		case 0: // c-p-w
-			choice = icP.memory[icP.pointer+offsetC]
+			choice = icP.Memory[icP.Pointer+offsetC]
 		case 2: // c-r-w
-			choice = icP.memory[icP.pointer+offsetC] + icP.relativeBase
+			choice = icP.Memory[icP.Pointer+offsetC] + icP.RelativeBase
 		}
 	} else {
 		switch instruction['c'] {
 		case 0: // c-p-r
-			choice = icP.memory[icP.memory[icP.pointer+offsetC]]
+			choice = icP.Memory[icP.Memory[icP.Pointer+offsetC]]
 		case 1: // c-i-r
-			choice = icP.memory[icP.pointer+offsetC]
+			choice = icP.Memory[icP.Pointer+offsetC]
 		case 2: // c-r-r
-			choice = icP.memory[icP.memory[icP.pointer+offsetC]+icP.relativeBase]
+			choice = icP.Memory[icP.Memory[icP.Pointer+offsetC]+icP.RelativeBase]
 		}
 	}
 	return choice
 }
 
-func (icP *IntCode) opCode() int {
-	if icP.isStopped {
+func (icP *IntCode) OpCode() int {
+	if icP.IsStopped {
 		return 0
 	} else {
-		instruction := pad5(icP.memory[icP.pointer])
+		instruction := pad5(icP.Memory[icP.Pointer])
 		if instruction['d'] == 9 {
-			icP.isStopped = true
+			icP.IsStopped = true
 			return 0
 		} else {
 			switch instruction['e'] {
 			case 1:
-				icP.memory[icP.aParam(instruction)] = icP.bParam(instruction) + icP.cParam(instruction)
-				icP.pointer += 4
+				icP.Memory[icP.aParam(instruction)] = icP.bParam(instruction) + icP.cParam(instruction)
+				icP.Pointer += 4
 				return 1
 			case 2:
-				icP.memory[icP.aParam(instruction)] = icP.bParam(instruction) * icP.cParam(instruction)
-				icP.pointer += 4
+				icP.Memory[icP.aParam(instruction)] = icP.bParam(instruction) * icP.cParam(instruction)
+				icP.Pointer += 4
 				return 1
 			case 3:
-				if icP.phase != -1 {
-					if icP.pointer == 0 {
-						icP.memory[icP.cParam(instruction)] = icP.phase
+				if icP.Phase != -1 {
+					if icP.Pointer == 0 {
+						icP.Memory[icP.cParam(instruction)] = icP.Phase
 					} else {
-						icP.memory[icP.cParam(instruction)] = icP.input
+						icP.Memory[icP.cParam(instruction)] = icP.Input
 					}
 				} else {
-					icP.memory[icP.cParam(instruction)] = icP.input
+					icP.Memory[icP.cParam(instruction)] = icP.Input
 				}
-				icP.pointer += 2
+				icP.Pointer += 2
 				return 1
 			case 4:
-				if icP.doesRecur {
-					icP.output = icP.cParam(instruction)
-					icP.pointer += 2
+				if icP.DoesRecur {
+					icP.Output = icP.cParam(instruction)
+					icP.Pointer += 2
 					return 1
 				} else {
-					icP.output = icP.cParam(instruction)
-					icP.pointer += 2
+					icP.Output = icP.cParam(instruction)
+					icP.Pointer += 2
 					return 0
 				}
 			case 5:
 				if icP.cParam(instruction) == 0 {
-					icP.pointer += 3
+					icP.Pointer += 3
 				} else {
-					icP.pointer = icP.bParam(instruction)
+					icP.Pointer = icP.bParam(instruction)
 				}
 				return 1
 			case 6:
 				if icP.cParam(instruction) != 0 {
-					icP.pointer += 3
+					icP.Pointer += 3
 				} else {
-					icP.pointer = icP.bParam(instruction)
+					icP.Pointer = icP.bParam(instruction)
 				}
 				return 1
 			case 7:
 				if icP.cParam(instruction) < icP.bParam(instruction) {
-					icP.memory[icP.aParam(instruction)] = 1
+					icP.Memory[icP.aParam(instruction)] = 1
 				} else {
-					icP.memory[icP.aParam(instruction)] = 0
+					icP.Memory[icP.aParam(instruction)] = 0
 				}
-				icP.pointer += 4
+				icP.Pointer += 4
 				return 1
 			case 8:
 				if icP.cParam(instruction) == icP.bParam(instruction) {
-					icP.memory[icP.aParam(instruction)] = 1
+					icP.Memory[icP.aParam(instruction)] = 1
 				} else {
-					icP.memory[icP.aParam(instruction)] = 0
+					icP.Memory[icP.aParam(instruction)] = 0
 				}
-				icP.pointer += 4
+				icP.Pointer += 4
 				return 1
 			case 9:
-				icP.relativeBase += icP.cParam(instruction)
-				icP.pointer += 2
+				icP.RelativeBase += icP.cParam(instruction)
+				icP.Pointer += 2
 				return 1
 			default:
 				panic("opcode is not valid")
