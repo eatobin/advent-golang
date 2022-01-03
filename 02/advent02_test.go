@@ -30,16 +30,16 @@ func CompareIntCode(a, b intcode.IntCode) bool {
 }
 
 func TestOpCode(t *testing.T) {
-	test01In := intcode.MakeMemory("resources/test01In.csv")
-	test01Out := intcode.MakeMemory("resources/test01Out.csv")
-	test02In := intcode.MakeMemory("resources/test02In.csv")
-	test02Out := intcode.MakeMemory("resources/test02Out.csv")
-	test03In := intcode.MakeMemory("resources/test03In.csv")
-	test03Out := intcode.MakeMemory("resources/test03Out.csv")
-	test04In := intcode.MakeMemory("resources/test04In.csv")
-	test04Out := intcode.MakeMemory("resources/test04Out.csv")
-	test05In := intcode.MakeMemory("resources/test05In.csv")
-	test05Out := intcode.MakeMemory("resources/test05Out.csv")
+	test01In := intcode.MakeMemory("resources02/test01In.csv")
+	test01Out := intcode.MakeMemory("resources02/test01Out.csv")
+	test02In := intcode.MakeMemory("resources02/test02In.csv")
+	test02Out := intcode.MakeMemory("resources02/test02Out.csv")
+	test03In := intcode.MakeMemory("resources02/test03In.csv")
+	test03Out := intcode.MakeMemory("resources02/test03Out.csv")
+	test04In := intcode.MakeMemory("resources02/test04In.csv")
+	test04Out := intcode.MakeMemory("resources02/test04Out.csv")
+	test05In := intcode.MakeMemory("resources02/test05In.csv")
+	test05Out := intcode.MakeMemory("resources02/test05Out.csv")
 
 	fixtures := []Fixtures{
 		{intcode.IntCode{Pointer: 0, Memory: test01In}, intcode.IntCode{Pointer: 4, Memory: test01Out}},
