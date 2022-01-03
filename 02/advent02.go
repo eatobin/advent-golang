@@ -5,7 +5,7 @@ import (
 	"github.com/eatobin/advent-golang/intcode"
 )
 
-const fp = "02/resources/advent02.csv"
+const fp = "02/resources02/advent02.csv"
 
 func updatedMemory(memory intcode.Memory, noun int, verb int) intcode.Memory {
 	memory[1] = noun
