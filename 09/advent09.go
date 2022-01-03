@@ -5,7 +5,7 @@ import (
 	"github.com/eatobin/advent-golang/intcode"
 )
 
-const fp = "05/advent05.csv"
+const fp = "09/advent09.csv"
 
 func main() {
 	tv := intcode.MakeMemory(fp)
@@ -23,11 +23,11 @@ func main() {
 	for icReturn == 1 {
 		icReturn = icP.OpCode()
 	}
-	fmt.Printf("Part A answer = %d\n", icP.Output) // Part A answer = 9025675
+	fmt.Printf("Part A answer = %d\n", icP.Output) // Part A answer = 3780860499
 
 	tv = intcode.MakeMemory(fp)
 	icP = &intcode.IntCode{
-		Input:        5,
+		Input:        2,
 		Output:       0,
 		Phase:        -1,
 		Pointer:      0,
@@ -40,5 +40,5 @@ func main() {
 	for icReturn == 1 {
 		icReturn = icP.OpCode()
 	}
-	fmt.Printf("Part B answer = %d", icP.Output) // Part B answer = 11981754
+	fmt.Printf("Part B answer = %d\n", icP.Output) // Part A answer = 33343
 }
