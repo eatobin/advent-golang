@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"strconv"
 	"strings"
@@ -32,5 +33,5 @@ func MakeModules(fp string) Modules {
 }
 
 func main() {
-	println(MakeModules(fp))
+	fmt.Printf("%v", MakeModules(fp))
 }
