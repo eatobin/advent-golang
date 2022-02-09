@@ -1,31 +1,38 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
-	"io/ioutil"
-	"strings"
+	"io"
+	"log"
+	"os"
 )
 
-type Directions = []string
-
-const fp = "03/day03a.csv"
-
-func MakeDirections(fp string) Directions {
-	dat, err := ioutil.ReadFile(fp)
+func main() {
+	// open file
+	f, err := os.Open("03/day03c.csv")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	txt := string(dat)
-	txt = strings.TrimRight(txt, "\n")
-	directions := strings.Split(txt, "\n")
+	// remember to close the file at the end of the program
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+		}
+	}(f)
 
-	return directions
-}
-
-// part a
-
-func main() {
-	ms := MakeDirections(fp)
-	fmt.Printf("%v", ms[1]) // 3337766
+	// read csv values using csv.Reader
+	csvReader := csv.NewReader(f)
+	for {
+		rec, err := csvReader.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+		// do something with read line
+		fmt.Printf("%+v\n", rec)
+	}
 }
