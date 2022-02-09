@@ -9,8 +9,9 @@ import (
 )
 
 func main() {
+	both := make([][]string, 2)
 	// open file
-	f, err := os.Open("03/day03c.csv")
+	f, err := os.Open("03/day03a.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -24,6 +25,7 @@ func main() {
 
 	// read csv values using csv.Reader
 	csvReader := csv.NewReader(f)
+	i := 0
 	for {
 		rec, err := csvReader.Read()
 		if err == io.EOF {
@@ -33,6 +35,10 @@ func main() {
 			log.Fatal(err)
 		}
 		// do something with read line
-		fmt.Printf("%+v\n", rec)
+		both[i] = rec
+		i++
 	}
+	fmt.Printf("%+v\n", both)
+	fmt.Printf("%+v\n", both[0])
+	fmt.Printf("%+v\n", both[1])
 }
