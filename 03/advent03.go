@@ -8,25 +8,22 @@ import (
 	"os"
 )
 
-var red []string
-var blue []string
+var fp = "03/day03a.csv"
 
-func main() {
+func MakeBoth(fp string) [][]string {
 	both := make([][]string, 2)
-	// open file
-	f, err := os.Open("03/day03a.csv")
+
+	f, err := os.Open(fp)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// remember to close the file at the end of the program
 	defer func(f *os.File) {
 		err := f.Close()
 		if err != nil {
 		}
 	}(f)
 
-	// read csv values using csv.Reader
 	csvReader := csv.NewReader(f)
 	i := 0
 	for {
@@ -37,14 +34,22 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		// do something with read line
+
 		both[i] = rec
 		i++
 	}
+	return both
+}
+
+func main() {
+	var red []string
+	var blue []string
+
+	both := MakeBoth(fp)
 
 	red = both[0]
 	blue = both[1]
 
-	fmt.Printf("%+v\n", red)
-	fmt.Printf("%+v\n", blue)
+	fmt.Printf("red = %+v\n", red)
+	fmt.Printf("blue = %+v\n", blue)
 }
