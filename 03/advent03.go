@@ -8,6 +8,9 @@ import (
 	"os"
 )
 
+var red []string
+var blue []string
+
 func main() {
 	both := make([][]string, 2)
 	// open file
@@ -38,7 +41,10 @@ func main() {
 		both[i] = rec
 		i++
 	}
-	fmt.Printf("%+v\n", both)
-	fmt.Printf("%+v\n", both[0])
-	fmt.Printf("%+v\n", both[1])
+
+	red = both[0]
+	blue = both[1]
+
+	fmt.Printf("%+v\n", red)
+	fmt.Printf("%+v\n", blue)
 }
