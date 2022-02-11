@@ -55,14 +55,32 @@ func distance(unit string) int {
 	return dist
 }
 
-func makePath(unit string, start []int) [][]int {
-	direction := direction(unit)
-	distance := distance(unit)
-	x := start[0]
-	y := start[1]
-	path := make([][]int, distance+1)
-	return nil
-}
+//func makePath(unit string, start []int) [][]int {
+//	direction := []byte(direction(unit))[0]
+//	distance := distance(unit)
+//	xStart := start[0]
+//	yStart := start[1]
+//	path := make([][]int, distance+1)
+//
+//	switch direction {
+//	case 'R':
+//		//slice_of_slices := make([][]int , 3)
+//
+//		for i := 0; i < distance; i++ {
+//			// looping through the slice to declare
+//			// slice of slice of length 3
+//			path[i] = make([]int, 2)
+//
+//			// assigning values to each
+//			// slice of a slice
+//			for x := xStart; x < xStart+distance+1; x++{
+//				path[i][j] = i * j
+//			}
+//		}
+//	}
+//
+//	return nil
+//}
 
 func main() {
 	var red []string
