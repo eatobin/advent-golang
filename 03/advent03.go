@@ -55,47 +55,53 @@ func distance(unit string) int {
 	return dist
 }
 
-//func makePath(unit string, start []int) [][]int {
-//	direction := []byte(direction(unit))[0]
-//	distance := distance(unit)
-//	xStart := start[0]
-//	yStart := start[1]
-//	path := make([][]int, distance+1)
-//
-//	switch direction {
-//	case 'R':
-//		//slice_of_slices := make([][]int , 3)
-//
-//		for i := 0; i < distance; i++ {
-//			// looping through the slice to declare
-//			// slice of slice of length 3
-//			path[i] = make([]int, 2)
-//
-//			// assigning values to each
-//			// slice of a slice
-//			for x := xStart; x < xStart+distance+1; x++{
-//				path[i][j] = i * j
-//			}
-//		}
-//	}
-//
-//	return nil
-//}
+func makePath(move string, start []int) [][]int {
+	direction := []byte(direction(move))[0]
+	distance := distance(move)
+	xStart := start[0]
+	yStart := start[1]
+	path := make([][]int, distance+1)
+
+	switch direction {
+	case 'R':
+		for i := 0; i < distance+1; i++ {
+			path[i] = make([]int, 2)
+		}
+		for i := 0; i < distance+1; i++ {
+			path[i] = []int{xStart, yStart}
+			xStart++
+		}
+	case 'U':
+		for i := 0; i < distance+1; i++ {
+			path[i] = make([]int, 2)
+		}
+		for i := 0; i < distance+1; i++ {
+			path[i] = []int{xStart, yStart}
+			yStart++
+		}
+	case 'L':
+		for i := 0; i < distance+1; i++ {
+			path[i] = make([]int, 2)
+		}
+		for i := 0; i < distance+1; i++ {
+			path[i] = []int{xStart, yStart}
+			xStart--
+		}
+	case 'D':
+		for i := 0; i < distance+1; i++ {
+			path[i] = make([]int, 2)
+		}
+		for i := 0; i < distance+1; i++ {
+			path[i] = []int{xStart, yStart}
+			yStart--
+		}
+	}
+
+	return path
+}
 
 func main() {
-	var red []string
-	var blue []string
 
-	both := MakeBoth(fp)
-
-	red = both[0]
-	blue = both[1]
-
-	fmt.Printf("red = %+v\n", red)
-	fmt.Printf("blue = %+v\n", blue)
-
-	country := "London"
-	firstCharacter := country[0:1]
-
-	fmt.Println(firstCharacter)
+	sliceOfSlices := makePath("D3", []int{1, 1})
+	fmt.Println("Slice of slices: ", sliceOfSlices)
 }
