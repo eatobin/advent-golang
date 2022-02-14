@@ -117,7 +117,7 @@ var blue []string
 func main() {
 	both := make([][]string, 2)
 	// open file
-	f, err := os.Open("03/day03a.csv")
+	f, err := os.Open("03/cc.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
