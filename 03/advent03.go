@@ -100,11 +100,16 @@ func makePath(move string, start []int) [][]int {
 	return path
 }
 
-//func main() {
-//
-//	sliceOfSlices := makePath("L3", []int{1, 1})
-//	fmt.Println("Slice of slices: ", sliceOfSlices)
-//}
+func makePaths(start []int, moves []string) [][][]int {
+	paths := make([][][]int, len(moves))
+	pathStart := start
+	for i, move := range moves {
+		path := makePath(move, pathStart)
+		paths[i] = path
+		pathStart = path[len(path)-1]
+	}
+	return paths
+}
 
 var red []string
 var blue []string
@@ -148,4 +153,7 @@ func main() {
 
 	sliceOfSlices := makePath("L3", []int{1, 1})
 	fmt.Println("\nSlice of slices: ", sliceOfSlices)
+
+	paths := makePaths([]int{0, 0}, blue)
+	fmt.Println("\nPaths: ", paths)
 }
