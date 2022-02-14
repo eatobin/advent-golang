@@ -167,3 +167,28 @@ func main() {
 	fmt.Println("\nPathsB: ", paths[0][0])
 	//fmt.Println("\nPathsC: ", paths[0][0][0])
 }
+
+//type visit struct {
+//	x, y int
+//}
+//
+//func main() {
+//	visited := []visit{
+//		visit{1, 100},
+//		visit{2, 2},
+//		visit{1, 100},
+//		visit{1, 1},
+//	}
+//
+//	var unique []visit
+//	m := map[visit]bool{}
+//
+//	for _, v := range visited {
+//		if !m[v] {
+//			m[v] = true
+//			unique = append(unique, v)
+//		}
+//	}
+//
+//	fmt.Println(unique)
+//}
