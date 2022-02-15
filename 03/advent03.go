@@ -14,6 +14,8 @@ type visit struct {
 }
 type path = []visit
 type route = []path
+type flatRoute = []visit
+type uniqueRoute = []visit
 
 var fp = "03/day03a.csv"
 
@@ -94,21 +96,40 @@ func makePath(move string, start visit) path {
 }
 
 func makeRoute(start visit, moves []string) route {
-	//	var flatPaths [][]int
 	route := make(route, len(moves))
-	//	paths := make([][][]int, len(moves))
 	pathStart := start
 	for i, move := range moves {
 		path := makePath(move, pathStart)
 		route[i] = path
 		pathStart = path[len(path)-1]
 	}
-	//	for _, path := range paths {
-	//		for _, move := range path {
-	//			flatPaths = append(flatPaths, move)
-	//		}
-	//	}
 	return route
+}
+
+func makeFlatRoute(route route) flatRoute {
+	flatRoute := flatRoute{}
+
+	for _, path := range route {
+		for _, visit := range path {
+			flatRoute = append(flatRoute, visit)
+		}
+	}
+	return flatRoute
+}
+
+func makeUniqueRoute(start visit, moves []string) uniqueRoute {
+	route := makeRoute(start, moves)
+	flatRoute := makeFlatRoute(route)
+	var unique uniqueRoute
+	m := map[visit]bool{}
+
+	for _, v := range flatRoute {
+		if !m[v] {
+			m[v] = true
+			unique = append(unique, v)
+		}
+	}
+	return unique
 }
 
 var red []string
@@ -116,20 +137,18 @@ var blue []string
 
 func main() {
 	both := make([][]string, 2)
-	// open file
-	f, err := os.Open("03/cc.csv")
+
+	f, err := os.Open(fp)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// remember to close the file at the end of the program
 	defer func(f *os.File) {
 		err := f.Close()
 		if err != nil {
 		}
 	}(f)
 
-	// read csv values using csv.Reader
 	csvReader := csv.NewReader(f)
 	i := 0
 	for {
@@ -140,7 +159,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		// do something with read line
+
 		both[i] = rec
 		i++
 	}
@@ -151,38 +170,6 @@ func main() {
 	fmt.Printf("%+v\n", red)
 	fmt.Printf("%+v\n", blue)
 
-	sliceOfSlices := makePath("D3", visit{x: 0, y: 1})
-	fmt.Println("\nSlice of slices: ", sliceOfSlices)
-
-	paths := makeRoute(visit{x: 0, y: 0}, red)
-	fmt.Println("\nPaths: ", paths)
-
-	//fmt.Println("\nPathsA: ", paths[0])
-	//fmt.Println("\nPathsB: ", paths[0][0])
-	////fmt.Println("\nPathsC: ", paths[0][0][0])
+	uniqueRoute := makeUniqueRoute(visit{x: 0, y: 0}, red)
+	fmt.Println("\nUniqueRoute: ", uniqueRoute)
 }
-
-//type visit struct {
-//	x, y int
-//}
-//
-//func main() {
-//	visited := []visit{
-//		visit{1, 100},
-//		visit{2, 2},
-//		visit{1, 100},
-//		visit{1, 1},
-//	}
-//
-//	var unique []visit
-//	m := map[visit]bool{}
-//
-//	for _, v := range visited {
-//		if !m[v] {
-//			m[v] = true
-//			unique = append(unique, v)
-//		}
-//	}
-//
-//	fmt.Println(unique)
-//}
