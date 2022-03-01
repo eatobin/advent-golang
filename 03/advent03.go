@@ -146,6 +146,6 @@ func main() {
 	blueRoute := makeRoute(visit{x: 0, y: 0}, blue)
 	fmt.Println("\nBlueRoute: ", blueRoute)
 
-	//uniqueRoute := makeUniqueRoute(visit{x: 0, y: 0}, red)
-	//fmt.Println("\nUniqueRoute: ", uniqueRoute)
+	uniqueRoute := makeUniqueRoute(visit{x: 0, y: 0}, blue)
+	fmt.Println("\nUniqueBlueRoute: ", uniqueRoute)
 }
