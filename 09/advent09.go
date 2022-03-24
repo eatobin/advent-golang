@@ -40,5 +40,5 @@ func main() {
 	for icReturn == 1 {
 		icReturn = icP.OpCode()
 	}
-	fmt.Printf("Part B answer = %d\n", icP.Output) // Part A answer = 33343
+	fmt.Printf("Part B answer = %d\n", icP.Output) // Part B answer = 33343
 }
