@@ -18,8 +18,8 @@ func nounVerb() int {
 	var verb int
 
 out:
-	for noun = 0; noun < 101; noun++ {
-		for verb = 0; verb < 101; verb++ {
+	for noun = 0; noun < 100; noun++ {
+		for verb = 0; verb < 100; verb++ {
 			tv := intcode.MakeMemory(fp)
 			icP := &intcode.IntCode{
 				Pointer: 0,
