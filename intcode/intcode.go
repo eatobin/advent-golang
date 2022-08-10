@@ -2,7 +2,7 @@ package intcode
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -26,7 +26,7 @@ type IntCode struct {
 }
 
 func MakeMemory(fp string) Memory {
-	dat, err := ioutil.ReadFile(fp)
+	dat, err := os.ReadFile(fp)
 	if err != nil {
 		panic(err)
 	}
