@@ -7,15 +7,15 @@ import (
 
 const fp = "02/advent02.csv"
 
-func updatedMemory(memory intcode.Memory, noun int, verb int) intcode.Memory {
+func updatedMemory(memory intcode.Memory, noun int64, verb int64) intcode.Memory {
 	memory[1] = noun
 	memory[2] = verb
 	return memory
 }
 
-func nounVerb() int {
-	var noun int
-	var verb int
+func nounVerb() int64 {
+	var noun int64
+	var verb int64
 
 out:
 	for noun = 0; noun < 100; noun++ {
