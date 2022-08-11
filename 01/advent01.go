@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -12,7 +12,7 @@ type Modules = []int
 const fp = "01/advent01.txt"
 
 func MakeModules(fp string) Modules {
-	dat, err := ioutil.ReadFile(fp)
+	dat, err := os.ReadFile(fp)
 	if err != nil {
 		panic(err)
 	}
