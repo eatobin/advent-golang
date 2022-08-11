@@ -62,7 +62,6 @@ func candidates2() [][]int {
 	return winners
 }
 
-// TODO - broken
 func pass(candidate []int, commonMemory intcode.Memory) int {
 	memA := make(map[int]int, len(commonMemory))
 	memB := make(map[int]int, len(commonMemory))

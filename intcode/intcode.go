@@ -7,19 +7,19 @@ import (
 	"strings"
 )
 
-type Memory map[int64]int64
+type Memory map[int]int
 type Instruction map[byte]uint8
 
-const offsetC int64 = 1
-const offsetB int64 = 2
-const offsetA int64 = 3
+const offsetC int = 1
+const offsetB int = 2
+const offsetA int = 3
 
 type IntCode struct {
-	Input        int64
-	Output       int64
-	Phase        int64
-	Pointer      int64
-	RelativeBase int64
+	Input        int
+	Output       int
+	Phase        int
+	Pointer      int
+	RelativeBase int
 	Memory       Memory
 	IsStopped    bool
 	DoesRecur    bool
@@ -34,14 +34,14 @@ func MakeMemory(fp string) Memory {
 	txt := string(dat)
 	txt = strings.TrimRight(txt, "\n")
 	strOps := strings.Split(txt, ",")
-	memory := make(map[int64]int64)
+	memory := make(map[int]int)
 
 	for i, strOp := range strOps {
 		op, err := strconv.Atoi(strOp)
 		if err != nil {
 			panic(err)
 		}
-		memory[int64(i)] = int64(op)
+		memory[i] = op
 	}
 	return memory
 }
@@ -53,7 +53,7 @@ func charToInt(char byte) uint8 {
 	return char - 48
 }
 
-func pad5(op int64) Instruction {
+func pad5(op int) Instruction {
 	keys := [5]byte{'a', 'b', 'c', 'd', 'e'}
 	instruction := make(map[byte]uint8)
 	asString := fmt.Sprintf("%05d", op)
@@ -65,8 +65,8 @@ func pad5(op int64) Instruction {
 	return instruction
 }
 
-func (icP *IntCode) aParam(instruction Instruction) int64 {
-	var choice int64
+func (icP *IntCode) aParam(instruction Instruction) int {
+	var choice int
 	switch instruction['a'] {
 	case 0: // a-p-w
 		choice = icP.Memory[icP.Pointer+offsetA]
@@ -76,8 +76,8 @@ func (icP *IntCode) aParam(instruction Instruction) int64 {
 	return choice
 }
 
-func (icP *IntCode) bParam(instruction Instruction) int64 {
-	var choice int64
+func (icP *IntCode) bParam(instruction Instruction) int {
+	var choice int
 	switch instruction['b'] {
 	case 0: // b-p-r
 		choice = icP.Memory[icP.Memory[icP.Pointer+offsetB]]
@@ -89,8 +89,8 @@ func (icP *IntCode) bParam(instruction Instruction) int64 {
 	return choice
 }
 
-func (icP *IntCode) cParam(instruction Instruction) int64 {
-	var choice int64
+func (icP *IntCode) cParam(instruction Instruction) int {
+	var choice int
 	if instruction['e'] == 3 {
 		switch instruction['c'] {
 		case 0: // c-p-w
