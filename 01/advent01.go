@@ -2,7 +2,7 @@ package main
 
 import (
     "fmt"
-    "io/ioutil"
+    "os"
     "strconv"
     "strings"
 )
@@ -43,7 +43,7 @@ func Fuel2(mass int) int {
 }
 
 func main() {
-    dat, err := ioutil.ReadFile("01/advent01.txt")
+    dat, err := os.ReadFile("01/advent01.txt")
     if err != nil {
         panic(err)
     }
