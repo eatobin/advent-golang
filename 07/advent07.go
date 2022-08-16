@@ -77,7 +77,7 @@ func pass(candidate []int, commonMemory intcode.Memory) int {
 	}
 	icpA := &intcode.IntCode{
 		Input:     0,
-		Output:    0,
+		Output:    []int{},
 		Phase:     candidate[0],
 		Pointer:   0,
 		Memory:    memA,
@@ -91,8 +91,8 @@ func pass(candidate []int, commonMemory intcode.Memory) int {
 	}
 
 	icpB := &intcode.IntCode{
-		Input:     icpA.Output,
-		Output:    0,
+		Input:     icpA.Output[len(icpA.Output)-1],
+		Output:    []int{},
 		Phase:     candidate[1],
 		Pointer:   0,
 		Memory:    memB,
@@ -106,8 +106,8 @@ func pass(candidate []int, commonMemory intcode.Memory) int {
 	}
 
 	icpC := &intcode.IntCode{
-		Input:     icpB.Output,
-		Output:    0,
+		Input:     icpB.Output[len(icpB.Output)-1],
+		Output:    []int{},
 		Phase:     candidate[2],
 		Pointer:   0,
 		Memory:    memC,
@@ -121,8 +121,8 @@ func pass(candidate []int, commonMemory intcode.Memory) int {
 	}
 
 	icpD := &intcode.IntCode{
-		Input:     icpC.Output,
-		Output:    0,
+		Input:     icpC.Output[len(icpC.Output)-1],
+		Output:    []int{},
 		Phase:     candidate[3],
 		Pointer:   0,
 		Memory:    memD,
@@ -136,8 +136,8 @@ func pass(candidate []int, commonMemory intcode.Memory) int {
 	}
 
 	icpE := &intcode.IntCode{
-		Input:     icpD.Output,
-		Output:    0,
+		Input:     icpD.Output[len(icpD.Output)-1],
+		Output:    []int{},
 		Phase:     candidate[4],
 		Pointer:   0,
 		Memory:    memE,
@@ -150,7 +150,7 @@ func pass(candidate []int, commonMemory intcode.Memory) int {
 		icReturn = icpE.OpCode()
 	}
 
-	return icpE.Output
+	return icpE.Output[len(icpE.Output)-1]
 }
 
 func pass2(candidate []int, commonMemory intcode.Memory) int {
@@ -170,7 +170,7 @@ func pass2(candidate []int, commonMemory intcode.Memory) int {
 	allStopped := false
 	icpA := &intcode.IntCode{
 		Input:     0,
-		Output:    0,
+		Output:    []int{},
 		Phase:     candidate[0],
 		Pointer:   0,
 		Memory:    memA,
@@ -179,7 +179,7 @@ func pass2(candidate []int, commonMemory intcode.Memory) int {
 	}
 	icpB := &intcode.IntCode{
 		Input:     0,
-		Output:    0,
+		Output:    []int{},
 		Phase:     candidate[1],
 		Pointer:   0,
 		Memory:    memB,
@@ -188,7 +188,7 @@ func pass2(candidate []int, commonMemory intcode.Memory) int {
 	}
 	icpC := &intcode.IntCode{
 		Input:     0,
-		Output:    0,
+		Output:    []int{},
 		Phase:     candidate[2],
 		Pointer:   0,
 		Memory:    memC,
@@ -197,7 +197,7 @@ func pass2(candidate []int, commonMemory intcode.Memory) int {
 	}
 	icpD := &intcode.IntCode{
 		Input:     0,
-		Output:    0,
+		Output:    []int{},
 		Phase:     candidate[3],
 		Pointer:   0,
 		Memory:    memD,
@@ -206,7 +206,7 @@ func pass2(candidate []int, commonMemory intcode.Memory) int {
 	}
 	icpE := &intcode.IntCode{
 		Input:     0,
-		Output:    0,
+		Output:    []int{},
 		Phase:     candidate[4],
 		Pointer:   0,
 		Memory:    memE,
@@ -219,29 +219,29 @@ func pass2(candidate []int, commonMemory intcode.Memory) int {
 		for icReturn == 1 {
 			icReturn = icpA.OpCode()
 		}
-		icpB.Input = icpA.Output
+		icpB.Input = icpA.Output[len(icpA.Output)-1]
 		icReturn = 1
 		for icReturn == 1 {
 			icReturn = icpB.OpCode()
 		}
-		icpC.Input = icpB.Output
+		icpC.Input = icpB.Output[len(icpB.Output)-1]
 		icReturn = 1
 		for icReturn == 1 {
 			icReturn = icpC.OpCode()
 		}
-		icpD.Input = icpC.Output
+		icpD.Input = icpC.Output[len(icpC.Output)-1]
 		icReturn = 1
 		for icReturn == 1 {
 			icReturn = icpD.OpCode()
 		}
-		icpE.Input = icpD.Output
+		icpE.Input = icpD.Output[len(icpD.Output)-1]
 		icReturn = 1
 		for icReturn == 1 {
 			icReturn = icpE.OpCode()
 		}
 
-		icpA.Input = icpE.Output
-		eOutput = icpE.Output
+		icpA.Input = icpE.Output[len(icpE.Output)-1]
+		eOutput = icpE.Output[len(icpE.Output)-1]
 		allStopped = icpE.IsStopped
 	}
 
