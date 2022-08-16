@@ -16,7 +16,7 @@ const offsetA int = 3
 
 type IntCode struct {
 	Input        int
-	Output       int
+	Output       []int
 	Phase        int
 	Pointer      int
 	RelativeBase int
@@ -143,11 +143,11 @@ func (icP *IntCode) OpCode() int {
 				return 1
 			case 4:
 				if icP.DoesRecur {
-					icP.Output = icP.cParam(instruction)
+					icP.Output = append(icP.Output, icP.cParam(instruction))
 					icP.Pointer += 2
 					return 1
 				} else {
-					icP.Output = icP.cParam(instruction)
+					icP.Output = append(icP.Output, icP.cParam(instruction))
 					icP.Pointer += 2
 					return 0
 				}

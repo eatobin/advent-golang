@@ -11,7 +11,7 @@ func main() {
 	tv := intcode.MakeMemory(fp)
 	icP := &intcode.IntCode{
 		Input:        1,
-		Output:       0,
+		Output:       []int{},
 		Phase:        -1,
 		Pointer:      0,
 		RelativeBase: 0,
@@ -28,7 +28,7 @@ func main() {
 	tv = intcode.MakeMemory(fp)
 	icP = &intcode.IntCode{
 		Input:        5,
-		Output:       0,
+		Output:       []int{},
 		Phase:        -1,
 		Pointer:      0,
 		RelativeBase: 0,
