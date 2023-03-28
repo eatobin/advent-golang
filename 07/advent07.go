@@ -6,7 +6,7 @@ import (
 	"sort"
 )
 
-const fp = "07/advent07.csv"
+const fp = "advent07.csv"
 
 func areUnique(si []int) bool {
 	m := map[int]bool{}

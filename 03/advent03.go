@@ -17,7 +17,7 @@ type route = []path
 type flatRoute = []visit
 type uniqueRoute = []visit
 
-var fp = "03/day03et.csv"
+var fp = "day03et.csv"
 
 func MakeBoth(fp string) [][]string {
 	both := make([][]string, 2)

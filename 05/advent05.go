@@ -5,7 +5,7 @@ import (
 	"github.com/eatobin/advent-golang/intcode"
 )
 
-const fp = "05/advent05.csv"
+const fp = "advent05.csv"
 
 func main() {
 	tv := intcode.MakeMemory(fp)
