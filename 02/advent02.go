@@ -49,5 +49,5 @@ func main() {
 		icReturn = icP.OpCode()
 	}
 	fmt.Printf("Part A answer = %d\n", icP.Memory[0]) // Part A answer = 2890696
-	fmt.Printf("Part B answer = %d\n", nounVerb())      // Part B answer = 8226
+	fmt.Printf("Part B answer = %d\n", nounVerb())    // Part B answer = 8226
 }
