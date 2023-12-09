@@ -22,20 +22,14 @@ just calculated as the input mass and repeat the process, continuing until a
 fuel requirement is zero or negative.
 */
 func Fuel2(mass int) int {
-	sum := 0
-	for {
-		fuel := Fuel(mass)
-		if fuel <= 0 {
-			return sum
-		}
-		sum += fuel
+	fuelMass := (mass / 3) - 2
+	accum := 0
 
-		mass = Fuel(fuel)
-		if mass <= 0 {
-			return sum
-		}
-		sum += mass
+	for fuelMass > 0 {
+		accum = accum + fuelMass
+		fuelMass = (fuelMass / 3) - 2
 	}
+	return accum
 }
 
 func main() {
