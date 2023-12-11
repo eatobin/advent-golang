@@ -7,6 +7,13 @@ import (
 	"strings"
 )
 
+// ABCDE
+// 01002
+
+// a b or c = left-to-right position after 2 digit opcode
+// p i or r = position, immediate or relative mode
+// r or w = read or write
+
 type Memory map[int]int
 type Instruction map[byte]uint8
 
