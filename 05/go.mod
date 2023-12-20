@@ -1,6 +1,6 @@
 module github.com/eatobin/advent-golang/05
 
-go 1.20
+go 1.21.5
 
 require (
 	github.com/eatobin/advent-golang/intcode v0.0.0

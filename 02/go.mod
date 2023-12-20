@@ -1,11 +1,7 @@
 module github.com/eatobin/advent-golang/02
 
-go 1.21
+go 1.21.5
 
-require (
-	github.com/eatobin/advent-golang/intcode v0.0.0
-)
+require github.com/eatobin/advent-golang/intcode v0.0.0
 
-replace (
-	github.com/eatobin/advent-golang/intcode => ../intcode
-)
+replace github.com/eatobin/advent-golang/intcode => ../intcode
