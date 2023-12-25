@@ -17,8 +17,6 @@ type route = []path
 type flatRoute = []visit
 type uniqueRoute = []visit
 
-var fp = "day03et.csv"
-
 func MakeBoth(fp string) [][]string {
 	both := make([][]string, 2)
 
@@ -133,6 +131,7 @@ func makeUniqueRoute(start visit, moves []string) uniqueRoute {
 }
 
 func main() {
+	var fp = "day03b.csv"
 	both := MakeBoth(fp)
 	var red []string
 	var blue []string
@@ -143,9 +142,15 @@ func main() {
 	fmt.Printf("%+v\n", red)
 	fmt.Printf("%+v\n", blue)
 
+	redRoute := makeRoute(visit{x: 0, y: 0}, red)
+	fmt.Println("\nRedRoute: ", redRoute)
+
+	uniqueRedRoute := makeUniqueRoute(visit{x: 0, y: 0}, red)
+	fmt.Println("\nUniqueRedRoute: ", uniqueRedRoute)
+
 	blueRoute := makeRoute(visit{x: 0, y: 0}, blue)
 	fmt.Println("\nBlueRoute: ", blueRoute)
 
-	uniqueRoute := makeUniqueRoute(visit{x: 0, y: 0}, blue)
-	fmt.Println("\nUniqueBlueRoute: ", uniqueRoute)
+	uniqueBlueRoute := makeUniqueRoute(visit{x: 0, y: 0}, blue)
+	fmt.Println("\nUniqueBlueRoute: ", uniqueBlueRoute)
 }
