@@ -93,7 +93,7 @@ func makePath(move string, start visit) path {
 	return path
 }
 
-func makeRoute(start visit, moves []string) route {
+func makeRoutes(start visit, moves []string) route {
 	route := make(route, len(moves))
 	pathStart := start
 	for i, move := range moves {
@@ -116,7 +116,7 @@ func makeFlatRoute(route route) flatRoute {
 }
 
 func makeUniqueRoute(start visit, moves []string) uniqueRoute {
-	route := makeRoute(start, moves)
+	route := makeRoutes(start, moves)
 	flatRoute := makeFlatRoute(route)
 	var unique uniqueRoute
 	m := map[visit]bool{}
@@ -131,7 +131,7 @@ func makeUniqueRoute(start visit, moves []string) uniqueRoute {
 }
 
 func main() {
-	var fp = "day03b.csv"
+	var fp = "day03et.csv"
 	both := MakeBoth(fp)
 	var red []string
 	var blue []string
@@ -142,14 +142,20 @@ func main() {
 	fmt.Printf("%+v\n", red)
 	fmt.Printf("%+v\n", blue)
 
-	redRoute := makeRoute(visit{x: 0, y: 0}, red)
-	fmt.Println("\nRedRoute: ", redRoute)
+	redRoutes := makeRoutes(visit{x: 0, y: 0}, red)
+	fmt.Println("\nRedRoutes: ", redRoutes)
+
+	redFlatRoute := makeFlatRoute(redRoutes)
+	fmt.Println("\nRedFlatRoute: ", redFlatRoute)
 
 	uniqueRedRoute := makeUniqueRoute(visit{x: 0, y: 0}, red)
 	fmt.Println("\nUniqueRedRoute: ", uniqueRedRoute)
 
-	blueRoute := makeRoute(visit{x: 0, y: 0}, blue)
-	fmt.Println("\nBlueRoute: ", blueRoute)
+	blueRoutes := makeRoutes(visit{x: 0, y: 0}, blue)
+	fmt.Println("\nBlueRoutes: ", blueRoutes)
+
+	blueFlatRoute := makeFlatRoute(blueRoutes)
+	fmt.Println("\nBlueFlatRoute: ", blueFlatRoute)
 
 	uniqueBlueRoute := makeUniqueRoute(visit{x: 0, y: 0}, blue)
 	fmt.Println("\nUniqueBlueRoute: ", uniqueBlueRoute)
