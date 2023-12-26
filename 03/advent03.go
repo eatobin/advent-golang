@@ -148,11 +148,11 @@ func findIntersection(redFlatRoute, blueFlatRoute uniqueRoute) []visit {
 		}
 	}
 
-	return intersection
+	return intersection[1:]
 }
 
 func main() {
-	var fp = "cross.csv"
+	var fp = "day03a.csv"
 	both := MakeBoth(fp)
 	var red []string
 	var blue []string
