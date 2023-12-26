@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math"
 	"os"
 	"strconv"
 )
@@ -131,24 +132,25 @@ func makeUniqueRoute(start visit, moves []string) uniqueRoute {
 }
 
 // function for finding the intersection of two arrays
-func findIntersection(redFlatRoute, blueFlatRoute uniqueRoute) []visit {
+func findIntersection(uniqueRedRoute, uniqueBlueRoute uniqueRoute) []visit {
 	intersection := make([]visit, 0)
 
 	set := make(map[visit]bool)
 
 	// Create a set from the first array
-	for _, visit := range redFlatRoute {
+	for _, visit := range uniqueRedRoute {
 		set[visit] = true // setting the initial value to true
 	}
 
 	// Check elements in the second array against the set
-	for _, visit := range blueFlatRoute {
+	for _, visit := range uniqueBlueRoute {
 		if set[visit] {
 			intersection = append(intersection, visit)
 		}
 	}
 
-	return intersection[1:]
+	//return intersection[1:]
+	return intersection
 }
 
 func main() {
@@ -160,27 +162,38 @@ func main() {
 	red = both[0]
 	blue = both[1]
 
-	fmt.Printf("%+v\n", red)
-	fmt.Printf("%+v\n", blue)
+	//fmt.Printf("%+v\n", red)
+	//fmt.Printf("%+v\n", blue)
 
 	redRoutes := makeRoute(visit{x: 0, y: 0}, red)
-	fmt.Println("\nRedRoutes: ", redRoutes)
+	//fmt.Println("\nRedRoutes: ", redRoutes)
 
 	redFlatRoute := makeFlatRoute(redRoutes)
 	fmt.Println("\nRedFlatRoute: ", redFlatRoute)
 
 	uniqueRedRoute := makeUniqueRoute(visit{x: 0, y: 0}, red)
-	fmt.Println("\nUniqueRedRoute: ", uniqueRedRoute)
+	//fmt.Println("\nUniqueRedRoute: ", uniqueRedRoute)
 
 	blueRoutes := makeRoute(visit{x: 0, y: 0}, blue)
-	fmt.Println("\nBlueRoutes: ", blueRoutes)
+	//fmt.Println("\nBlueRoutes: ", blueRoutes)
 
 	blueFlatRoute := makeFlatRoute(blueRoutes)
 	fmt.Println("\nBlueFlatRoute: ", blueFlatRoute)
 
 	uniqueBlueRoute := makeUniqueRoute(visit{x: 0, y: 0}, blue)
-	fmt.Println("\nUniqueBlueRoute: ", uniqueBlueRoute)
+	//fmt.Println("\nUniqueBlueRoute: ", uniqueBlueRoute)
 
-	intersections := findIntersection(redFlatRoute, blueFlatRoute)
+	intersections := findIntersection(uniqueRedRoute, uniqueBlueRoute)
 	fmt.Println("\nRoutes Intersect at: ", intersections)
+
+	// Positive integer value
+	n := math.Abs(9)
+	fmt.Println("The absolute value of 9 is", n)
+
+	// Negative integer value
+	x := math.Abs(-6)
+	fmt.Println("The absolute value of -6 is", x)
 }
+
+// Manhattandistance=abs(x1−x2)+abs(y1−y2)
+// The maximum Manhattan distance is found between (1, 2) and (3, 4) i.e., |3 – 1| + |4- 2 | = 4.
