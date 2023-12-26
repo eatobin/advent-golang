@@ -130,6 +130,27 @@ func makeUniqueRoute(start visit, moves []string) uniqueRoute {
 	return unique
 }
 
+// function for finding the intersection of two arrays
+func findIntersection(redFlatRoute, blueFlatRoute uniqueRoute) []visit {
+	intersection := make([]visit, 0)
+
+	set := make(map[visit]bool)
+
+	// Create a set from the first array
+	for _, visit := range redFlatRoute {
+		set[visit] = true // setting the initial value to true
+	}
+
+	// Check elements in the second array against the set
+	for _, visit := range blueFlatRoute {
+		if set[visit] {
+			intersection = append(intersection, visit)
+		}
+	}
+
+	return intersection
+}
+
 func main() {
 	var fp = "cross.csv"
 	both := MakeBoth(fp)
@@ -159,4 +180,7 @@ func main() {
 
 	uniqueBlueRoute := makeUniqueRoute(visit{x: 0, y: 0}, blue)
 	fmt.Println("\nUniqueBlueRoute: ", uniqueBlueRoute)
+
+	intersections := findIntersection(redFlatRoute, blueFlatRoute)
+	fmt.Println("\nRoutes Intersect at: ", intersections)
 }
