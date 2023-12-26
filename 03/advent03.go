@@ -93,7 +93,7 @@ func makePath(move string, start visit) path {
 	return path
 }
 
-func makeRoutes(start visit, moves []string) route {
+func makeRoute(start visit, moves []string) route {
 	route := make(route, len(moves))
 	pathStart := start
 	for i, move := range moves {
@@ -116,7 +116,7 @@ func makeFlatRoute(route route) flatRoute {
 }
 
 func makeUniqueRoute(start visit, moves []string) uniqueRoute {
-	route := makeRoutes(start, moves)
+	route := makeRoute(start, moves)
 	flatRoute := makeFlatRoute(route)
 	var unique uniqueRoute
 	m := map[visit]bool{}
@@ -142,7 +142,7 @@ func main() {
 	fmt.Printf("%+v\n", red)
 	fmt.Printf("%+v\n", blue)
 
-	redRoutes := makeRoutes(visit{x: 0, y: 0}, red)
+	redRoutes := makeRoute(visit{x: 0, y: 0}, red)
 	fmt.Println("\nRedRoutes: ", redRoutes)
 
 	redFlatRoute := makeFlatRoute(redRoutes)
@@ -151,7 +151,7 @@ func main() {
 	uniqueRedRoute := makeUniqueRoute(visit{x: 0, y: 0}, red)
 	fmt.Println("\nUniqueRedRoute: ", uniqueRedRoute)
 
-	blueRoutes := makeRoutes(visit{x: 0, y: 0}, blue)
+	blueRoutes := makeRoute(visit{x: 0, y: 0}, blue)
 	fmt.Println("\nBlueRoutes: ", blueRoutes)
 
 	blueFlatRoute := makeFlatRoute(blueRoutes)
