@@ -154,7 +154,7 @@ func findIntersection(uniqueRedRoute, uniqueBlueRoute uniqueRoute) []visit {
 }
 
 func manhattanizeAVisitFromOrigin(visit visit) int {
-	return int(math.Abs(float64(visit.x-0.0)) + math.Abs(float64(visit.y-0.0)))
+	return int(math.Abs(float64(visit.x-0)) + math.Abs(float64(visit.y-0)))
 }
 
 func main() {
