@@ -153,6 +153,10 @@ func findIntersection(uniqueRedRoute, uniqueBlueRoute uniqueRoute) []visit {
 	return intersection
 }
 
+func manhattanizeAVisitFromOrigin(visit visit) int {
+	return int(math.Abs(float64(visit.x-0.0)) + math.Abs(float64(visit.y-0.0)))
+}
+
 func main() {
 	var fp = "day03a.csv"
 	both := MakeBoth(fp)
@@ -193,6 +197,8 @@ func main() {
 	// Negative integer value
 	x := math.Abs(-6)
 	fmt.Println("The absolute value of -6 is", x)
+
+	fmt.Println("The manhattan value of visit{x: 20, y: -30} is", manhattanizeAVisitFromOrigin(visit{x: 20, y: -30}))
 }
 
 // Manhattandistance=abs(x1−x2)+abs(y1−y2)
