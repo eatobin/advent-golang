@@ -131,7 +131,7 @@ func makeUniqueRoute(start visit, moves []string) uniqueRoute {
 }
 
 func main() {
-	var fp = "day03et.csv"
+	var fp = "cross.csv"
 	both := MakeBoth(fp)
 	var red []string
 	var blue []string
