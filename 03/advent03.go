@@ -7,6 +7,7 @@ import (
 	"log"
 	"math"
 	"os"
+	"slices"
 	"strconv"
 )
 
@@ -149,16 +150,24 @@ func findIntersection(uniqueRedRoute, uniqueBlueRoute uniqueRoute) []visit {
 		}
 	}
 
-	//return intersection[1:]
-	return intersection
+	return intersection[1:]
 }
 
 func manhattanizeAVisitFromOrigin(visit visit) int {
 	return int(math.Abs(float64(visit.x-0)) + math.Abs(float64(visit.y-0)))
 }
 
+func manhattanizedSlice(intersection []visit) []int {
+	manhattans := make([]int, len(intersection))
+
+	for i, visit := range intersection {
+		manhattans[i] = manhattanizeAVisitFromOrigin(visit)
+	}
+	return manhattans
+}
+
 func main() {
-	var fp = "day03a.csv"
+	var fp = "day03.csv"
 	both := MakeBoth(fp)
 	var red []string
 	var blue []string
@@ -166,40 +175,15 @@ func main() {
 	red = both[0]
 	blue = both[1]
 
-	//fmt.Printf("%+v\n", red)
-	//fmt.Printf("%+v\n", blue)
-
-	redRoutes := makeRoute(visit{x: 0, y: 0}, red)
-	//fmt.Println("\nRedRoutes: ", redRoutes)
-
-	redFlatRoute := makeFlatRoute(redRoutes)
-	fmt.Println("\nRedFlatRoute: ", redFlatRoute)
-
 	uniqueRedRoute := makeUniqueRoute(visit{x: 0, y: 0}, red)
-	//fmt.Println("\nUniqueRedRoute: ", uniqueRedRoute)
-
-	blueRoutes := makeRoute(visit{x: 0, y: 0}, blue)
-	//fmt.Println("\nBlueRoutes: ", blueRoutes)
-
-	blueFlatRoute := makeFlatRoute(blueRoutes)
-	fmt.Println("\nBlueFlatRoute: ", blueFlatRoute)
 
 	uniqueBlueRoute := makeUniqueRoute(visit{x: 0, y: 0}, blue)
-	//fmt.Println("\nUniqueBlueRoute: ", uniqueBlueRoute)
 
 	intersections := findIntersection(uniqueRedRoute, uniqueBlueRoute)
-	fmt.Println("\nRoutes Intersect at: ", intersections)
+	//fmt.Println("\nRoutes Intersect at: ", intersections)
 
-	// Positive integer value
-	n := math.Abs(9)
-	fmt.Println("The absolute value of 9 is", n)
+	manhattans := manhattanizedSlice(intersections)
+	//fmt.Println("\nManhattanized slice: ", manhattans)
 
-	// Negative integer value
-	x := math.Abs(-6)
-	fmt.Println("The absolute value of -6 is", x)
-
-	fmt.Println("The manhattan value of visit{x: 20, y: -30} is", manhattanizeAVisitFromOrigin(visit{x: 20, y: -30}))
+	fmt.Println("Minimum distance: ", slices.Min(manhattans))
 }
-
-// Manhattandistance=abs(x1−x2)+abs(y1−y2)
-// The maximum Manhattan distance is found between (1, 2) and (3, 4) i.e., |3 – 1| + |4- 2 | = 4.
