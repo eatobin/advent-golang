@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/eatobin/advent-golang/intcode"
 	"sort"
+
+	"github.com/eatobin/advent-golang/intcode"
 )
 
 const fp = "advent07.csv"
@@ -273,5 +274,5 @@ func main() {
 	tv = intcode.MakeMemory(fp)
 	answer2 := passes2(candidates2(), tv)
 	sort.Ints(answer2)
-	fmt.Printf("Part B answer = %d", answer2[len(answer)-1]) // Part B answer = 35993240
+	fmt.Printf("Part B answer = %d\n", answer2[len(answer)-1]) // Part B answer = 35993240
 }
