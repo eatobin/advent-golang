@@ -113,8 +113,6 @@ func makeFlatRoute(route route) flatRoute {
 	return flatRoute
 }
 
-// var newArr []int32
-
 func makeUniqueRoute(start visit, moves []string) uniqueRoute {
 	route := makeRoute(start, moves)
 	flatRoute := makeFlatRoute(route)
