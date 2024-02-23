@@ -28,9 +28,7 @@ func MakeBoth(fp string) [][]string {
 	}
 
 	defer func(f *os.File) {
-		err := f.Close()
-		if err != nil {
-		}
+		f.Close()
 	}(f)
 
 	csvReader := csv.NewReader(f)
@@ -110,12 +108,12 @@ func makeFlatRoute(route route) flatRoute {
 	flatRoute := flatRoute{}
 
 	for _, path := range route {
-		for _, visit := range path {
-			flatRoute = append(flatRoute, visit)
-		}
+		flatRoute = append(flatRoute, path...)
 	}
 	return flatRoute
 }
+
+// var newArr []int32
 
 func makeUniqueRoute(start visit, moves []string) uniqueRoute {
 	route := makeRoute(start, moves)
@@ -185,5 +183,5 @@ func main() {
 	manhattans := manhattanizedSlice(intersections)
 	//fmt.Println("\nManhattanized slice: ", manhattans)
 
-	fmt.Println("Minimum distance: ", slices.Min(manhattans))
+	fmt.Println("Minimum distance: ", slices.Min(manhattans)) // 2193
 }
