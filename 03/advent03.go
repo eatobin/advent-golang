@@ -22,13 +22,16 @@ type uniqueRoute = []visit
 func MakeBoth(fp string) [][]string {
 	both := make([][]string, 2)
 
-	f, err := os.Open(fp)
-	if err != nil {
-		log.Fatal(err)
+	f, err1 := os.Open(fp)
+	if err1 != nil {
+		log.Fatal(err1)
 	}
 
 	defer func(f *os.File) {
-		f.Close()
+		err2 := f.Close()
+		if err2 != nil {
+			return
+		}
 	}(f)
 
 	csvReader := csv.NewReader(f)
