@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/eatobin/advent-golang/intcode"
 )
 
@@ -17,7 +18,6 @@ func nounVerb() int {
 	var noun int
 	var verb int
 
-out:
 	for noun = 0; noun < 100; noun++ {
 		for verb = 0; verb < 100; verb++ {
 			tv := intcode.MakeMemory(fp)
@@ -31,10 +31,11 @@ out:
 			}
 			candidate := icP.Memory[0]
 			if candidate == 19690720 {
-				break out
+				goto end
 			}
 		}
 	}
+end:
 	return (100 * noun) + verb
 }
 
