@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/eatobin/advent-golang/intcode"
 )
 
@@ -23,7 +24,7 @@ func main() {
 	for icReturn == 1 {
 		icReturn = icP.OpCode()
 	}
-	fmt.Printf("Part A answer = %d\n", icP.Output) // Part A answer = 3780860499
+	fmt.Printf("Part A answer = %d\n", icP.Output[len(icP.Output)-1]) // Part A answer = 3780860499
 
 	tv = intcode.MakeMemory(fp)
 	icP = &intcode.IntCode{
@@ -40,5 +41,5 @@ func main() {
 	for icReturn == 1 {
 		icReturn = icP.OpCode()
 	}
-	fmt.Printf("Part B answer = %d\n", icP.Output) // Part B answer = 33343
+	fmt.Printf("Part B answer = %d\n", icP.Output[len(icP.Output)-1]) // Part B answer = 33343
 }

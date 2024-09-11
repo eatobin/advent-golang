@@ -269,7 +269,7 @@ func main() {
 	tv := intcode.MakeMemory(fp)
 	answer := passes(candidates(), tv)
 	sort.Ints(answer)
-	fmt.Printf("Part A answer = %d\n", answer[len(answer)-1]) // Part A answer = ;368584
+	fmt.Printf("Part A answer = %d\n", answer[len(answer)-1]) // Part A answer = 368584
 
 	tv = intcode.MakeMemory(fp)
 	answer2 := passes2(candidates2(), tv)
