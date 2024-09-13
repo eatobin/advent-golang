@@ -38,8 +38,8 @@ func ReturnMemoryLength(string string) int {
 }
 
 func main() {
-	string := FileToString("advent02.csv")
-	length := ReturnMemoryLength(string)
-	fmt.Printf("%s\n", string)
+	myString := FileToString("advent02.csv")
+	length := ReturnMemoryLength(myString)
+	fmt.Printf("%s\n", myString)
 	fmt.Printf("%d\n", length)
 }
