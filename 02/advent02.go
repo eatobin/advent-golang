@@ -2,53 +2,28 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/eatobin/advent-golang/intcode"
+	"os"
 )
 
-const fp = "advent02.csv"
-
-func updatedMemory(memory intcode.Memory, noun int, verb int) intcode.Memory {
-	memory[1] = noun
-	memory[2] = verb
-	return memory
+type Memory struct {
+	Contents []int
+	Length   int
 }
 
-func nounVerb() int {
-	var noun int
-	var verb int
+type Intcode struct {
+	Pointer int
+	Memory  Memory
+}
 
-	for noun = 0; noun < 100; noun++ {
-		for verb = 0; verb < 100; verb++ {
-			tv := intcode.MakeMemory(fp)
-			icP := &intcode.IntCode{
-				Pointer: 0,
-				Memory:  updatedMemory(tv, noun, verb),
-			}
-			icReturn := 1
-			for icReturn == 1 {
-				icReturn = icP.OpCode()
-			}
-			candidate := icP.Memory[0]
-			if candidate == 19690720 {
-				goto end
-			}
-		}
+func FileToString(filename string) string {
+	fileContent, err := os.ReadFile(filename)
+	if err != nil {
+		panic(err)
 	}
-end:
-	return (100 * noun) + verb
+	text := string(fileContent)
+	return text
 }
 
 func main() {
-	tv := intcode.MakeMemory(fp)
-	icP := &intcode.IntCode{
-		Pointer: 0,
-		Memory:  updatedMemory(tv, 12, 2),
-	}
-	icReturn := 1
-	for icReturn == 1 {
-		icReturn = icP.OpCode()
-	}
-	fmt.Printf("Part A answer = %d\n", icP.Memory[0]) // Part A answer = 2890696
-	fmt.Printf("Part B answer = %d\n", nounVerb())    // Part B answer = 8226
+	fmt.Printf("%s\n", FileToString("advent02.csv"))
 }
