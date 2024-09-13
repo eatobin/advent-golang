@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 type Memory struct {
@@ -21,9 +22,24 @@ func FileToString(filename string) string {
 		panic(err)
 	}
 	text := string(fileContent)
+	text = strings.TrimRight(text, "\n")
 	return text
 }
 
+func ReturnMemoryLength(string string) int {
+	count := 0
+
+	for i := 0; i < len(string); i++ {
+		if string[i] == ',' {
+			count++
+		}
+	}
+	return count + 1
+}
+
 func main() {
-	fmt.Printf("%s\n", FileToString("advent02.csv"))
+	string := FileToString("advent02.csv")
+	length := ReturnMemoryLength(string)
+	fmt.Printf("%s\n", string)
+	fmt.Printf("%d\n", length)
 }
