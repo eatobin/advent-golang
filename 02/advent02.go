@@ -3,43 +3,41 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
-type Memory struct {
-	Contents []int
-	Length   int
-}
+type Memory []int
 
 type Intcode struct {
 	Pointer int
 	Memory  Memory
 }
 
-func FileToString(filename string) string {
-	fileContent, err := os.ReadFile(filename)
+func MakeMemory(fp string) Memory {
+	dat, err := os.ReadFile(fp)
 	if err != nil {
 		panic(err)
 	}
-	text := string(fileContent)
-	text = strings.TrimRight(text, "\n")
-	return text
-}
 
-func ReturnMemoryLength(string string) int {
-	count := 0
+	txt := string(dat)
+	txt = strings.TrimRight(txt, "\n")
+	strOps := strings.Split(txt, ",")
+	length := len(strOps)
+	memory := make([]int, length)
 
-	for i := 0; i < len(string); i++ {
-		if string[i] == ',' {
-			count++
+	for i, strOp := range strOps {
+		op, err := strconv.Atoi(strOp)
+		if err != nil {
+			panic(err)
 		}
+		memory[i] = op
 	}
-	return count + 1
+	return memory
 }
 
 func main() {
-	myString := FileToString("advent02.csv")
-	length := ReturnMemoryLength(myString)
-	fmt.Printf("%s\n", myString)
-	fmt.Printf("%d\n", length)
+	m := MakeMemory("advent02.csv")
+	fmt.Printf("%v\n", m)
+	fmt.Printf("%d - %d\n", len(m), cap(m))
 }
