@@ -36,6 +36,36 @@ func MakeMemory(fp string) Memory {
 	return memory
 }
 
+func Opcode(intcode *Intcode) int {
+	var action int
+	var address1 int
+	var address2 int
+	var address3 int
+
+	action = intcode.Memory[intcode.Pointer]
+	address1 = intcode.Memory[intcode.Pointer+1]
+	address2 = intcode.Memory[intcode.Pointer+2]
+	address3 = intcode.Memory[intcode.Pointer+3]
+
+	switch action {
+	case 1:
+		intcode.Memory[address3] =
+			intcode.Memory[address1] +
+				intcode.Memory[address2]
+		intcode.Pointer += 4
+		action = intcode.Memory[intcode.Pointer]
+		return 1
+	case 2:
+		intcode.Memory[address3] =
+			intcode.Memory[address1] *
+				intcode.Memory[address2]
+		intcode.Pointer += 4
+		action = intcode.Memory[intcode.Pointer]
+		return 1
+	}
+	return 0
+}
+
 func main() {
 	m := MakeMemory("advent02.csv")
 	fmt.Printf("%v\n", m)
