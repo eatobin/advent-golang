@@ -66,8 +66,26 @@ func Opcode(intcode *Intcode) int {
 	return 0
 }
 
+func UpdatedMemory(intcode *Intcode, noun int, verb int) {
+	intcode.Memory[1] = noun
+	intcode.Memory[2] = verb
+}
+
 func main() {
-	m := MakeMemory("advent02.csv")
-	fmt.Printf("%v\n", m)
-	fmt.Printf("%d - %d\n", len(m), cap(m))
+	var memory Memory
+	var intcode Intcode
+
+	memory = MakeMemory("advent02.csv")
+	intcode.Pointer = 0
+	intcode.Memory = memory
+	icReturn := 1
+
+	UpdatedMemory(&intcode, 12, 2)
+
+	for icReturn == 1 {
+		icReturn = Opcode(&intcode)
+	}
+
+	fmt.Printf("Memory length: %d\n\n", len(intcode.Memory))
+	fmt.Printf("Part A answer = %d\n", intcode.Memory[0]) // Part A answer = 2890696
 }
