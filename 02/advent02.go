@@ -53,14 +53,12 @@ func Opcode(intcode *Intcode) int {
 			intcode.Memory[address1] +
 				intcode.Memory[address2]
 		intcode.Pointer += 4
-		action = intcode.Memory[intcode.Pointer]
 		return 1
 	case 2:
 		intcode.Memory[address3] =
 			intcode.Memory[address1] *
 				intcode.Memory[address2]
 		intcode.Pointer += 4
-		action = intcode.Memory[intcode.Pointer]
 		return 1
 	}
 	return 0
