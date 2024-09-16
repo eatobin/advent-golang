@@ -72,12 +72,10 @@ func UpdatedMemory(intcode *Intcode, noun int, verb int) {
 }
 
 func main() {
-	var memory Memory
 	var intcode Intcode
 
-	memory = MakeMemory("advent02.csv")
 	intcode.Pointer = 0
-	intcode.Memory = memory
+	intcode.Memory = MakeMemory("advent02.csv")
 	icReturn := 1
 
 	UpdatedMemory(&intcode, 12, 2)
