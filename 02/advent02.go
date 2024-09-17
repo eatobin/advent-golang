@@ -14,7 +14,7 @@ type Intcode struct {
 	Memory  Memory
 }
 
-func MakeMemory(fp string) Memory {
+func makeMemory(fp string) Memory {
 	dat, err := os.ReadFile(fp)
 	if err != nil {
 		panic(err)
@@ -36,7 +36,7 @@ func MakeMemory(fp string) Memory {
 	return memory
 }
 
-func Opcode(intcode *Intcode) int {
+func opcode(intcode *Intcode) int {
 	var action int
 	var address1 int
 	var address2 int
@@ -64,7 +64,7 @@ func Opcode(intcode *Intcode) int {
 	return 0
 }
 
-func UpdatedMemory(intcode *Intcode, noun int, verb int) {
+func updatedMemory(intcode *Intcode, noun int, verb int) {
 	intcode.Memory[1] = noun
 	intcode.Memory[2] = verb
 }
@@ -79,12 +79,12 @@ func nounVerb() int {
 	for noun = 0; noun < 100; noun++ {
 		for verb = 0; verb < 100; verb++ {
 			intcode.Pointer = 0
-			intcode.Memory = MakeMemory("advent02.csv")
-			UpdatedMemory(&intcode, noun, verb)
+			intcode.Memory = makeMemory("advent02.csv")
+			updatedMemory(&intcode, noun, verb)
 
 			icReturn = 1
 			for icReturn == 1 {
-				icReturn = Opcode(&intcode)
+				icReturn = opcode(&intcode)
 			}
 
 			candidate = intcode.Memory[0]
@@ -102,13 +102,13 @@ func main() {
 	var icReturn int
 
 	intcode.Pointer = 0
-	intcode.Memory = MakeMemory("advent02.csv")
+	intcode.Memory = makeMemory("advent02.csv")
 	icReturn = 1
 
-	UpdatedMemory(&intcode, 12, 2)
+	updatedMemory(&intcode, 12, 2)
 
 	for icReturn == 1 {
-		icReturn = Opcode(&intcode)
+		icReturn = opcode(&intcode)
 	}
 
 	fmt.Printf("Memory length: %d\n\n", len(intcode.Memory))
