@@ -2,38 +2,12 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
+	"github.com/eatobin/advent-golang/makeMemory"
 )
-
-type Memory []int
 
 type Intcode struct {
 	Pointer int
-	Memory  Memory
-}
-
-func makeMemory(fp string) Memory {
-	dat, err := os.ReadFile(fp)
-	if err != nil {
-		panic(err)
-	}
-
-	txt := string(dat)
-	txt = strings.TrimRight(txt, "\n")
-	strOps := strings.Split(txt, ",")
-	length := len(strOps)
-	memory := make([]int, length)
-
-	for i, strOp := range strOps {
-		op, err := strconv.Atoi(strOp)
-		if err != nil {
-			panic(err)
-		}
-		memory[i] = op
-	}
-	return memory
+	Memory  makeMemory.Memory
 }
 
 func opcode(intcode *Intcode) int {
@@ -79,7 +53,7 @@ func nounVerb() int {
 	for noun = 0; noun < 100; noun++ {
 		for verb = 0; verb < 100; verb++ {
 			intcode.Pointer = 0
-			intcode.Memory = makeMemory("advent02.csv")
+			intcode.Memory = makeMemory.MakeMemory("advent02.csv")
 			updatedMemory(&intcode, noun, verb)
 
 			icReturn = 1
@@ -102,7 +76,7 @@ func main() {
 	var icReturn int
 
 	intcode.Pointer = 0
-	intcode.Memory = makeMemory("advent02.csv")
+	intcode.Memory = makeMemory.MakeMemory("advent02.csv")
 	icReturn = 1
 
 	updatedMemory(&intcode, 12, 2)
@@ -111,7 +85,7 @@ func main() {
 		icReturn = opcode(&intcode)
 	}
 
-	fmt.Printf("Memory length: %d\n\n", len(intcode.Memory))
+	fmt.Printf("\nMemory length: %d\n\n", len(intcode.Memory))
 	fmt.Printf("Part A answer = %d\n", intcode.Memory[0]) // Part A answer = 2890696
 	fmt.Printf("Part B answer = %d\n", nounVerb())        // Part B answer = 8226
 }
