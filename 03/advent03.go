@@ -179,10 +179,10 @@ func main() {
 	uniqueBlueRoute := makeUniqueRoute(visit{x: 0, y: 0}, blue)
 
 	intersections := findIntersection(uniqueRedRoute, uniqueBlueRoute)
-	fmt.Println("\nRoutes Intersect at: ", intersections)
+	// fmt.Println("\nRoutes Intersect at: ", intersections)
 
 	manhattans := manhattanizedSlice(intersections)
-	fmt.Println("\nManhattanized slice: ", manhattans)
+	// fmt.Println("\nManhattanized slice: ", manhattans)
 
 	fmt.Println("Minimum distance: ", slices.Min(manhattans)) // 2193
 }
