@@ -2,9 +2,6 @@ package intcode
 
 import (
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
 )
 
 // ABCDE
@@ -30,27 +27,6 @@ type IntCode struct {
 	Memory       Memory
 	IsStopped    bool
 	DoesRecur    bool
-}
-
-func MakeMemory(fp string) Memory {
-	dat, err := os.ReadFile(fp)
-	if err != nil {
-		panic(err)
-	}
-
-	txt := string(dat)
-	txt = strings.TrimRight(txt, "\n")
-	strOps := strings.Split(txt, ",")
-	memory := make(map[int]int)
-
-	for i, strOp := range strOps {
-		op, err := strconv.Atoi(strOp)
-		if err != nil {
-			panic(err)
-		}
-		memory[i] = op
-	}
-	return memory
 }
 
 func charToInt(char byte) uint8 {
