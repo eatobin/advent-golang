@@ -2,6 +2,7 @@ package intcode
 
 import (
 	"fmt"
+	"github.com/eatobin/advent-golang/makeMemory"
 )
 
 // ABCDE
@@ -24,7 +25,7 @@ type IntCode struct {
 	Phase        int
 	Pointer      int
 	RelativeBase int
-	Memory       Memory
+	Memory       makeMemory.Memory
 	IsStopped    bool
 	DoesRecur    bool
 }
