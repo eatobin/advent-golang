@@ -34,8 +34,9 @@ func opcode(intcode *Intcode) int {
 				intcode.Memory[address2]
 		intcode.Pointer += 4
 		return 1
+	default:
+		return 0
 	}
-	return 0
 }
 
 func updatedMemory(intcode *Intcode, noun int, verb int) {
