@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/eatobin/advent-golang/makeMemory"
+	"advent-golang/makeMemory"
 )
 
 type Intcode struct {

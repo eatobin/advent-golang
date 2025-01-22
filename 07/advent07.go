@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/eatobin/advent-golang/intcode"
+	"advent-golang/intcode"
+	"advent-golang/makeMemory"
 )
 
 const fp = "advent07.csv"
@@ -63,7 +64,7 @@ func candidates2() [][]int {
 	return winners
 }
 
-func pass(candidate []int, commonMemory intcode.Memory) int {
+func pass(candidate []int, commonMemory makeMemory.Memory) int {
 	memA := make(map[int]int, len(commonMemory))
 	memB := make(map[int]int, len(commonMemory))
 	memC := make(map[int]int, len(commonMemory))
@@ -154,7 +155,7 @@ func pass(candidate []int, commonMemory intcode.Memory) int {
 	return icpE.Output[len(icpE.Output)-1]
 }
 
-func pass2(candidate []int, commonMemory intcode.Memory) int {
+func pass2(candidate []int, commonMemory makeMemory.Memory) int {
 	memA := make(map[int]int, len(commonMemory))
 	memB := make(map[int]int, len(commonMemory))
 	memC := make(map[int]int, len(commonMemory))
@@ -249,7 +250,7 @@ func pass2(candidate []int, commonMemory intcode.Memory) int {
 	return eOutput
 }
 
-func passes(candidates [][]int, memory intcode.Memory) []int {
+func passes(candidates [][]int, memory makeMemory.Memory) []int {
 	vcm := make([]int, len(candidates))
 	for i, v := range candidates {
 		vcm[i] = pass(v, memory)
@@ -257,7 +258,7 @@ func passes(candidates [][]int, memory intcode.Memory) []int {
 	return vcm
 }
 
-func passes2(candidates [][]int, memory intcode.Memory) []int {
+func passes2(candidates [][]int, memory makeMemory.Memory) []int {
 	vcm := make([]int, len(candidates))
 	for i, v := range candidates {
 		vcm[i] = pass2(v, memory)
@@ -266,13 +267,13 @@ func passes2(candidates [][]int, memory intcode.Memory) []int {
 }
 
 func main() {
-	tv := intcode.MakeMemory(fp)
+	tv := makeMemory.MakeMemory(fp)
 	answer := passes(candidates(), tv)
 	sort.Ints(answer)
 	fmt.Printf("Part A answer = %d\n", answer[len(answer)-1]) // Part A answer = 368584
 
-	tv = intcode.MakeMemory(fp)
-	answer2 := passes2(candidates2(), tv)
-	sort.Ints(answer2)
-	fmt.Printf("Part B answer = %d\n", answer2[len(answer)-1]) // Part B answer = 35993240
+	// tv = makeMemory.MakeMemory(fp)
+	// answer2 := passes2(candidates2(), tv)
+	// sort.Ints(answer2)
+	// fmt.Printf("Part B answer = %d\n", answer2[len(answer)-1]) // Part B answer = 35993240
 }

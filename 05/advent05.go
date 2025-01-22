@@ -1,9 +1,9 @@
 package main
 
 import (
+	"advent-golang/intcode"
+	"advent-golang/makeMemory"
 	"fmt"
-	"github.com/eatobin/advent-golang/intcode"
-	"github.com/eatobin/advent-golang/makeMemory"
 )
 
 const fp = "advent05.csv"

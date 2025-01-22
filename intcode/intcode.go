@@ -2,7 +2,7 @@ package intcode
 
 import (
 	"fmt"
-	"github.com/eatobin/advent-golang/makeMemory"
+	"advent-golang/makeMemory"
 )
 
 // ABCDE
