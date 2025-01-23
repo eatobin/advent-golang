@@ -3,14 +3,14 @@ package main
 import (
 	"fmt"
 
-	"github.com/eatobin/advent-golang/intcode"
+	"advent-golang/intCodePkg"
 )
 
 const fp = "advent09.csv"
 
 func main() {
-	tv := intcode.MakeMemory(fp)
-	icP := &intcode.IntCode{
+	tv := intCodePkg.MakeMemory(fp)
+	icP := &intCodePkg.IntCode{
 		Input:        1,
 		Output:       []int{},
 		Phase:        -1,
@@ -26,8 +26,8 @@ func main() {
 	}
 	fmt.Printf("Part A answer = %d\n", icP.Output[len(icP.Output)-1]) // Part A answer = 3780860499
 
-	tv = intcode.MakeMemory(fp)
-	icP = &intcode.IntCode{
+	tv = intCodePkg.MakeMemory(fp)
+	icP = &intCodePkg.IntCode{
 		Input:        2,
 		Output:       []int{},
 		Phase:        -1,

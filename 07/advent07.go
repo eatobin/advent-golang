@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"sort"
 
-	"advent-golang/intcode"
-	"advent-golang/makeMemory"
+	"advent-golang/intCodePkg"
 )
 
 const fp = "advent07.csv"
@@ -64,7 +63,7 @@ func candidates2() [][]int {
 	return winners
 }
 
-func pass(candidate []int, commonMemory makeMemory.Memory) int {
+func pass(candidate []int, commonMemory map[int]int) int {
 	memA := make(map[int]int, len(commonMemory))
 	memB := make(map[int]int, len(commonMemory))
 	memC := make(map[int]int, len(commonMemory))
@@ -77,7 +76,7 @@ func pass(candidate []int, commonMemory makeMemory.Memory) int {
 		memD[key] = value
 		memE[key] = value
 	}
-	icpA := &intcode.IntCode{
+	icpA := &intCodePkg.IntCode{
 		Input:     0,
 		Output:    []int{},
 		Phase:     candidate[0],
@@ -92,7 +91,7 @@ func pass(candidate []int, commonMemory makeMemory.Memory) int {
 		icReturn = icpA.OpCode()
 	}
 
-	icpB := &intcode.IntCode{
+	icpB := &intCodePkg.IntCode{
 		Input:     icpA.Output[len(icpA.Output)-1],
 		Output:    []int{},
 		Phase:     candidate[1],
@@ -107,7 +106,7 @@ func pass(candidate []int, commonMemory makeMemory.Memory) int {
 		icReturn = icpB.OpCode()
 	}
 
-	icpC := &intcode.IntCode{
+	icpC := &intCodePkg.IntCode{
 		Input:     icpB.Output[len(icpB.Output)-1],
 		Output:    []int{},
 		Phase:     candidate[2],
@@ -122,7 +121,7 @@ func pass(candidate []int, commonMemory makeMemory.Memory) int {
 		icReturn = icpC.OpCode()
 	}
 
-	icpD := &intcode.IntCode{
+	icpD := &intCodePkg.IntCode{
 		Input:     icpC.Output[len(icpC.Output)-1],
 		Output:    []int{},
 		Phase:     candidate[3],
@@ -137,7 +136,7 @@ func pass(candidate []int, commonMemory makeMemory.Memory) int {
 		icReturn = icpD.OpCode()
 	}
 
-	icpE := &intcode.IntCode{
+	icpE := &intCodePkg.IntCode{
 		Input:     icpD.Output[len(icpD.Output)-1],
 		Output:    []int{},
 		Phase:     candidate[4],
@@ -155,7 +154,7 @@ func pass(candidate []int, commonMemory makeMemory.Memory) int {
 	return icpE.Output[len(icpE.Output)-1]
 }
 
-func pass2(candidate []int, commonMemory makeMemory.Memory) int {
+func pass2(candidate []int, commonMemory map[int]int) int {
 	memA := make(map[int]int, len(commonMemory))
 	memB := make(map[int]int, len(commonMemory))
 	memC := make(map[int]int, len(commonMemory))
@@ -170,7 +169,7 @@ func pass2(candidate []int, commonMemory makeMemory.Memory) int {
 	}
 	eOutput := 0
 	allStopped := false
-	icpA := &intcode.IntCode{
+	icpA := &intCodePkg.IntCode{
 		Input:     0,
 		Output:    []int{},
 		Phase:     candidate[0],
@@ -179,7 +178,7 @@ func pass2(candidate []int, commonMemory makeMemory.Memory) int {
 		IsStopped: false,
 		DoesRecur: false,
 	}
-	icpB := &intcode.IntCode{
+	icpB := &intCodePkg.IntCode{
 		Input:     0,
 		Output:    []int{},
 		Phase:     candidate[1],
@@ -188,7 +187,7 @@ func pass2(candidate []int, commonMemory makeMemory.Memory) int {
 		IsStopped: false,
 		DoesRecur: false,
 	}
-	icpC := &intcode.IntCode{
+	icpC := &intCodePkg.IntCode{
 		Input:     0,
 		Output:    []int{},
 		Phase:     candidate[2],
@@ -197,7 +196,7 @@ func pass2(candidate []int, commonMemory makeMemory.Memory) int {
 		IsStopped: false,
 		DoesRecur: false,
 	}
-	icpD := &intcode.IntCode{
+	icpD := &intCodePkg.IntCode{
 		Input:     0,
 		Output:    []int{},
 		Phase:     candidate[3],
@@ -206,7 +205,7 @@ func pass2(candidate []int, commonMemory makeMemory.Memory) int {
 		IsStopped: false,
 		DoesRecur: false,
 	}
-	icpE := &intcode.IntCode{
+	icpE := &intCodePkg.IntCode{
 		Input:     0,
 		Output:    []int{},
 		Phase:     candidate[4],
@@ -250,7 +249,7 @@ func pass2(candidate []int, commonMemory makeMemory.Memory) int {
 	return eOutput
 }
 
-func passes(candidates [][]int, memory makeMemory.Memory) []int {
+func passes(candidates [][]int, memory map[int]int) []int {
 	vcm := make([]int, len(candidates))
 	for i, v := range candidates {
 		vcm[i] = pass(v, memory)
@@ -258,7 +257,7 @@ func passes(candidates [][]int, memory makeMemory.Memory) []int {
 	return vcm
 }
 
-func passes2(candidates [][]int, memory makeMemory.Memory) []int {
+func passes2(candidates [][]int, memory map[int]int) []int {
 	vcm := make([]int, len(candidates))
 	for i, v := range candidates {
 		vcm[i] = pass2(v, memory)
@@ -267,13 +266,13 @@ func passes2(candidates [][]int, memory makeMemory.Memory) []int {
 }
 
 func main() {
-	tv := makeMemory.MakeMemory(fp)
+	tv := intCodePkg.MakeMemory(fp)
 	answer := passes(candidates(), tv)
 	sort.Ints(answer)
 	fmt.Printf("Part A answer = %d\n", answer[len(answer)-1]) // Part A answer = 368584
 
-	// tv = makeMemory.MakeMemory(fp)
-	// answer2 := passes2(candidates2(), tv)
-	// sort.Ints(answer2)
-	// fmt.Printf("Part B answer = %d\n", answer2[len(answer)-1]) // Part B answer = 35993240
+	tv = intCodePkg.MakeMemory(fp)
+	answer2 := passes2(candidates2(), tv)
+	sort.Ints(answer2)
+	fmt.Printf("Part B answer = %d\n", answer2[len(answer)-1]) // Part B answer = 35993240
 }

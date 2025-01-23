@@ -1,45 +1,40 @@
 package main
 
 import (
+	"advent-golang/intCodePkg"
 	"fmt"
-	"advent-golang/makeMemory"
 )
 
-type Intcode struct {
-	Pointer int
-	Memory  makeMemory.Memory
-}
-
-func opcode(intcode *Intcode) int {
+func opcode(intCode *intCodePkg.IntCode) int {
 	var action int
 	var address1 int
 	var address2 int
 	var address3 int
 
-	action = intcode.Memory[intcode.Pointer]
-	address1 = intcode.Memory[intcode.Pointer+1]
-	address2 = intcode.Memory[intcode.Pointer+2]
-	address3 = intcode.Memory[intcode.Pointer+3]
+	action = intCode.Memory[intCode.Pointer]
+	address1 = intCode.Memory[intCode.Pointer+1]
+	address2 = intCode.Memory[intCode.Pointer+2]
+	address3 = intCode.Memory[intCode.Pointer+3]
 
 	switch action {
 	case 1:
-		intcode.Memory[address3] =
-			intcode.Memory[address1] +
-				intcode.Memory[address2]
-		intcode.Pointer += 4
+		intCode.Memory[address3] =
+			intCode.Memory[address1] +
+				intCode.Memory[address2]
+		intCode.Pointer += 4
 		return 1
 	case 2:
-		intcode.Memory[address3] =
-			intcode.Memory[address1] *
-				intcode.Memory[address2]
-		intcode.Pointer += 4
+		intCode.Memory[address3] =
+			intCode.Memory[address1] *
+				intCode.Memory[address2]
+		intCode.Pointer += 4
 		return 1
 	default:
 		return 0
 	}
 }
 
-func updatedMemory(intcode *Intcode, noun int, verb int) {
+func updatedMemory(intcode *intCodePkg.IntCode, noun int, verb int) {
 	intcode.Memory[1] = noun
 	intcode.Memory[2] = verb
 }
@@ -47,14 +42,14 @@ func updatedMemory(intcode *Intcode, noun int, verb int) {
 func nounVerb() int {
 	var noun int
 	var verb int
-	var intcode Intcode
+	var intcode intCodePkg.IntCode
 	var icReturn int
 	var candidate int
 
 	for noun = 0; noun < 100; noun++ {
 		for verb = 0; verb < 100; verb++ {
 			intcode.Pointer = 0
-			intcode.Memory = makeMemory.MakeMemory("advent02.csv")
+			intcode.Memory = intCodePkg.MakeMemory("advent02.csv")
 			updatedMemory(&intcode, noun, verb)
 
 			icReturn = 1
@@ -73,11 +68,11 @@ end:
 }
 
 func main() {
-	var intcode Intcode
+	var intcode intCodePkg.IntCode
 	var icReturn int
 
 	intcode.Pointer = 0
-	intcode.Memory = makeMemory.MakeMemory("advent02.csv")
+	intcode.Memory = intCodePkg.MakeMemory("advent02.csv")
 	icReturn = 1
 
 	updatedMemory(&intcode, 12, 2)

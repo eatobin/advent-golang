@@ -1,23 +1,11 @@
-package intcode
+package intCodePkg
 
 import (
 	"fmt"
-	"advent-golang/makeMemory"
+	"os"
+	"strconv"
+	"strings"
 )
-
-// ABCDE
-// 01002
-
-// a b or c = left-to-right position after 2 digit opcode
-// p i or r = position, immediate or relative mode
-// r or w = read or write
-
-type Memory map[int]int
-type Instruction map[byte]uint8
-
-const offsetC int = 1
-const offsetB int = 2
-const offsetA int = 3
 
 type IntCode struct {
 	Input        int
@@ -25,9 +13,37 @@ type IntCode struct {
 	Phase        int
 	Pointer      int
 	RelativeBase int
-	Memory       makeMemory.Memory
+	Memory       map[int]int
 	IsStopped    bool
 	DoesRecur    bool
+}
+
+type Instruction map[byte]uint8
+
+const offsetC int = 1
+const offsetB int = 2
+const offsetA int = 3
+
+func MakeMemory(fp string) map[int]int {
+	dat, err := os.ReadFile(fp)
+	if err != nil {
+		panic(err)
+	}
+
+	txt := string(dat)
+	txt = strings.TrimRight(txt, "\n")
+	strOps := strings.Split(txt, ",")
+	length := len(strOps)
+	memory := make(map[int]int, length)
+
+	for i, strOp := range strOps {
+		op, err := strconv.Atoi(strOp)
+		if err != nil {
+			panic(err)
+		}
+		memory[i] = op
+	}
+	return memory
 }
 
 func charToInt(char byte) uint8 {
@@ -48,6 +64,13 @@ func pad5(op int) Instruction {
 	}
 	return instruction
 }
+
+// ABCDE
+// 01002
+
+// a b or c = left-to-right position after 2 digit opcode
+// p i or r = position, immediate or relative mode
+// r or w = read or write
 
 func (icP *IntCode) aParam(instruction Instruction) int {
 	var choice int

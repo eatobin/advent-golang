@@ -1,16 +1,15 @@
 package main
 
 import (
-	"advent-golang/intcode"
-	"advent-golang/makeMemory"
+	"advent-golang/intCodePkg"
 	"fmt"
 )
 
 const fp = "advent05.csv"
 
 func main() {
-	tv := makeMemory.MakeMemory(fp)
-	icP := &intcode.IntCode{
+	tv := intCodePkg.MakeMemory(fp)
+	icP := &intCodePkg.IntCode{
 		Input:        1,
 		Output:       []int{},
 		Phase:        -1,
@@ -26,8 +25,8 @@ func main() {
 	}
 	fmt.Printf("Part A answer = %d\n", icP.Output[len(icP.Output)-1]) // Part A answer = 9025675
 
-	tv = makeMemory.MakeMemory(fp)
-	icP = &intcode.IntCode{
+	tv = intCodePkg.MakeMemory(fp)
+	icP = &intCodePkg.IntCode{
 		Input:        5,
 		Output:       []int{},
 		Phase:        -1,
