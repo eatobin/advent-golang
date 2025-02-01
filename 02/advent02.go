@@ -59,12 +59,11 @@ func nounVerb() int {
 
 			candidate = intcode.Memory[0]
 			if candidate == 19690720 {
-				goto end
+				return (100 * noun) + verb
 			}
 		}
 	}
-end:
-	return (100 * noun) + verb
+	return -1
 }
 
 func main() {
@@ -81,7 +80,6 @@ func main() {
 		icReturn = opcode(&intcode)
 	}
 
-	fmt.Printf("\nMemory length: %d\n\n", len(intcode.Memory))
-	fmt.Printf("Part A answer = %d\n", intcode.Memory[0]) // Part A answer = 2890696
-	fmt.Printf("Part B answer = %d\n", nounVerb())        // Part B answer = 8226
+	fmt.Printf("\nPart A answer = %d. Correct = 2890696\n", intcode.Memory[0])
+	fmt.Printf("Part B answer = %d. Correct = 8226\n\n", nounVerb())
 }
