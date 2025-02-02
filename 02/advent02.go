@@ -9,6 +9,23 @@ type Intcode struct {
 	memory  [121]int
 }
 
+func main() {
+	var intcode Intcode
+	var icReturn int
+
+	intcode = makeIntcode()
+	icReturn = 1
+
+	updatedMemory(&intcode, 12, 2)
+
+	for icReturn == 1 {
+		icReturn = opcode(&intcode)
+	}
+
+	fmt.Printf("\nPart A answer = %d. Correct = 2890696\n", intcode.memory[0])
+	fmt.Printf("Part B answer = %d. Correct = 8226\n\n", nounVerb())
+}
+
 func makeIntcode() Intcode {
 	intcode := Intcode{
 		pointer: 0,
@@ -79,21 +96,4 @@ func nounVerb() int {
 		}
 	}
 	return -1
-}
-
-func main() {
-	var intcode Intcode
-	var icReturn int
-
-	intcode = makeIntcode()
-	icReturn = 1
-
-	updatedMemory(&intcode, 12, 2)
-
-	for icReturn == 1 {
-		icReturn = opcode(&intcode)
-	}
-
-	fmt.Printf("\nPart A answer = %d. Correct = 2890696\n", intcode.memory[0])
-	fmt.Printf("Part B answer = %d. Correct = 8226\n\n", nounVerb())
 }
