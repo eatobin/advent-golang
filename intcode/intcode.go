@@ -67,6 +67,11 @@ func pad5(op int) Instruction {
 
 // ABCDE
 // 01002
+// DE - two-digit opcode,      02 == opcode 2
+//  C - mode of 1st parameter,  0 == position mode
+//  B - mode of 2nd parameter,  1 == immediate mode
+//  A - mode of 3rd parameter,  0 == position mode,
+//                                   omitted due to being a leading zero
 
 // a b or c = left-to-right position after 2 digit opcode
 // p i or r = position, immediate or relative mode
