@@ -72,7 +72,6 @@ func pad5(op int) Instruction {
 //  B - mode of 2nd parameter,  1 == immediate mode
 //  A - mode of 3rd parameter,  0 == position mode,
 //                                   omitted due to being a leading zero
-
 // a b or c = left-to-right position after 2 digit opcode
 // p i or r = position, immediate or relative mode
 // r or w = read or write
