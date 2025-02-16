@@ -65,7 +65,9 @@ func pad5(op int) Instruction {
 	return instruction
 }
 
+// Instruction:
 // ABCDE
+// 01234
 // 01002
 // DE - two-digit opcode,      02 == opcode 2
 //  C - mode of 1st parameter,  0 == position mode
