@@ -165,17 +165,17 @@ func (icP *IntCode) OpCode() int {
 					return 0
 				}
 			case 5:
-				if icP.cParam(instruction) == 0 {
-					icP.Pointer += 3
-				} else {
+				if icP.cParam(instruction) != 0 {
 					icP.Pointer = icP.bParam(instruction)
+				} else {
+					icP.Pointer += 3
 				}
 				return 1
 			case 6:
-				if icP.cParam(instruction) != 0 {
-					icP.Pointer += 3
-				} else {
+				if icP.cParam(instruction) == 0 {
 					icP.Pointer = icP.bParam(instruction)
+				} else {
+					icP.Pointer += 3
 				}
 				return 1
 			case 7:
