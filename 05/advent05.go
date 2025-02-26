@@ -24,13 +24,13 @@ type Intcode struct {
 	memory  [11]int
 }
 
-type Instruction []int
+type Instruction []byte
 
 func main() {
-	var intcode Intcode
+	// var intcode Intcode
 	//var icReturn int
 
-	intcode = makeIntcode()
+	intcode := makeIntcode()
 	//icReturn = 1
 	//
 	//for icReturn == 1 {
