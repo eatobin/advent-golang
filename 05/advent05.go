@@ -34,19 +34,39 @@ var memoryConstant = [678]int{3, 225, 1, 225, 6, 6, 1100, 1, 238, 225, 104, 0, 1
 
 func main() {
 	instruction := &[5]int{}
-	intcode := makeIntcode()
+	intcode := makeIntcodeA()
 	var icReturn = 1
 
 	for icReturn == 1 {
 		icReturn = opcode(&intcode, instruction)
 	}
 
-	fmt.Printf("\nPart A answer = %d. Correct = 9025675\n\n", intcode.output)
+	fmt.Printf("\nPart A answer = %d. Correct = 9025675\n", intcode.output)
+
+	intcode = makeIntcodeB()
+	icReturn = 1
+
+	for icReturn == 1 {
+		icReturn = opcode(&intcode, instruction)
+	}
+
+	fmt.Printf("Part B answer = %d. Correct = 11981754\n", intcode.output)
+
 }
 
-func makeIntcode() IntCode {
+func makeIntcodeA() IntCode {
 	intcode := IntCode{
 		input:   1,
+		output:  0,
+		pointer: 0,
+		memory:  memoryConstant,
+	}
+	return intcode
+}
+
+func makeIntcodeB() IntCode {
+	intcode := IntCode{
+		input:   5,
 		output:  0,
 		pointer: 0,
 		memory:  memoryConstant,
