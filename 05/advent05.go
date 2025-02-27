@@ -1,8 +1,34 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
+
+type Instruction *[5]byte
+
+func pad5(op int, instrtuction Instruction) Instruction {
+	asString := fmt.Sprintf("%05d", op)
+	asBytes := []byte(asString)
+	for i := 0; i < 5; i++ {
+		(*instrtuction)[i] = asBytes[i] - 48
+	}
+	return instrtuction
+}
+
+func main() {
+	changed := &[5]byte{}
+	changed = pad5(12343, changed)
+	fmt.Println("Modified array:", *changed)
+	fmt.Printf("%p\n", changed)
+
+	changed = pad5(1368, changed)
+	fmt.Println("Modified array:", *changed)
+	fmt.Printf("%p\n", changed)
+}
+
+// package main
+
+// import (
+// 	"fmt"
+// )
 
 // Instruction:
 // ABCDE
@@ -17,55 +43,57 @@ import (
 // p i or r = position, immediate or relative mode
 // r or w = read or write
 
-type Intcode struct {
-	input   int
-	output  int
-	pointer int
-	memory  [11]int
-}
+// type Intcode struct {
+// 	input   int
+// 	output  int
+// 	pointer int
+// 	memory  [11]int
+// }
 
-type Instruction []byte
+// type Instruction [5]byte
 
-const offsetC int = 1
-const offsetB int = 2
-const offsetA int = 3
+// const offsetC int = 1
+// const offsetB int = 2
+// const offsetA int = 3
 
-func main() {
-	// var intcode Intcode
-	//var icReturn int
+// func main() {
+// 	// var intcode Intcode
+// 	//var icReturn int
 
-	intcode := makeIntcode()
-	//icReturn = 1
-	//
-	//for icReturn == 1 {
-	//	icReturn = opcode(&intcode)
-	//}
+// 	intcode := makeIntcode()
 
-	fmt.Printf("\nPart A answer = %d. Correct = 2890696\n", intcode.memory[0])
-}
+// instruction := new(Instruction)
+// instruction = pad5(3,instruction)
+//icReturn = 1
+//
+//for icReturn == 1 {
+//	icReturn = opcode(&intcode)
+//}
 
-func makeIntcode() Intcode {
-	intcode := Intcode{
-		input:   0,
-		output:  0,
-		pointer: 0,
-		memory:  [11]int{3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8},
-	}
-	return intcode
-}
+// 	fmt.Printf("\nPart A answer = %d. Correct = 2890696\n", intcode.memory[0])
+// }
 
-// func pad5(op int) Instruction {
-// 	keys := [5]byte{'a', 'b', 'c', 'd', 'e'}
-// 	instruction := make(map[byte]uint8)
+// func makeIntcode() Intcode {
+// 	intcode := Intcode{
+// 		input:   0,
+// 		output:  0,
+// 		pointer: 0,
+// 		memory:  [11]int{3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8},
+// 	}
+// 	return intcode
+// }
+
+// func pad5(op int, instructionPtr *Instruction) *Instruction {
 // 	asString := fmt.Sprintf("%05d", op)
 // 	asBytes := []byte(asString)
-
 // 	for i := 0; i < 5; i++ {
-// 		instruction[keys[i]] = charToInt(asBytes[i])
+// 		(*instructionPtr[i]) = asBytes[i] - '0'
 // 	}
 // 	return instruction
 // }
-
+// func modifyArray(ptr *[3]int) {
+// 	(*ptr)[0] = 100
+// }
 //func opcode(intCode *Intcode) int {
 //	var action int
 //	var address1 int
