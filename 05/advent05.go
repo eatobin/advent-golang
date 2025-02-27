@@ -26,6 +26,10 @@ type Intcode struct {
 
 type Instruction []byte
 
+const offsetC int = 1
+const offsetB int = 2
+const offsetA int = 3
+
 func main() {
 	// var intcode Intcode
 	//var icReturn int
@@ -49,6 +53,18 @@ func makeIntcode() Intcode {
 	}
 	return intcode
 }
+
+// func pad5(op int) Instruction {
+// 	keys := [5]byte{'a', 'b', 'c', 'd', 'e'}
+// 	instruction := make(map[byte]uint8)
+// 	asString := fmt.Sprintf("%05d", op)
+// 	asBytes := []byte(asString)
+
+// 	for i := 0; i < 5; i++ {
+// 		instruction[keys[i]] = charToInt(asBytes[i])
+// 	}
+// 	return instruction
+// }
 
 //func opcode(intCode *Intcode) int {
 //	var action int
