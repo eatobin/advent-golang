@@ -24,8 +24,6 @@ type IntCode struct {
 	memory  [678]int
 }
 
-type Instruction *[5]int
-
 const offsetC int = 1
 const offsetB int = 2
 const offsetA int = 3
@@ -74,7 +72,7 @@ func makeIntcodeB() IntCode {
 	return intcode
 }
 
-func pad5(op int, instruction Instruction) Instruction {
+func pad5(op int, instruction *[5]int) *[5]int {
 	asString := fmt.Sprintf("%05d", op)
 	asBytes := []byte(asString)
 	for i := 0; i < 5; i++ {
@@ -83,7 +81,7 @@ func pad5(op int, instruction Instruction) Instruction {
 	return instruction
 }
 
-func aParam(icP *IntCode, instruction Instruction) int {
+func aParam(icP *IntCode, instruction *[5]int) int {
 	switch instruction[0] {
 	case 0: // a-p-w
 		return icP.memory[icP.pointer+offsetA]
@@ -92,7 +90,7 @@ func aParam(icP *IntCode, instruction Instruction) int {
 	}
 }
 
-func bParam(icP *IntCode, instruction Instruction) int {
+func bParam(icP *IntCode, instruction *[5]int) int {
 	switch instruction[1] {
 	case 0: // b-p-r
 		return icP.memory[icP.memory[icP.pointer+offsetB]]
@@ -103,7 +101,7 @@ func bParam(icP *IntCode, instruction Instruction) int {
 	}
 }
 
-func cParam(icP *IntCode, instruction Instruction) int {
+func cParam(icP *IntCode, instruction *[5]int) int {
 	if instruction[4] == 3 {
 		switch instruction[2] {
 		case 0: // c-p-w
@@ -122,7 +120,7 @@ func cParam(icP *IntCode, instruction Instruction) int {
 	}
 }
 
-func opcode(icP *IntCode, instruction Instruction) int {
+func opcode(icP *IntCode, instruction *[5]int) int {
 	instruction = pad5(icP.memory[icP.pointer], instruction)
 	switch instruction[4] {
 	case 1:
