@@ -4,24 +4,24 @@ import "fmt"
 
 type Instruction *[5]byte
 
-func pad5(op int, instrtuction Instruction) Instruction {
+func pad5(op int, instruction Instruction) Instruction {
 	asString := fmt.Sprintf("%05d", op)
 	asBytes := []byte(asString)
 	for i := 0; i < 5; i++ {
-		(*instrtuction)[i] = asBytes[i] - 48
+		(*instruction)[i] = asBytes[i] - 48
 	}
-	return instrtuction
+	return instruction
 }
 
 func main() {
-	changed := &[5]byte{}
-	changed = pad5(12343, changed)
-	fmt.Println("Modified array:", *changed)
-	fmt.Printf("%p\n", changed)
+	instruction := &[5]byte{}
+	instruction = pad5(12343, instruction)
+	fmt.Println("Modified array:", *instruction)
+	fmt.Printf("%p\n", instruction)
 
-	changed = pad5(1368, changed)
-	fmt.Println("Modified array:", *changed)
-	fmt.Printf("%p\n", changed)
+	instruction = pad5(1368, instruction)
+	fmt.Println("Modified array:", *instruction)
+	fmt.Printf("%p\n", instruction)
 }
 
 // package main
