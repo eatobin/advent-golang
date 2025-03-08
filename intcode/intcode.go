@@ -143,14 +143,14 @@ func (icP *IntCode) OpCode() int {
 				icP.Pointer += 4
 				return 1
 			case 3:
-				if icP.Phase != -1 {
+				if icP.Phase == -1 {
+					icP.Memory[icP.cParam(instruction)] = icP.Input
+				} else {
 					if icP.Pointer == 0 {
 						icP.Memory[icP.cParam(instruction)] = icP.Phase
 					} else {
 						icP.Memory[icP.cParam(instruction)] = icP.Input
 					}
-				} else {
-					icP.Memory[icP.cParam(instruction)] = icP.Input
 				}
 				icP.Pointer += 2
 				return 1
