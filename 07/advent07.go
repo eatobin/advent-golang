@@ -9,16 +9,27 @@ import (
 
 const fp = "advent07.csv"
 
-func areUnique(si []int) bool {
-	m := map[int]bool{}
-	for _, v := range si {
-		if m[v] {
-			return false
-		} else {
-			m[v] = true
+// func areUnique(si []int) bool {
+// 	m := map[int]bool{}
+// 	for _, v := range si {
+// 		if m[v] {
+// 			return false
+// 		} else {
+// 			m[v] = true
+// 		}
+// 	}
+// 	return true
+// }
+
+func areUnique(si []int, size int) int {
+	for i := 0; i < size; i++ {
+		for j := i + 1; j < size; j++ {
+			if si[i] == si[j] {
+				return 0
+			}
 		}
 	}
-	return true
+	return 1
 }
 
 func candidates() [][]int {
@@ -31,7 +42,7 @@ func candidates() [][]int {
 					for e := 0; e < 5; e++ {
 						candidate = nil
 						candidate = append(candidate, a, b, c, d, e)
-						if areUnique(candidate) {
+						if areUnique(candidate, 5) == 1 {
 							winners = append(winners, candidate)
 						}
 					}
@@ -52,7 +63,7 @@ func candidates2() [][]int {
 					for e := 5; e < 10; e++ {
 						candidate = nil
 						candidate = append(candidate, a, b, c, d, e)
-						if areUnique(candidate) {
+						if areUnique(candidate, 5) == 1 {
 							winners = append(winners, candidate)
 						}
 					}
