@@ -5,9 +5,14 @@ package main
 
 import "fmt"
 
+var perms = make([][]int, 0)
+
 func permutations(k int, A []int) {
 	if k == 1 {
-		fmt.Println(A)
+		fmt.Println("A", A)
+		fmt.Println("perms1", perms)
+		perms = append(perms, A)
+		fmt.Println("perms2", perms)
 	} else {
 		permutations(k-1, A)
 		for i := 0; i < k-1; i++ {
@@ -22,6 +27,10 @@ func permutations(k int, A []int) {
 }
 
 func main() {
-	A := []int{1, 2, 3, 4, 5}
+	A := []int{1, 2, 3}
 	permutations(len(A), A)
+	fmt.Println("done", perms)
+	// for row := range perms {
+	// 	fmt.Println(row)
+	// }
 }
