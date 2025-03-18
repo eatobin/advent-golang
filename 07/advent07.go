@@ -33,71 +33,6 @@ func permutations(k int, A []int) {
 	}
 }
 
-// func areUnique(si []int) bool {
-// 	m := map[int]bool{}
-// 	for _, v := range si {
-// 		if m[v] {
-// 			return false
-// 		} else {
-// 			m[v] = true
-// 		}
-// 	}
-// 	return true
-// }
-
-func areUnique(si []int, size int) int {
-	for i := 0; i < size; i++ {
-		for j := i + 1; j < size; j++ {
-			if si[i] == si[j] {
-				return 0
-			}
-		}
-	}
-	return 1
-}
-
-//func candidates() [][]int {
-//	var winners [][]int
-//	var candidate []int
-//	for a := 0; a < 5; a++ {
-//		for b := 0; b < 5; b++ {
-//			for c := 0; c < 5; c++ {
-//				for d := 0; d < 5; d++ {
-//					for e := 0; e < 5; e++ {
-//						candidate = nil
-//						candidate = append(candidate, a, b, c, d, e)
-//						if areUnique(candidate, 5) == 1 {
-//							winners = append(winners, candidate)
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
-//	return winners
-//}
-
-func candidates2() [][]int {
-	var winners [][]int
-	var candidate []int
-	for a := 5; a < 10; a++ {
-		for b := 5; b < 10; b++ {
-			for c := 5; c < 10; c++ {
-				for d := 5; d < 10; d++ {
-					for e := 5; e < 10; e++ {
-						candidate = nil
-						candidate = append(candidate, a, b, c, d, e)
-						if areUnique(candidate, 5) == 1 {
-							winners = append(winners, candidate)
-						}
-					}
-				}
-			}
-		}
-	}
-	return winners
-}
-
 func pass(candidate []int, commonMemory map[int]int) int {
 	memA := make(map[int]int, len(commonMemory))
 	memB := make(map[int]int, len(commonMemory))
@@ -309,7 +244,10 @@ func main() {
 	fmt.Printf("Part A answer = %d. Correct = 368584\n", answer[len(answer)-1])
 
 	tv = intCodePkg.MakeMemory(fp)
-	answer2 := passes2(candidates2(), tv)
+	candidates = nil
+	A = []int{5, 6, 7, 8, 9}
+	permutations(len(A), A)
+	answer2 := passes2(candidates, tv)
 	sort.Ints(answer2)
 	fmt.Printf("Part B answer = %d. Correct = 35993240\n", answer2[len(answer)-1])
 }
