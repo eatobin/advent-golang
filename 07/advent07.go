@@ -9,6 +9,30 @@ import (
 
 const fp = "advent07.csv"
 
+var candidates [][]int
+
+func addAPerm(perm []int) {
+	tmp := make([]int, len(perm))
+	copy(tmp, perm)
+	candidates = append(candidates, tmp)
+}
+
+func permutations(k int, A []int) {
+	if k == 1 {
+		addAPerm(A)
+	} else {
+		permutations(k-1, A)
+		for i := 0; i < k-1; i++ {
+			if k%2 == 0 {
+				A[i], A[k-1] = A[k-1], A[i]
+			} else {
+				A[0], A[k-1] = A[k-1], A[0]
+			}
+			permutations(k-1, A)
+		}
+	}
+}
+
 // func areUnique(si []int) bool {
 // 	m := map[int]bool{}
 // 	for _, v := range si {
@@ -32,26 +56,26 @@ func areUnique(si []int, size int) int {
 	return 1
 }
 
-func candidates() [][]int {
-	var winners [][]int
-	var candidate []int
-	for a := 0; a < 5; a++ {
-		for b := 0; b < 5; b++ {
-			for c := 0; c < 5; c++ {
-				for d := 0; d < 5; d++ {
-					for e := 0; e < 5; e++ {
-						candidate = nil
-						candidate = append(candidate, a, b, c, d, e)
-						if areUnique(candidate, 5) == 1 {
-							winners = append(winners, candidate)
-						}
-					}
-				}
-			}
-		}
-	}
-	return winners
-}
+//func candidates() [][]int {
+//	var winners [][]int
+//	var candidate []int
+//	for a := 0; a < 5; a++ {
+//		for b := 0; b < 5; b++ {
+//			for c := 0; c < 5; c++ {
+//				for d := 0; d < 5; d++ {
+//					for e := 0; e < 5; e++ {
+//						candidate = nil
+//						candidate = append(candidate, a, b, c, d, e)
+//						if areUnique(candidate, 5) == 1 {
+//							winners = append(winners, candidate)
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
+//	return winners
+//}
 
 func candidates2() [][]int {
 	var winners [][]int
@@ -278,7 +302,9 @@ func passes2(candidates [][]int, memory map[int]int) []int {
 
 func main() {
 	tv := intCodePkg.MakeMemory(fp)
-	answer := passes(candidates(), tv)
+	A := []int{0, 1, 2, 3, 4}
+	permutations(len(A), A)
+	answer := passes(candidates, tv)
 	sort.Ints(answer)
 	fmt.Printf("Part A answer = %d. Correct = 368584\n", answer[len(answer)-1])
 
