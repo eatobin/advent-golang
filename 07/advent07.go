@@ -280,10 +280,10 @@ func main() {
 	tv := intCodePkg.MakeMemory(fp)
 	answer := passes(candidates(), tv)
 	sort.Ints(answer)
-	fmt.Printf("Part A answer = %d\n", answer[len(answer)-1]) // Part A answer = 368584
+	fmt.Printf("Part A answer = %d. Correct = 368584\n", answer[len(answer)-1])
 
 	tv = intCodePkg.MakeMemory(fp)
 	answer2 := passes2(candidates2(), tv)
 	sort.Ints(answer2)
-	fmt.Printf("Part B answer = %d\n", answer2[len(answer)-1]) // Part B answer = 35993240
+	fmt.Printf("Part B answer = %d. Correct = 35993240\n", answer2[len(answer)-1])
 }
