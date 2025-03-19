@@ -21,15 +21,15 @@ func permutations(k int, A []int) {
 	if k == 1 {
 		addAPerm(A)
 	} else {
-		permutations(k-1, A)
 		for i := 0; i < k-1; i++ {
+			permutations(k-1, A)
 			if k%2 == 0 {
 				A[i], A[k-1] = A[k-1], A[i]
 			} else {
 				A[0], A[k-1] = A[k-1], A[0]
 			}
-			permutations(k-1, A)
 		}
+		permutations(k-1, A)
 	}
 }
 
