@@ -18,14 +18,12 @@ import (
 // p i or r = position, immediate or relative mode
 // r or w = read or write
 
-//const fp = "advent07.csv"
-
 type IntCode struct {
 	input     int
 	output    int
 	phase     int
 	pointer   int
-	memory    [17]int
+	memory    [523]int
 	isStopped bool
 	doesRecur bool
 }
@@ -34,20 +32,7 @@ const offsetC int = 1
 const offsetB int = 2
 const offsetA int = 3
 
-var memoryConstant = [17]int{3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0}
-
-func makeIntcode() IntCode {
-	intcode := IntCode{
-		input:     1,
-		output:    0,
-		phase:     -1,
-		pointer:   0,
-		memory:    memoryConstant,
-		isStopped: false,
-		doesRecur: true,
-	}
-	return intcode
-}
+var memoryConstant = [523]int{3, 8, 1001, 8, 10, 8, 105, 1, 0, 0, 21, 38, 55, 72, 93, 118, 199, 280, 361, 442, 99999, 3, 9, 1001, 9, 2, 9, 1002, 9, 5, 9, 101, 4, 9, 9, 4, 9, 99, 3, 9, 1002, 9, 3, 9, 1001, 9, 5, 9, 1002, 9, 4, 9, 4, 9, 99, 3, 9, 101, 4, 9, 9, 1002, 9, 3, 9, 1001, 9, 4, 9, 4, 9, 99, 3, 9, 1002, 9, 4, 9, 1001, 9, 4, 9, 102, 5, 9, 9, 1001, 9, 4, 9, 4, 9, 99, 3, 9, 101, 3, 9, 9, 1002, 9, 3, 9, 1001, 9, 3, 9, 102, 5, 9, 9, 101, 4, 9, 9, 4, 9, 99, 3, 9, 101, 1, 9, 9, 4, 9, 3, 9, 1001, 9, 1, 9, 4, 9, 3, 9, 102, 2, 9, 9, 4, 9, 3, 9, 101, 2, 9, 9, 4, 9, 3, 9, 1001, 9, 1, 9, 4, 9, 3, 9, 102, 2, 9, 9, 4, 9, 3, 9, 1001, 9, 1, 9, 4, 9, 3, 9, 102, 2, 9, 9, 4, 9, 3, 9, 102, 2, 9, 9, 4, 9, 3, 9, 1002, 9, 2, 9, 4, 9, 99, 3, 9, 1001, 9, 1, 9, 4, 9, 3, 9, 1002, 9, 2, 9, 4, 9, 3, 9, 1001, 9, 2, 9, 4, 9, 3, 9, 1002, 9, 2, 9, 4, 9, 3, 9, 101, 2, 9, 9, 4, 9, 3, 9, 102, 2, 9, 9, 4, 9, 3, 9, 102, 2, 9, 9, 4, 9, 3, 9, 102, 2, 9, 9, 4, 9, 3, 9, 101, 1, 9, 9, 4, 9, 3, 9, 101, 1, 9, 9, 4, 9, 99, 3, 9, 101, 2, 9, 9, 4, 9, 3, 9, 101, 1, 9, 9, 4, 9, 3, 9, 101, 1, 9, 9, 4, 9, 3, 9, 102, 2, 9, 9, 4, 9, 3, 9, 1002, 9, 2, 9, 4, 9, 3, 9, 101, 2, 9, 9, 4, 9, 3, 9, 1002, 9, 2, 9, 4, 9, 3, 9, 1001, 9, 2, 9, 4, 9, 3, 9, 1002, 9, 2, 9, 4, 9, 3, 9, 101, 1, 9, 9, 4, 9, 99, 3, 9, 1001, 9, 1, 9, 4, 9, 3, 9, 1002, 9, 2, 9, 4, 9, 3, 9, 1001, 9, 1, 9, 4, 9, 3, 9, 1001, 9, 2, 9, 4, 9, 3, 9, 102, 2, 9, 9, 4, 9, 3, 9, 1001, 9, 1, 9, 4, 9, 3, 9, 1002, 9, 2, 9, 4, 9, 3, 9, 1001, 9, 2, 9, 4, 9, 3, 9, 1001, 9, 2, 9, 4, 9, 3, 9, 102, 2, 9, 9, 4, 9, 99, 3, 9, 101, 1, 9, 9, 4, 9, 3, 9, 1002, 9, 2, 9, 4, 9, 3, 9, 101, 2, 9, 9, 4, 9, 3, 9, 1002, 9, 2, 9, 4, 9, 3, 9, 101, 2, 9, 9, 4, 9, 3, 9, 1002, 9, 2, 9, 4, 9, 3, 9, 101, 1, 9, 9, 4, 9, 3, 9, 101, 2, 9, 9, 4, 9, 3, 9, 1002, 9, 2, 9, 4, 9, 3, 9, 101, 1, 9, 9, 4, 9, 99}
 
 func pad5(op int, instruction *[5]int) *[5]int {
 	asString := fmt.Sprintf("%05d", op)
@@ -121,19 +106,12 @@ func permutations(k int, A []int) {
 	}
 }
 
-func pass(candidate []int, commonMemory [17]int, instruction *[5]int) int {
+func pass(candidate []int, commonMemory [523]int, instruction *[5]int) int {
 	memA := commonMemory
 	memB := commonMemory
 	memC := commonMemory
 	memD := commonMemory
 	memE := commonMemory
-	//for key, value := range commonMemory {
-	//	memA[key] = value
-	//	memB[key] = value
-	//	memC[key] = value
-	//	memD[key] = value
-	//	memE[key] = value
-	//}
 	icpA := &IntCode{
 		input:     0,
 		output:    0,
@@ -212,105 +190,106 @@ func pass(candidate []int, commonMemory [17]int, instruction *[5]int) int {
 	return icpE.output
 }
 
-//func pass2(candidate []int, commonMemory [17]int, instruction *[5]int) int {
-//	memA := commonMemory
-//	memB := commonMemory
-//	memC := commonMemory
-//	memD := commonMemory
-//	memE := commonMemory
-//	//for key, value := range commonMemory {
-//	//	memA[key] = value
-//	//	memB[key] = value
-//	//	memC[key] = value
-//	//	memD[key] = value
-//	//	memE[key] = value
-//	//}
-//	eOutput := 0
-//	allStopped := false
-//	icpA := &IntCode{
-//		input:     0,
-//		output:    0,
-//		phase:     candidate[0],
-//		pointer:   0,
-//		memory:    memA,
-//		isStopped: false,
-//		doesRecur: false,
-//	}
-//	icpB := &IntCode{
-//		input:     0,
-//		output:    0,
-//		phase:     candidate[1],
-//		pointer:   0,
-//		memory:    memB,
-//		isStopped: false,
-//		doesRecur: false,
-//	}
-//	icpC := &IntCode{
-//		input:     0,
-//		output:    0,
-//		phase:     candidate[2],
-//		pointer:   0,
-//		memory:    memC,
-//		isStopped: false,
-//		doesRecur: false,
-//	}
-//	icpD := &IntCode{
-//		input:     0,
-//		output:    0,
-//		phase:     candidate[3],
-//		pointer:   0,
-//		memory:    memD,
-//		isStopped: false,
-//		doesRecur: false,
-//	}
-//	icpE := &IntCode{
-//		input:     0,
-//		output:    0,
-//		phase:     candidate[4],
-//		pointer:   0,
-//		memory:    memE,
-//		isStopped: false,
-//		doesRecur: false,
-//	}
-//
-//	for !allStopped {
-//		icReturn := 1
-//		for icReturn == 1 {
-//			icReturn = opcode(icpA, instruction)
-//		}
-//		icpB.input = icpA.output
-//		icReturn = 1
-//		for icReturn == 1 {
-//			icReturn = opcode(icpB, instruction)
-//		}
-//		icpC.input = icpB.output
-//		icReturn = 1
-//		for icReturn == 1 {
-//			icReturn = opcode(icpC, instruction)
-//		}
-//		icpD.input = icpC.output
-//		icReturn = 1
-//		for icReturn == 1 {
-//			icReturn = opcode(icpD, instruction)
-//		}
-//		icpE.input = icpD.output
-//		icReturn = 1
-//		for icReturn == 1 {
-//			icReturn = opcode(icpE, instruction)
-//		}
-//
-//		icpA.input = icpE.output
-//		eOutput = icpE.output
-//		allStopped = icpE.isStopped
-//	}
-//
-//	return eOutput
-//}
+func pass2(candidate []int, commonMemory [523]int, instruction *[5]int) int {
+	memA := commonMemory
+	memB := commonMemory
+	memC := commonMemory
+	memD := commonMemory
+	memE := commonMemory
+	eOutput := 0
+	allStopped := false
+	icpA := &IntCode{
+		input:     0,
+		output:    0,
+		phase:     candidate[0],
+		pointer:   0,
+		memory:    memA,
+		isStopped: false,
+		doesRecur: false,
+	}
+	icpB := &IntCode{
+		input:     0,
+		output:    0,
+		phase:     candidate[1],
+		pointer:   0,
+		memory:    memB,
+		isStopped: false,
+		doesRecur: false,
+	}
+	icpC := &IntCode{
+		input:     0,
+		output:    0,
+		phase:     candidate[2],
+		pointer:   0,
+		memory:    memC,
+		isStopped: false,
+		doesRecur: false,
+	}
+	icpD := &IntCode{
+		input:     0,
+		output:    0,
+		phase:     candidate[3],
+		pointer:   0,
+		memory:    memD,
+		isStopped: false,
+		doesRecur: false,
+	}
+	icpE := &IntCode{
+		input:     0,
+		output:    0,
+		phase:     candidate[4],
+		pointer:   0,
+		memory:    memE,
+		isStopped: false,
+		doesRecur: false,
+	}
 
-func passes(memory [17]int, instruction *[5]int) []int {
+	for !allStopped {
+		icReturn := 1
+		for icReturn == 1 {
+			icReturn = opcode(icpA, instruction)
+		}
+		icpB.input = icpA.output
+		icReturn = 1
+		for icReturn == 1 {
+			icReturn = opcode(icpB, instruction)
+		}
+		icpC.input = icpB.output
+		icReturn = 1
+		for icReturn == 1 {
+			icReturn = opcode(icpC, instruction)
+		}
+		icpD.input = icpC.output
+		icReturn = 1
+		for icReturn == 1 {
+			icReturn = opcode(icpD, instruction)
+		}
+		icpE.input = icpD.output
+		icReturn = 1
+		for icReturn == 1 {
+			icReturn = opcode(icpE, instruction)
+		}
+
+		icpA.input = icpE.output
+		eOutput = icpE.output
+		allStopped = icpE.isStopped
+	}
+
+	return eOutput
+}
+
+func passes(memory [523]int, instruction *[5]int) []int {
 	vcm := make([]int, len(candidates))
 	for i, v := range candidates {
 		vcm[i] = pass(v, memory, instruction)
+	}
+	return vcm
+}
+
+func passes2(memory [523]int, instruction *[5]int) []int {
+	vcm := make([]int, len(candidates))
+	for i, v := range candidates {
+		vcm[i] = pass2(v, memory, instruction)
 	}
 	return vcm
 }
@@ -400,23 +379,6 @@ func opcode(icP *IntCode, instruction *[5]int) int {
 	}
 }
 
-//func main() {
-//	tv := intCodePkg.MakeMemory(fp)
-//	A := []int{0, 1, 2, 3, 4}
-//	permutations(len(A), A)
-//	answer := passes(candidates, tv)
-//	sort.Ints(answer)
-//	fmt.Printf("Part A answer = %d. Correct = 368584\n", answer[len(answer)-1])
-//
-//	tv = intCodePkg.MakeMemory(fp)
-//	candidates = nil
-//	A = []int{5, 6, 7, 8, 9}
-//	permutations(len(A), A)
-//	answer2 := passes2(candidates, tv)
-//	sort.Ints(answer2)
-//	fmt.Printf("Part B answer = %d. Correct = 35993240\n", answer2[len(answer)-1])
-//}
-
 func main() {
 	A := []int{0, 1, 2, 3, 4}
 	permutations(len(A), A)
@@ -424,4 +386,12 @@ func main() {
 	answer := passes(memoryConstant, &instruction)
 	sort.Ints(answer)
 	fmt.Printf("Part A answer = %d. Correct = 368584\n", answer[len(answer)-1])
+
+	candidates = nil
+	A = []int{5, 6, 7, 8, 9}
+	permutations(len(A), A)
+	instruction = [5]int{}
+	answer2 := passes2(memoryConstant, &instruction)
+	sort.Ints(answer2)
+	fmt.Printf("Part B answer = %d. Correct = 35993240\n", answer2[len(answer)-1])
 }
