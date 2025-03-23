@@ -294,14 +294,6 @@ func passes2(memory [523]int, instruction *[5]int) []int {
 	return vcm
 }
 
-//func passes2(candidates [][]int, memory [17]int, instruction *[5]int) []int {
-//	vcm := make([]int, len(candidates))
-//	for i, v := range candidates {
-//		vcm[i] = pass2(v, memory, instruction)
-//	}
-//	return vcm
-//}
-
 func opcode(icP *IntCode, instruction *[5]int) int {
 	if icP.isStopped {
 		return 0
@@ -391,7 +383,7 @@ func main() {
 	A = []int{5, 6, 7, 8, 9}
 	permutations(len(A), A)
 	instruction = [5]int{}
-	answer2 := passes2(memoryConstant, &instruction)
-	sort.Ints(answer2)
-	fmt.Printf("Part B answer = %d. Correct = 35993240\n", answer2[len(answer)-1])
+	answer = passes2(memoryConstant, &instruction)
+	sort.Ints(answer)
+	fmt.Printf("Part B answer = %d. Correct = 35993240\n", answer[len(answer)-1])
 }
