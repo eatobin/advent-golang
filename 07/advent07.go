@@ -372,16 +372,16 @@ func opcode(icP *IntCode, instruction *[5]int) int {
 }
 
 func main() {
-	A := []int{0, 1, 2, 3, 4}
-	permutations(len(A), A)
+	phases := []int{0, 1, 2, 3, 4}
+	permutations(len(phases), phases)
 	instruction := [5]int{}
 	answer := passes(memoryConstant, &instruction)
 	sort.Ints(answer)
 	fmt.Printf("Part A answer = %d. Correct = 368584\n", answer[len(answer)-1])
 
 	candidates = nil
-	A = []int{5, 6, 7, 8, 9}
-	permutations(len(A), A)
+	phases = []int{5, 6, 7, 8, 9}
+	permutations(len(phases), phases)
 	instruction = [5]int{}
 	answer = passes2(memoryConstant, &instruction)
 	sort.Ints(answer)
