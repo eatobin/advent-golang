@@ -106,12 +106,12 @@ func permutations(k int, A []int) {
 	}
 }
 
-func pass(candidate []int, commonMemory [523]int, instruction *[5]int) int {
-	memA := commonMemory
-	memB := commonMemory
-	memC := commonMemory
-	memD := commonMemory
-	memE := commonMemory
+func pass(candidate []int, instruction *[5]int) int {
+	memA := memoryConstant
+	memB := memoryConstant
+	memC := memoryConstant
+	memD := memoryConstant
+	memE := memoryConstant
 	icpA := &IntCode{
 		input:     0,
 		output:    0,
@@ -190,12 +190,12 @@ func pass(candidate []int, commonMemory [523]int, instruction *[5]int) int {
 	return icpE.output
 }
 
-func pass2(candidate []int, commonMemory [523]int, instruction *[5]int) int {
-	memA := commonMemory
-	memB := commonMemory
-	memC := commonMemory
-	memD := commonMemory
-	memE := commonMemory
+func pass2(candidate []int, instruction *[5]int) int {
+	memA := memoryConstant
+	memB := memoryConstant
+	memC := memoryConstant
+	memD := memoryConstant
+	memE := memoryConstant
 	eOutput := 0
 	allStopped := false
 	icpA := &IntCode{
@@ -278,18 +278,18 @@ func pass2(candidate []int, commonMemory [523]int, instruction *[5]int) int {
 	return eOutput
 }
 
-func passes(memory [523]int, instruction *[5]int) []int {
+func passes(instruction *[5]int) []int {
 	vcm := make([]int, len(candidates))
 	for i, v := range candidates {
-		vcm[i] = pass(v, memory, instruction)
+		vcm[i] = pass(v, instruction)
 	}
 	return vcm
 }
 
-func passes2(memory [523]int, instruction *[5]int) []int {
+func passes2(instruction *[5]int) []int {
 	vcm := make([]int, len(candidates))
 	for i, v := range candidates {
-		vcm[i] = pass2(v, memory, instruction)
+		vcm[i] = pass2(v, instruction)
 	}
 	return vcm
 }
@@ -375,7 +375,7 @@ func main() {
 	phases := []int{0, 1, 2, 3, 4}
 	permutations(len(phases), phases)
 	instruction := [5]int{}
-	answer := passes(memoryConstant, &instruction)
+	answer := passes(&instruction)
 	sort.Ints(answer)
 	fmt.Printf("Part A answer = %d. Correct = 368584\n", answer[len(answer)-1])
 
@@ -383,7 +383,7 @@ func main() {
 	phases = []int{5, 6, 7, 8, 9}
 	permutations(len(phases), phases)
 	instruction = [5]int{}
-	answer = passes2(memoryConstant, &instruction)
+	answer = passes2(&instruction)
 	sort.Ints(answer)
 	fmt.Printf("Part B answer = %d. Correct = 35993240\n", answer[len(answer)-1])
 }
