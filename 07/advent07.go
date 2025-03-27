@@ -112,7 +112,7 @@ func pass(candidate []int, instruction *[5]int) int {
 	memC := memoryConstant
 	memD := memoryConstant
 	memE := memoryConstant
-	icpA := &IntCode{
+	icpA := IntCode{
 		input:     0,
 		output:    0,
 		phase:     candidate[0],
@@ -124,10 +124,10 @@ func pass(candidate []int, instruction *[5]int) int {
 
 	icReturn := 1
 	for icReturn == 1 {
-		icReturn = opcode(icpA, instruction)
+		icReturn = opcode(&icpA, instruction)
 	}
 
-	icpB := &IntCode{
+	icpB := IntCode{
 		input:     icpA.output,
 		output:    0,
 		phase:     candidate[1],
@@ -139,10 +139,10 @@ func pass(candidate []int, instruction *[5]int) int {
 
 	icReturn = 1
 	for icReturn == 1 {
-		icReturn = opcode(icpB, instruction)
+		icReturn = opcode(&icpB, instruction)
 	}
 
-	icpC := &IntCode{
+	icpC := IntCode{
 		input:     icpB.output,
 		output:    0,
 		phase:     candidate[2],
@@ -154,10 +154,10 @@ func pass(candidate []int, instruction *[5]int) int {
 
 	icReturn = 1
 	for icReturn == 1 {
-		icReturn = opcode(icpC, instruction)
+		icReturn = opcode(&icpC, instruction)
 	}
 
-	icpD := &IntCode{
+	icpD := IntCode{
 		input:     icpC.output,
 		output:    0,
 		phase:     candidate[3],
@@ -169,10 +169,10 @@ func pass(candidate []int, instruction *[5]int) int {
 
 	icReturn = 1
 	for icReturn == 1 {
-		icReturn = opcode(icpD, instruction)
+		icReturn = opcode(&icpD, instruction)
 	}
 
-	icpE := &IntCode{
+	icpE := IntCode{
 		input:     icpD.output,
 		output:    0,
 		phase:     candidate[4],
@@ -184,7 +184,7 @@ func pass(candidate []int, instruction *[5]int) int {
 
 	icReturn = 1
 	for icReturn == 1 {
-		icReturn = opcode(icpE, instruction)
+		icReturn = opcode(&icpE, instruction)
 	}
 
 	return icpE.output
@@ -198,7 +198,7 @@ func pass2(candidate []int, instruction *[5]int) int {
 	memE := memoryConstant
 	eOutput := 0
 	allStopped := false
-	icpA := &IntCode{
+	icpA := IntCode{
 		input:     0,
 		output:    0,
 		phase:     candidate[0],
@@ -207,7 +207,7 @@ func pass2(candidate []int, instruction *[5]int) int {
 		isStopped: false,
 		doesRecur: false,
 	}
-	icpB := &IntCode{
+	icpB := IntCode{
 		input:     0,
 		output:    0,
 		phase:     candidate[1],
@@ -216,7 +216,7 @@ func pass2(candidate []int, instruction *[5]int) int {
 		isStopped: false,
 		doesRecur: false,
 	}
-	icpC := &IntCode{
+	icpC := IntCode{
 		input:     0,
 		output:    0,
 		phase:     candidate[2],
@@ -225,7 +225,7 @@ func pass2(candidate []int, instruction *[5]int) int {
 		isStopped: false,
 		doesRecur: false,
 	}
-	icpD := &IntCode{
+	icpD := IntCode{
 		input:     0,
 		output:    0,
 		phase:     candidate[3],
@@ -234,7 +234,7 @@ func pass2(candidate []int, instruction *[5]int) int {
 		isStopped: false,
 		doesRecur: false,
 	}
-	icpE := &IntCode{
+	icpE := IntCode{
 		input:     0,
 		output:    0,
 		phase:     candidate[4],
@@ -247,27 +247,27 @@ func pass2(candidate []int, instruction *[5]int) int {
 	for !allStopped {
 		icReturn := 1
 		for icReturn == 1 {
-			icReturn = opcode(icpA, instruction)
+			icReturn = opcode(&icpA, instruction)
 		}
 		icpB.input = icpA.output
 		icReturn = 1
 		for icReturn == 1 {
-			icReturn = opcode(icpB, instruction)
+			icReturn = opcode(&icpB, instruction)
 		}
 		icpC.input = icpB.output
 		icReturn = 1
 		for icReturn == 1 {
-			icReturn = opcode(icpC, instruction)
+			icReturn = opcode(&icpC, instruction)
 		}
 		icpD.input = icpC.output
 		icReturn = 1
 		for icReturn == 1 {
-			icReturn = opcode(icpD, instruction)
+			icReturn = opcode(&icpD, instruction)
 		}
 		icpE.input = icpD.output
 		icReturn = 1
 		for icReturn == 1 {
-			icReturn = opcode(icpE, instruction)
+			icReturn = opcode(&icpE, instruction)
 		}
 
 		icpA.input = icpE.output
