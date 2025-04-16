@@ -106,13 +106,13 @@ func permutations(k int, A []int) {
 	}
 }
 
-func pass(candidate []int, commonMemory [523]int, instruction *[5]int) int {
-	memA := commonMemory
-	memB := commonMemory
-	memC := commonMemory
-	memD := commonMemory
-	memE := commonMemory
-	icpA := &IntCode{
+func pass(candidate []int, instruction *[5]int) int {
+	memA := memoryConstant
+	memB := memoryConstant
+	memC := memoryConstant
+	memD := memoryConstant
+	memE := memoryConstant
+	icpA := IntCode{
 		input:     0,
 		output:    0,
 		phase:     candidate[0],
@@ -124,10 +124,10 @@ func pass(candidate []int, commonMemory [523]int, instruction *[5]int) int {
 
 	icReturn := 1
 	for icReturn == 1 {
-		icReturn = opcode(icpA, instruction)
+		icReturn = opcode(&icpA, instruction)
 	}
 
-	icpB := &IntCode{
+	icpB := IntCode{
 		input:     icpA.output,
 		output:    0,
 		phase:     candidate[1],
@@ -139,10 +139,10 @@ func pass(candidate []int, commonMemory [523]int, instruction *[5]int) int {
 
 	icReturn = 1
 	for icReturn == 1 {
-		icReturn = opcode(icpB, instruction)
+		icReturn = opcode(&icpB, instruction)
 	}
 
-	icpC := &IntCode{
+	icpC := IntCode{
 		input:     icpB.output,
 		output:    0,
 		phase:     candidate[2],
@@ -154,10 +154,10 @@ func pass(candidate []int, commonMemory [523]int, instruction *[5]int) int {
 
 	icReturn = 1
 	for icReturn == 1 {
-		icReturn = opcode(icpC, instruction)
+		icReturn = opcode(&icpC, instruction)
 	}
 
-	icpD := &IntCode{
+	icpD := IntCode{
 		input:     icpC.output,
 		output:    0,
 		phase:     candidate[3],
@@ -169,10 +169,10 @@ func pass(candidate []int, commonMemory [523]int, instruction *[5]int) int {
 
 	icReturn = 1
 	for icReturn == 1 {
-		icReturn = opcode(icpD, instruction)
+		icReturn = opcode(&icpD, instruction)
 	}
 
-	icpE := &IntCode{
+	icpE := IntCode{
 		input:     icpD.output,
 		output:    0,
 		phase:     candidate[4],
@@ -184,21 +184,21 @@ func pass(candidate []int, commonMemory [523]int, instruction *[5]int) int {
 
 	icReturn = 1
 	for icReturn == 1 {
-		icReturn = opcode(icpE, instruction)
+		icReturn = opcode(&icpE, instruction)
 	}
 
 	return icpE.output
 }
 
-func pass2(candidate []int, commonMemory [523]int, instruction *[5]int) int {
-	memA := commonMemory
-	memB := commonMemory
-	memC := commonMemory
-	memD := commonMemory
-	memE := commonMemory
+func pass2(candidate []int, instruction *[5]int) int {
+	memA := memoryConstant
+	memB := memoryConstant
+	memC := memoryConstant
+	memD := memoryConstant
+	memE := memoryConstant
 	eOutput := 0
 	allStopped := false
-	icpA := &IntCode{
+	icpA := IntCode{
 		input:     0,
 		output:    0,
 		phase:     candidate[0],
@@ -207,7 +207,7 @@ func pass2(candidate []int, commonMemory [523]int, instruction *[5]int) int {
 		isStopped: false,
 		doesRecur: false,
 	}
-	icpB := &IntCode{
+	icpB := IntCode{
 		input:     0,
 		output:    0,
 		phase:     candidate[1],
@@ -216,7 +216,7 @@ func pass2(candidate []int, commonMemory [523]int, instruction *[5]int) int {
 		isStopped: false,
 		doesRecur: false,
 	}
-	icpC := &IntCode{
+	icpC := IntCode{
 		input:     0,
 		output:    0,
 		phase:     candidate[2],
@@ -225,7 +225,7 @@ func pass2(candidate []int, commonMemory [523]int, instruction *[5]int) int {
 		isStopped: false,
 		doesRecur: false,
 	}
-	icpD := &IntCode{
+	icpD := IntCode{
 		input:     0,
 		output:    0,
 		phase:     candidate[3],
@@ -234,7 +234,7 @@ func pass2(candidate []int, commonMemory [523]int, instruction *[5]int) int {
 		isStopped: false,
 		doesRecur: false,
 	}
-	icpE := &IntCode{
+	icpE := IntCode{
 		input:     0,
 		output:    0,
 		phase:     candidate[4],
@@ -247,27 +247,27 @@ func pass2(candidate []int, commonMemory [523]int, instruction *[5]int) int {
 	for !allStopped {
 		icReturn := 1
 		for icReturn == 1 {
-			icReturn = opcode(icpA, instruction)
+			icReturn = opcode(&icpA, instruction)
 		}
 		icpB.input = icpA.output
 		icReturn = 1
 		for icReturn == 1 {
-			icReturn = opcode(icpB, instruction)
+			icReturn = opcode(&icpB, instruction)
 		}
 		icpC.input = icpB.output
 		icReturn = 1
 		for icReturn == 1 {
-			icReturn = opcode(icpC, instruction)
+			icReturn = opcode(&icpC, instruction)
 		}
 		icpD.input = icpC.output
 		icReturn = 1
 		for icReturn == 1 {
-			icReturn = opcode(icpD, instruction)
+			icReturn = opcode(&icpD, instruction)
 		}
 		icpE.input = icpD.output
 		icReturn = 1
 		for icReturn == 1 {
-			icReturn = opcode(icpE, instruction)
+			icReturn = opcode(&icpE, instruction)
 		}
 
 		icpA.input = icpE.output
@@ -278,18 +278,18 @@ func pass2(candidate []int, commonMemory [523]int, instruction *[5]int) int {
 	return eOutput
 }
 
-func passes(memory [523]int, instruction *[5]int) []int {
+func passes(instruction *[5]int) []int {
 	vcm := make([]int, len(candidates))
 	for i, v := range candidates {
-		vcm[i] = pass(v, memory, instruction)
+		vcm[i] = pass(v, instruction)
 	}
 	return vcm
 }
 
-func passes2(memory [523]int, instruction *[5]int) []int {
+func passes2(instruction *[5]int) []int {
 	vcm := make([]int, len(candidates))
 	for i, v := range candidates {
-		vcm[i] = pass2(v, memory, instruction)
+		vcm[i] = pass2(v, instruction)
 	}
 	return vcm
 }
@@ -372,18 +372,18 @@ func opcode(icP *IntCode, instruction *[5]int) int {
 }
 
 func main() {
-	A := []int{0, 1, 2, 3, 4}
-	permutations(len(A), A)
+	phases := []int{0, 1, 2, 3, 4}
+	permutations(len(phases), phases)
 	instruction := [5]int{}
-	answer := passes(memoryConstant, &instruction)
+	answer := passes(&instruction)
 	sort.Ints(answer)
 	fmt.Printf("Part A answer = %d. Correct = 368584\n", answer[len(answer)-1])
 
 	candidates = nil
-	A = []int{5, 6, 7, 8, 9}
-	permutations(len(A), A)
+	phases = []int{5, 6, 7, 8, 9}
+	permutations(len(phases), phases)
 	instruction = [5]int{}
-	answer = passes2(memoryConstant, &instruction)
+	answer = passes2(&instruction)
 	sort.Ints(answer)
 	fmt.Printf("Part B answer = %d. Correct = 35993240\n", answer[len(answer)-1])
 }
