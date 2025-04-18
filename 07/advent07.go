@@ -37,7 +37,7 @@ var memoryConstant = [523]int{3, 8, 1001, 8, 10, 8, 105, 1, 0, 0, 21, 38, 55, 72
 func pad5(op int, instruction *[5]int) *[5]int {
 	asString := fmt.Sprintf("%05d", op)
 	asBytes := []byte(asString)
-	for i := 0; i < 5; i++ {
+	for i := range 5 {
 		(*instruction)[i] = int(asBytes[i] - 48)
 	}
 	return instruction
