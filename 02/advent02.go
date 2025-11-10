@@ -10,23 +10,23 @@ type Intcode struct {
 }
 
 func main() {
-	var intcode Intcode
+	var intcode *Intcode
 	var icReturn int
 
-	intcode = makeIntcode()
+	intcode = newIntcode()
 	icReturn = 1
 
-	updatedMemory(&intcode, 12, 2)
+	updatedMemory(intcode, 12, 2)
 
 	for icReturn == 1 {
-		icReturn = opcode(&intcode)
+		icReturn = opcode(intcode)
 	}
 
 	fmt.Printf("\nPart A answer = %d. Correct = 2890696\n", intcode.memory[0])
 	fmt.Printf("Part B answer = %d. Correct = 8226\n\n", nounVerb())
 }
 
-func makeIntcode() Intcode {
+func newIntcode() *Intcode {
 	intcode := Intcode{
 		pointer: 0,
 		memory: [121]int{1, 0, 0, 3, 1, 1, 2, 3, 1, 3, 4, 3, 1, 5, 0, 3, 2, 10, 1, 19, 2, 9, 19, 23, 2, 13, 23,
@@ -35,7 +35,7 @@ func makeIntcode() Intcode {
 			75, 2, 6, 75, 79, 1, 5, 79, 83, 2, 83, 6, 87, 1, 5, 87, 91, 1, 6, 91, 95, 2, 95, 6, 99,
 			1, 5, 99, 103, 1, 6, 103, 107, 1, 107, 2, 111, 1, 111, 5, 0, 99, 2, 14, 0, 0},
 	}
-	return intcode
+	return &intcode
 }
 
 func opcode(intCode *Intcode) int {
@@ -77,18 +77,18 @@ func updatedMemory(intcode *Intcode, noun int, verb int) {
 func nounVerb() int {
 	var noun int
 	var verb int
-	var intcode Intcode
+	var intcode *Intcode
 	var icReturn int
 	var candidate int
 
 	for noun = range 100 {
 		for verb = range 100 {
-			intcode = makeIntcode()
-			updatedMemory(&intcode, noun, verb)
+			intcode = newIntcode()
+			updatedMemory(intcode, noun, verb)
 
 			icReturn = 1
 			for icReturn == 1 {
-				icReturn = opcode(&intcode)
+				icReturn = opcode(intcode)
 			}
 
 			candidate = intcode.memory[0]
