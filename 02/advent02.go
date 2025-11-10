@@ -62,8 +62,10 @@ func opcode(intCode *Intcode) int {
 				intCode.memory[address2]
 		intCode.pointer += 4
 		return 1
-	default:
+	case 99:
 		return 0
+	default:
+		panic("Something critical went wrong!")
 	}
 }
 
@@ -79,8 +81,8 @@ func nounVerb() int {
 	var icReturn int
 	var candidate int
 
-	for noun = 0; noun < 100; noun++ {
-		for verb = 0; verb < 100; verb++ {
+	for noun = range 100 {
+		for verb = range 100 {
 			intcode = makeIntcode()
 			updatedMemory(&intcode, noun, verb)
 
@@ -95,5 +97,5 @@ func nounVerb() int {
 			}
 		}
 	}
-	return -1
+	panic("Something critical went wrong!")
 }
