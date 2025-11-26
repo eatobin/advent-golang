@@ -22,7 +22,7 @@ func main() {
 		icReturn = opcode(intcode)
 	}
 
-	fmt.Printf("\nPart A answer = %d. Correct = 2890696\n", intcode.memory[0])
+	fmt.Printf("\nPart A answerX = %d. Correct = 2890696\n", intcode.memory[0])
 	fmt.Printf("Part B answer = %d. Correct = 8226\n\n", nounVerb())
 }
 
