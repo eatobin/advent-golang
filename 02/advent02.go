@@ -1,5 +1,18 @@
 package main
 
+// Instruction:
+// ABCDE
+// 01234
+// 01002
+// 34(DE) - two-digit opcode,      02 == opcode 2
+//  2(C) - mode of 1st parameter,  0 == position mode
+//  1(B) - mode of 2nd parameter,  1 == immediate mode
+//  0(A) - mode of 3rd parameter,  0 == position mode,
+//                                   omitted due to being a leading zero
+// 0 1 or 2 = left-to-right position after 2 digit opcode
+// p i or r = position, immediate or relative mode
+// r or w = read or write
+
 import (
 	"fmt"
 )
@@ -38,22 +51,26 @@ func newIntcode() *Intcode {
 	return &intcode
 }
 
+// For example, if your Intcode computer encounters 1,10,20,30,
+// it should read the values at positions 10 and 20, add those values,
+// and then overwrite the value at position 30 with their sum.
+
 func opcode(intCode *Intcode) int {
 	var action int
 	var address1 int
 	var address2 int
 	var address3 int
 
-	action = intCode.memory[intCode.pointer]
-	address1 = intCode.memory[intCode.pointer+1]
-	address2 = intCode.memory[intCode.pointer+2]
-	address3 = intCode.memory[intCode.pointer+3]
+	action = intCode.memory[intCode.pointer]     // action = 1
+	address1 = intCode.memory[intCode.pointer+1] // address1 = 10 key = 10
+	address2 = intCode.memory[intCode.pointer+2] // address2 = 20 key = 20
+	address3 = intCode.memory[intCode.pointer+3] // address3 = 30 key = 30
 
 	switch action {
 	case 1:
-		intCode.memory[address3] =
-			intCode.memory[address1] +
-				intCode.memory[address2]
+		intCode.memory[address3] = // write to position 30
+			intCode.memory[address1] + // read value at position 10
+				intCode.memory[address2] // read value at position 20
 		intCode.pointer += 4
 		return 1
 	case 2:
